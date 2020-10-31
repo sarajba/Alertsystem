@@ -65,7 +65,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
           <a href="#" class="list-items"><i class="fas fa-map-marker-alt"></i>&nbsp; Nodes</a>
         </li>
         <li>
-          <a href="#" class="list-items"><i class="fas fa-bell fa fw"></i>&nbsp; Alerms</a>
+          <a href="Alerms.php" class="list-items"><i class="fas fa-bell fa fw"></i>&nbsp; Alerms</a>
         </li>
         <li>
           <a href="#" class="list-items"><i class="fas fa-chart-bar fa fw"></i>&nbsp; Charts</a>
@@ -187,11 +187,11 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             </div>
           </div>
         </div>
-        <div class="col-md-6 mb-4">
+        <div class="col-md-5 mb-4">
           <div id="chartdiv"></div>
           <span>Nodes down</span>
         </div>
-        <div class="col-md-6 mb-4">
+        <div class="col-md-5 mb-4">
           <div id="chartdiv2"></div>
           <span>Nodes Up</span>
         </div>
