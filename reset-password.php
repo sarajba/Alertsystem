@@ -127,7 +127,7 @@
                                 </div>
                                 <div class="form-group">
                                     <input type="submit" class="btn btn-outline-success" value="Submit">
-                                    <a class="btn btn-link" href="welcome.php">Cancel</a>
+                                    <a class="btn btn-link" href="index.php">Cancel</a>
                                 </div>
                             </form>
                         </div>    
