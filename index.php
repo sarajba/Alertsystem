@@ -52,20 +52,20 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <!-- Sidebar Holder -->
     <nav id="sidebar">
       <div class="sidebar-header">
-        <a href="welcome.php">
+        <a href="index.php">
           <h3>GeoAlertSystem</h3>
         </a>
       </div>
-
+      
       <ul class="list-unstyled components">
         <li>
           <a href="#" class="list-items"><i class="fas fa-tachometer-alt"></i>&nbsp; Dashboard</a>
         </li>
         <li>
-          <a href="#" class="list-items"><i class="fas fa-map-marker-alt"></i>&nbsp; Nodes</a>
+          <a href="nodes.php" class="list-items"><i class="fas fa-map-marker-alt"></i>&nbsp; Nodes</a>
         </li>
         <li>
-          <a href="Alerms.php" class="list-items"><i class="fas fa-bell fa fw"></i>&nbsp; Alerms</a>
+          <a href="Alarms.php" class="list-items"><i class="fas fa-bell fa fw"></i>&nbsp; Alarms</a>
         </li>
         <li>
           <a href="#" class="list-items"><i class="fas fa-chart-bar fa fw"></i>&nbsp; Charts</a>
@@ -103,7 +103,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
           </button>
 
           <div class="navbar navbar-light amber lighten-4 mb-4">
-            <a class="animated-icon1" href="#"><span></span><span></span><span></span></a>
+            <a class="animated-icon1" href="Alarms.php"><span></span><span></span><span></span></a>
           </div>
         </div>
       </nav>
@@ -121,12 +121,12 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             <!-- Data -->
             <div class="third-content ml-auto mr-4 mb-2">
               <p class="text">Normal</p>
-              <h4 class="font-weight-bold float-right">10</h4>
+              <h4 class="font-weight-bold number">10</h4>
             </div>
             <!-- Content -->
             <div class="card-body white">
               <div class="progress md-progress">
-                <div class="progress-bar bg-primary" role="progressbar" style="width: 10%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar bg-primary" role="progressbar" style="width: 0%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
               </div>
             </div>
           </div>
@@ -141,7 +141,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             <!-- Data -->
             <div class="third-content  ml-auto mr-4 mb-2">
               <p class="text">Advisory</p>
-              <h4 class="font-weight-bold float-right">0</h4>
+              <h4 class="font-weight-bold number">0</h4>
             </div>
             <!-- Content -->
             <div class="card-body white">
@@ -159,7 +159,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             <!-- Data -->
             <div class="third-content  ml-auto mr-4 mb-2">
               <p class="text">Watch</p>
-              <h4 class="font-weight-bold float-right">0</h4>
+              <h4 class="font-weight-bold number">0</h4>
             </div>
             <!-- Content -->
             <div class="card-body white">
@@ -177,7 +177,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             <!-- Data -->
             <div class="third-content  ml-auto mr-4 mb-2">
               <p class="text">Danger</p>
-              <h4 class="font-weight-bold float-right">0</h4>
+              <h4 class="font-weight-bold number">0</h4>
             </div>
             <!-- Content -->
             <div class="card-body white">
@@ -187,14 +187,16 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             </div>
           </div>
         </div>
-        <div class="col-md-5 mb-4">
+       <div class="gua-chart">
+       <div class="col-md-5 mb-4">
           <div id="chartdiv"></div>
-          <span>Nodes down</span>
+          <span class="nodes">Nodes Up <br> 10 Nodes (100%)</span>
         </div>
         <div class="col-md-5 mb-4">
           <div id="chartdiv2"></div>
-          <span>Nodes Up</span>
+          <span class="nodes"> Nodes Down <br> 0 Ndoes (0%)</span>
         </div>
+       </div>
 
         <!-- circle percentage -->
         <div class="col-md-12 mb-8">
@@ -214,70 +216,70 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
       <tr class="table-info">
         <td>10</td>
         <td>Residence</td>
-        <td>UP</td>
+        <td>Up</td>
         <td>2020-10-28 12:00:00</td>
         <td>Normal</td>
       </tr>      
       <tr class="table-primary">
         <td>20</td>
         <td>Residence</td>
-        <td>UP</td>
+        <td>Up</td>
         <td>2020-10-28 12:00:00</td>
         <td>Normal</td>
       </tr>
       <tr class="table-secondary">
         <td>21</td>
         <td>Residence</td>
-        <td>UP</td>
+        <td>Up</td>
         <td>2020-10-28 12:00:00</td>
         <td>Normal</td>
       </tr>
       <tr class="table-danger">
         <td>30</td>
         <td>Residence</td>
-        <td>UP</td>
+        <td>Up</td>
         <td>2020-10-28 12:00:00</td>
         <td>Normal</td>
       </tr>
       <tr class="table-info">
         <td>40</td>
         <td>Residence</td>
-        <td>UP</td>
+        <td>Up</td>
         <td>2020-10-28 12:00:00</td>
         <td>Normal</td>
       </tr>
       <tr class="table-warning">
         <td>50</td>
         <td>Residence</td>
-        <td>UP</td>
+        <td>Up</td>
         <td>2020-10-28 12:00:00</td>
         <td>Normal</td>
       </tr>
       <tr class="table-active">
         <td>60</td>
         <td>Residence</td>
-        <td>UP</td>
+        <td>Up</td>
         <td>2020-10-28 12:00:00</td>
         <td>Normal</td>
       </tr>
       <tr class="table-success">
         <td>61</td>
         <td>Residence</td>
-        <td>UP</td>
+        <td>Up</td>
         <td>2020-10-28 12:00:00</td> 
         <td>Normal</td>
       </tr>
       <tr class="table-warning">
         <td>70</td>
         <td>Residence</td>
-        <td>UP</td>
+        <td>Up</td>
         <td>2020-10-28 12:00:00</td>
         <td>Normal</td>
       </tr>
       <tr class="table-dark text-dark">
         <td>80</td>
         <td>Residence</td>
-        <td>UP</td>
+        <td>Up</td>
         <td>2020-10-28 12:00:00</td>
         <td>Normal</td>
       </tr>
@@ -351,7 +353,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
       hand.radius = am4core.percent(97);
 
       setInterval(function() {
-        hand.showValue(25);
+        hand.showValue(99);
       }, 2000);
 
 
@@ -397,7 +399,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
       hand.radius = am4core.percent(97);
 
       setInterval(function() {
-        hand.showValue(95);
+        hand.showValue(1);
       }, 2000);
 
 
