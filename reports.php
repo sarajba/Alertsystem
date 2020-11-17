@@ -225,11 +225,11 @@ height: auto !important;
 <table class="table table-bordered">
     <thead>
     <tr>
-        <th style="text-align:center">Node ID</th>
-        <th style="text-align:center">Location</th>
-        <th style="text-align:center">Status</th>
-        <th style="text-align:center">Data Time</th>
-        <th style="text-align:center">Alarm</th>
+        <th style="text-align:center;background-color:rgb(33,37,41);color:white;">Node ID</th>
+        <th style="text-align:center;background-color:rgb(33,37,41);color:white;">Location</th>
+        <th style="text-align:center;background-color:rgb(33,37,41);color:white;">Status</th>
+        <th style="text-align:center;background-color:rgb(33,37,41);color:white;">Data Time</th>
+        <th style="text-align:center;background-color:rgb(33,37,41);color:white;">Alarm</th>
     </tr>
     </thead>
     <tbody>
