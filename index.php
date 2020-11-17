@@ -68,10 +68,10 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
           <a href="Alarms.php" class="list-items"><i class="fas fa-bell fa fw"></i>&nbsp; Alarms</a>
         </li>
         <li>
-          <a href="#" class="list-items"><i class="fas fa-chart-bar fa fw"></i>&nbsp; Charts</a>
+          <a href="genchart.php" class="list-items"><i class="fas fa-chart-bar fa fw"></i>&nbsp; Charts</a>
         </li>
         <li>
-          <a href="#" class="list-items"><i class="fas fa-file-alt"></i>&nbsp; Reports</a>
+          <a href="reports.php" class="list-items"><i class="fas fa-file-alt"></i>&nbsp; Reports</a>
         </li>
         <li>
           <a href="#" class="list-items"><i class="fas fa-user"></i>&nbsp; User</a>
