@@ -7,6 +7,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
+$id = $_GET['nodeID'];
 ?>
 
 <!DOCTYPE html>
@@ -107,31 +108,47 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     </div>
                 </div>
             </nav>
+            <script>
+                var auto_refresh = setInterval(
+                    function() {
+                        location.reload();
+                    }, 1200000); // refreshing after every 15000 milliseconds
+            </script>
 
+            <style>
+                canvas {
+                    -moz-user-select: none;
+                    -webkit-user-select: none;
+                    -ms-user-select: none;
+                    width: 100% !important;
+                    max-width: 1920px;
+                    height: auto !important;
+                }
+            </style>
             <div>
-            <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
-            <div class="page-header pull-left">
-            <div class="page-title">
-             Charts (day) Node ID: 10
-            </div>
-            </div>
-             <div class="clearfix"></div>
-             </div>
+                <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+                    <div class="page-header pull-left">
+                        <div class="page-title">
+                            Charts (day) Node ID: <?php echo $id ?>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
 
                 <!--BEGIN CONTENT-->
                 <div class="page-content">
                     <div id="tab-general">
                         <div class="row mbl">
                             <div class="col-lg-12">
-                            <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-                            <link rel="stylesheet" type="text/css" href="chartmenu.css">
-                             <title>Chart Menu</title>
-                             
+                                <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+                                <link rel="stylesheet" type="text/css" href="chartmenu.css">
+                                <title>Chart Menu</title>
+
                                 <div class="topnav" style="display: flex;">
 
-                                    <a href="charts_d.php?nodeID=10" class="active">Day</a>
-                                    <a href="charts_w.php?nodeID=10">Week</a>
-                                    <a href="charts_m.php?nodeID=10">Month</a>
+                                    <a href="charts_d.php?nodeID=<?php echo $id ?>" class="active">Day</a>
+                                    <a href="charts_w.php?nodeID=<?php echo $id ?>">Week</a>
+                                    <a href="charts_m.php?nodeID=<?php echo $id ?>">Month</a>
 
                                 </div>
 

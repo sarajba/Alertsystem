@@ -50,7 +50,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
-    
+
 </head>
 
 <body>
@@ -118,107 +118,221 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                 <h1>Content will be here</h1>
             </div> -->
             <div>
-                      <!--BEGIN CONTENT-->
-                      <div class="page-content">
+                <!--BEGIN CONTENT-->
+                <div class="page-content">
                     <div id="tab-general">
                         <div class="row mbl">
                             <div class="col-lg-12">
 
-                                            <div class="col-md-12">
-                                                <div id="area-chart-spline" style="width: 100%; height: 300px; display: none;">
-                                                </div>
-                                            </div>
+                                <div class="col-md-12">
+                                    <div id="area-chart-spline" style="width: 100%; height: 300px; display: none;">
+                                    </div>
+                                </div>
 
                             </div>
 
                             <div class="col-lg-12">
 
-                            <div class="page-content">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="panel">
-                            <div class="panel-body">
-                                <div id="grid-layout-table-1" class="box jplist">
-                                    <div class="jplist-ios-button"><i class="fa fa-sort"></i>jPList Actions</div>
-                                    <div class="jplist-panel box panel-top">
-                                        <button type="button" data-control-type="reset" data-control-name="reset" data-control-action="reset" class="jplist-reset-btn btn btn-default">Reset<i class="fa fa-share mls"></i></button>
+                                <div class="page-content">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel">
+                                                <div class="panel-body">
+                                                    <div id="grid-layout-table-1" class="box jplist">
+                                                        <div class="jplist-ios-button"><i class="fa fa-sort"></i>jPList Actions</div>
+                                                        <div class="jplist-panel box panel-top">
+                                                            <button type="button" data-control-type="reset" data-control-name="reset" data-control-action="reset" class="jplist-reset-btn btn btn-default">Reset<i class="fa fa-share mls"></i></button>
 
-                                        <div data-control-type="drop-down" data-control-name="paging" data-control-action="paging" class="jplist-drop-down form-control">
-                                            <ul class="dropdown-menu">
-                                                <li><span data-number="3"> 3 per page</span></li>
-                                                <li><span data-number="5"> 5 per page</span></li>
-                                                <li><span data-number="10"> 10 per page</span></li>
-                                                <li><span data-number="all" data-default="true"> view all</span></li>
-                                            </ul>
-                                        </div>
+                                                            <div data-control-type="drop-down" data-control-name="paging" data-control-action="paging" class="jplist-drop-down form-control">
+                                                                <ul class="dropdown-menu">
+                                                                    <li><span data-number="3"> 3 per page</span></li>
+                                                                    <li><span data-number="5"> 5 per page</span></li>
+                                                                    <li><span data-number="10"> 10 per page</span></li>
+                                                                    <li><span data-number="all" data-default="true"> view all</span></li>
+                                                                </ul>
+                                                            </div>
 
 
-                                        <div data-control-type="drop-down" data-control-name="sort" data-control-action="sort" data-datetime-format="{month}/{day}/{year}" class="jplist-drop-down form-control">
-                                            <ul class="dropdown-menu">
-                                                <li><span data-path="default">Sort by</span></li>
-                                                <li><span data-path=".title" data-order="asc" data-type="text" data-default="true">Node ID A-Z</span></li>
-                                                <li><span data-path=".title" data-order="desc" data-type="text">Node ID Z-A</span></li>
-                                                <!--<li><span data-path=".desc" data-order="asc" data-type="text">Description A-Z</span></li>
+                                                            <div data-control-type="drop-down" data-control-name="sort" data-control-action="sort" data-datetime-format="{month}/{day}/{year}" class="jplist-drop-down form-control">
+                                                                <ul class="dropdown-menu">
+                                                                    <li><span data-path="default">Sort by</span></li>
+                                                                    <li><span data-path=".title" data-order="asc" data-type="text" data-default="true">Node ID A-Z</span></li>
+                                                                    <li><span data-path=".title" data-order="desc" data-type="text">Node ID Z-A</span></li>
+                                                                    <!--<li><span data-path=".desc" data-order="asc" data-type="text">Description A-Z</span></li>
                                                 <li><span data-path=".desc" data-order="desc" data-type="text">Description Z-A</span></li>-->
-                                                <li><span data-path=".like" data-order="asc" data-type="text">Alarm</span></li>
-                                                <!--<li><span data-path=".like" data-order="desc" data-type="text"> desc</span></li>
+                                                                    <li><span data-path=".like" data-order="asc" data-type="text">Alarm</span></li>
+                                                                    <!--<li><span data-path=".like" data-order="desc" data-type="text"> desc</span></li>
                                                 <li><span data-path=".date" data-order="asc" data-type="datetime">Date asc</span></li>
                                                 <li><span data-path=".date" data-order="desc" data-type="datetime">Date desc</span></li>-->
-                                            </ul>
-                                        </div>
+                                                                </ul>
+                                                            </div>
 
-                                        <div style="display:inline-block">
-                                        <div class="text-filter-box">
-                                            <div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span><input data-path=".title" type="text" value="" placeholder="Filter by Node ID" data-control-type="textbox" data-control-name="title-filter" data-control-action="filter" class="form-control"/></div>
-                                        </div>
-                                        <div class="text-filter-box">
-                                            <div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span><input data-path=".desc" type="text" value="" placeholder="Filter by Description" data-control-type="textbox" data-control-name="desc-filter" data-control-action="filter" class="form-control"/></div>
-                                        </div>
-                                        <div class="text-filter-box">
-                                            <div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span><input data-path=".like" type="text" value="" placeholder="Filter by Alarm" data-control-type="textbox" data-control-name="like-filter" data-control-action="filter" class="form-control"/></div>
-                                        </div>
-                                      </div>
+                                                            <div style="display:inline-block">
+                                                                <div class="text-filter-box">
+                                                                    <div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                                                    <input data-path=".title" type="text" value="" placeholder="Filter by Node ID" data-control-type="textbox" data-control-name="title-filter" data-control-action="filter" class="form-control" />
+                                                                </div>
+                                                                </div>
+                                                                <div class="text-filter-box">
+                                                                    <div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span><input data-path=".desc" type="text" value="" placeholder="Filter by Description" data-control-type="textbox" data-control-name="desc-filter" data-control-action="filter" class="form-control" /></div>
+                                                                </div>
+                                                                <div class="text-filter-box">
+                                                                    <div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span><input data-path=".like" type="text" value="" placeholder="Filter by Alarm" data-control-type="textbox" data-control-name="like-filter" data-control-action="filter" class="form-control" /></div>
+                                                                </div>
+                                                            </div>
 
-                                        <div data-type="Page {current} of {pages}" data-control-type="pagination-info" data-control-name="paging" data-control-action="paging" class="jplist-label btn btn-default"></div>
-                                        <div data-control-type="pagination" data-control-name="paging" data-control-action="paging" class="jplist-pagination"></div>
+                                                            <div data-type="Page {current} of {pages}" data-control-type="pagination-info" data-control-name="paging" data-control-action="paging" class="jplist-label btn btn-default"></div>
+                                                            <div data-control-type="pagination" data-control-name="paging" data-control-action="paging" class="jplist-pagination"></div>
 
-                                      </div>
+                                                        </div>
 
-                                    <div class="box text-shadow">
-                                        <table class="demo-tbl"><!--<item>1</item>-->
+                                                        <div class="box text-shadow">
+                                                            <table class="demo-tbl">
+                                                                <!--<item>1</item>-->
 
-                                          <tr class="tbl-item"><!--<img/>--><td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px"/></td><td class="td-block"><p style="text-align:right">Data Last Received</p><p class="date">2020-11-03 12:00:00</p><p class="title">Node 10</p><p class="desc">Location: Residence<br>Axis A movement (mm/m): -0.31<br>Axis B movement (mm/m): -1.05<br>Total movement (mm/m): 1.09<br>Device Temperature (Celcius): 29.6<br>Node Status: Up<p class="like">Latest Alarm: Normal</p><p style="color:green">[ <a style="color:green" href="charts_d.php" target="_blank">View Charts</a> ]</p></td></tr><tr class="tbl-item"><!--<img/>--><td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px"/></td><td class="td-block"><p style="text-align:right">Data Last Received</p><p class="date">2020-11-03 12:00:00</p><p class="title">Node 20</p><p class="desc">Location: Residence<br>Axis A movement (mm/m): 0.13<br>Axis B movement (mm/m): -0.44<br>Total movement (mm/m): 0.46<br>Device Temperature (Celcius): 29.7<br>Node Status: Up<p class="like">Latest Alarm: Normal</p><p style="color:green">[ <a style="color:green" href="charts_nodes_20_d.php" target="_blank">View Charts</a> ]</p></td></tr><tr class="tbl-item"><!--<img/>--><td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px"/></td><td class="td-block"><p style="text-align:right">Data Last Received</p><p class="date">2020-11-03 12:00:00</p><p class="title">Node 21</p><p class="desc">Location: Residence<br>Axis A movement (mm/m): 0.34<br>Axis B movement (mm/m): -0.2<br>Total movement (mm/m): 0.39<br>Device Temperature (Celcius): 30.3<br>Node Status: Up<p class="like">Latest Alarm: Normal</p><p style="color:green">[ <a style="color:green" href="charts_nodes_21_d.php" target="_blank">View Charts</a> ]</p></td></tr><tr class="tbl-item"><!--<img/>--><td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px"/></td><td class="td-block"><p style="text-align:right">Data Last Received</p><p class="date">2020-11-03 12:00:00</p><p class="title">Node 30</p><p class="desc">Location: Residence<br>Axis A movement (mm/m): -1.2<br>Axis B movement (mm/m): -0.42<br>Total movement (mm/m): 1.27<br>Device Temperature (Celcius): 29.4<br>Node Status: Up<p class="like">Latest Alarm: Normal</p><p style="color:green">[ <a style="color:green" href="charts_nodes_30_d.php" target="_blank">View Charts</a> ]</p></td></tr><tr class="tbl-item"><!--<img/>--><td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px"/></td><td class="td-block"><p style="text-align:right">Data Last Received</p><p class="date">2020-11-03 12:00:00</p><p class="title">Node 40</p><p class="desc">Location: Residence<br>Axis A movement (mm/m): -0.37<br>Axis B movement (mm/m): 0.46<br>Total movement (mm/m): 0.59<br>Device Temperature (Celcius): 29.6<br>Node Status: Up<p class="like">Latest Alarm: Normal</p><p style="color:green">[ <a style="color:green" href="charts_nodes_40_d.php" target="_blank">View Charts</a> ]</p></td></tr><tr class="tbl-item"><!--<img/>--><td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px"/></td><td class="td-block"><p style="text-align:right">Data Last Received</p><p class="date">2020-11-03 12:00:00</p><p class="title">Node 50</p><p class="desc">Location: Residence<br>Axis A movement (mm/m): -1.22<br>Axis B movement (mm/m): -0.59<br>Total movement (mm/m): 1.35<br>Device Temperature (Celcius): 29.6<br>Node Status: Up<p class="like">Latest Alarm: Normal</p><p style="color:green">[ <a style="color:green" href="charts_nodes_50_d.php" target="_blank">View Charts</a> ]</p></td></tr><tr class="tbl-item"><!--<img/>--><td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px"/></td><td class="td-block"><p style="text-align:right">Data Last Received</p><p class="date">2020-11-03 12:00:00</p><p class="title">Node 60</p><p class="desc">Location: Residence<br>Axis A movement (mm/m): 0.34<br>Axis B movement (mm/m): 0.56<br>Total movement (mm/m): 0.66<br>Device Temperature (Celcius): 30.2<br>Node Status: Up<p class="like">Latest Alarm: Normal</p><p style="color:green">[ <a style="color:green" href="charts_nodes_60_d.php" target="_blank">View Charts</a> ]</p></td></tr><tr class="tbl-item"><!--<img/>--><td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px"/></td><td class="td-block"><p style="text-align:right">Data Last Received</p><p class="date">2020-11-03 12:00:00</p><p class="title">Node 61</p><p class="desc">Location: Residence<br>Axis A movement (mm/m): -0.32<br>Axis B movement (mm/m): 0.55<br>Total movement (mm/m): 0.64<br>Device Temperature (Celcius): 30<br>Node Status: Up<p class="like">Latest Alarm: Normal</p><p style="color:green">[ <a style="color:green" href="charts_nodes_61_d.php" target="_blank">View Charts</a> ]</p></td></tr><tr class="tbl-item"><!--<img/>--><td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px"/></td><td class="td-block"><p style="text-align:right">Data Last Received</p><p class="date">2020-11-03 12:00:00</p><p class="title">Node 70</p><p class="desc">Location: Residence<br>Axis A movement (mm/m): -0.14<br>Axis B movement (mm/m): 0.25<br>Total movement (mm/m): 0.29<br>Device Temperature (Celcius): 29.9<br>Node Status: Up<p class="like">Latest Alarm: Normal</p><p style="color:green">[ <a style="color:green" href="charts_nodes_70_d.php" target="_blank">View Charts</a> ]</p></td></tr><tr class="tbl-item"><!--<img/>--><td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px"/></td><td class="td-block"><p style="text-align:right">Data Last Received</p><p class="date">2020-11-03 12:00:00</p><p class="title">Node 80</p><p class="desc">Location: Residence<br>Axis A movement (mm/m): -1.54<br>Axis B movement (mm/m): -0.76<br>Total movement (mm/m): 1.71<br>Device Temperature (Celcius): 30.5<br>Node Status: Up<p class="like">Latest Alarm: Normal</p><p style="color:green">[ <a style="color:green" href="charts_nodes_80_d.php" target="_blank">View Charts</a> ]</p></td></tr>
-                                        </table>
+                                                                <tr class="tbl-item">
+                                                                    <!--<img/>-->
+                                                                    <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>
+                                                                    <td class="td-block">
+                                                                        <p style="text-align:right">Data Last Received</p>
+                                                                        <p class="date">2020-11-03 12:00:00</p>
+                                                                        <p class="title">Node 10</p>
+                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): -0.31<br>Axis B movement (mm/m): -1.05<br>Total movement (mm/m): 1.09<br>Device Temperature (Celcius): 29.6<br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
+                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=10" target="_blank">View Charts</a> ]</p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="tbl-item">
+                                                                    <!--<img/>-->
+                                                                    <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>
+                                                                    <td class="td-block">
+                                                                        <p style="text-align:right">Data Last Received</p>
+                                                                        <p class="date">2020-11-03 12:00:00</p>
+                                                                        <p class="title">Node 20</p>
+                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): 0.13<br>Axis B movement (mm/m): -0.44<br>Total movement (mm/m): 0.46<br>Device Temperature (Celcius): 29.7<br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
+                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=20" target="_blank">View Charts</a> ]</p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="tbl-item">
+                                                                    <!--<img/>-->
+                                                                    <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>
+                                                                    <td class="td-block">
+                                                                        <p style="text-align:right">Data Last Received</p>
+                                                                        <p class="date">2020-11-03 12:00:00</p>
+                                                                        <p class="title">Node 21</p>
+                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): 0.34<br>Axis B movement (mm/m): -0.2<br>Total movement (mm/m): 0.39<br>Device Temperature (Celcius): 30.3<br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
+                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=21" target="_blank">View Charts</a> ]</p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="tbl-item">
+                                                                    <!--<img/>-->
+                                                                    <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>
+                                                                    <td class="td-block">
+                                                                        <p style="text-align:right">Data Last Received</p>
+                                                                        <p class="date">2020-11-03 12:00:00</p>
+                                                                        <p class="title">Node 30</p>
+                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): -1.2<br>Axis B movement (mm/m): -0.42<br>Total movement (mm/m): 1.27<br>Device Temperature (Celcius): 29.4<br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
+                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=30" target="_blank">View Charts</a> ]</p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="tbl-item">
+                                                                    <!--<img/>-->
+                                                                    <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>
+                                                                    <td class="td-block">
+                                                                        <p style="text-align:right">Data Last Received</p>
+                                                                        <p class="date">2020-11-03 12:00:00</p>
+                                                                        <p class="title">Node 40</p>
+                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): -0.37<br>Axis B movement (mm/m): 0.46<br>Total movement (mm/m): 0.59<br>Device Temperature (Celcius): 29.6<br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
+                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=40" target="_blank">View Charts</a> ]</p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="tbl-item">
+                                                                    <!--<img/>-->
+                                                                    <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>
+                                                                    <td class="td-block">
+                                                                        <p style="text-align:right">Data Last Received</p>
+                                                                        <p class="date">2020-11-03 12:00:00</p>
+                                                                        <p class="title">Node 50</p>
+                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): -1.22<br>Axis B movement (mm/m): -0.59<br>Total movement (mm/m): 1.35<br>Device Temperature (Celcius): 29.6<br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
+                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=50" target="_blank">View Charts</a> ]</p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="tbl-item">
+                                                                    <!--<img/>-->
+                                                                    <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>
+                                                                    <td class="td-block">
+                                                                        <p style="text-align:right">Data Last Received</p>
+                                                                        <p class="date">2020-11-03 12:00:00</p>
+                                                                        <p class="title">Node 60</p>
+                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): 0.34<br>Axis B movement (mm/m): 0.56<br>Total movement (mm/m): 0.66<br>Device Temperature (Celcius): 30.2<br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
+                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=60" target="_blank">View Charts</a> ]</p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="tbl-item">
+                                                                    <!--<img/>-->
+                                                                    <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>
+                                                                    <td class="td-block">
+                                                                        <p style="text-align:right">Data Last Received</p>
+                                                                        <p class="date">2020-11-03 12:00:00</p>
+                                                                        <p class="title">Node 61</p>
+                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): -0.32<br>Axis B movement (mm/m): 0.55<br>Total movement (mm/m): 0.64<br>Device Temperature (Celcius): 30<br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
+                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=61" target="_blank">View Charts</a> ]</p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="tbl-item">
+                                                                    <!--<img/>-->
+                                                                    <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>
+                                                                    <td class="td-block">
+                                                                        <p style="text-align:right">Data Last Received</p>
+                                                                        <p class="date">2020-11-03 12:00:00</p>
+                                                                        <p class="title">Node 70</p>
+                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): -0.14<br>Axis B movement (mm/m): 0.25<br>Total movement (mm/m): 0.29<br>Device Temperature (Celcius): 29.9<br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
+                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=70" target="_blank">View Charts</a> ]</p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="tbl-item">
+                                                                    <!--<img/>-->
+                                                                    <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>
+                                                                    <td class="td-block">
+                                                                        <p style="text-align:right">Data Last Received</p>
+                                                                        <p class="date">2020-11-03 12:00:00</p>
+                                                                        <p class="title">Node 80</p>
+                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): -1.54<br>Axis B movement (mm/m): -0.76<br>Total movement (mm/m): 1.71<br>Device Temperature (Celcius): 30.5<br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
+                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=80" target="_blank">View Charts</a> ]</p>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
 
-                                    </div>
-                                    <div class="box jplist-no-results text-shadow align-center"><p>No results found</p></div>
-                                    <div class="jplist-ios-button"><i class="fa fa-sort"></i>jPList Actions</div>
-                                    <div class="jplist-panel box panel-bottom">
-                                        <div data-control-type="drop-down" data-control-name="paging" data-control-action="paging" data-control-animate-to-top="true" class="jplist-drop-down form-control">
-                                            <ul class="dropdown-menu">
-                                                <li><span data-number="3"> 3 per page</span></li>
-                                                <li><span data-number="5"> 5 per page</span></li>
-                                                <li><span data-number="10"> 10 per page</span></li>
-                                                <li><span data-number="all" data-default="true"> view all</span></li>
-                                            </ul>
+                                                        </div>
+                                                        <div class="box jplist-no-results text-shadow align-center">
+                                                            <p>No results found</p>
+                                                        </div>
+                                                        <div class="jplist-ios-button"><i class="fa fa-sort"></i>jPList Actions</div>
+                                                        <div class="jplist-panel box panel-bottom">
+                                                            <div data-control-type="drop-down" data-control-name="paging" data-control-action="paging" data-control-animate-to-top="true" class="jplist-drop-down form-control">
+                                                                <ul class="dropdown-menu">
+                                                                    <li><span data-number="3"> 3 per page</span></li>
+                                                                    <li><span data-number="5"> 5 per page</span></li>
+                                                                    <li><span data-number="10"> 10 per page</span></li>
+                                                                    <li><span data-number="all" data-default="true"> view all</span></li>
+                                                                </ul>
+                                                            </div>
+                                                            <div data-control-type="drop-down" data-control-name="sort" data-control-action="sort" data-control-animate-to-top="true" data-datetime-format="{year}/{month}/{day}" class="jplist-drop-down form-control">
+                                                                <ul class="dropdown-menu">
+                                                                    <li><span data-path="default">Sort by</span></li>
+                                                                    <li><span data-path=".title" data-order="asc" data-type="text" data-default="true">Node ID A-Z</span></li>
+                                                                    <li><span data-path=".title" data-order="desc" data-type="text">Node ID Z-A</span></li>
+                                                                    <li><span data-path=".like" data-order="asc" data-type="text">Alarm</span></li>
+                                                                </ul>
+                                                            </div>
+                                                            <div data-type="{start} - {end} of {all}" data-control-type="pagination-info" data-control-name="paging" data-control-action="paging" class="jplist-label btn btn-default"></div>
+                                                            <div data-control-type="pagination" data-control-name="paging" data-control-action="paging" data-control-animate-to-top="true" class="jplist-pagination"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div data-control-type="drop-down" data-control-name="sort" data-control-action="sort" data-control-animate-to-top="true" data-datetime-format="{year}/{month}/{day}" class="jplist-drop-down form-control">
-                                            <ul class="dropdown-menu">
-                                                <li><span data-path="default">Sort by</span></li>
-                                                <li><span data-path=".title" data-order="asc" data-type="text" data-default="true">Node ID A-Z</span></li>
-                                                <li><span data-path=".title" data-order="desc" data-type="text">Node ID Z-A</span></li>
-                                                <li><span data-path=".like" data-order="asc" data-type="text">Alarm</span></li>
-                                            </ul>
-                                        </div>
-                                        <div data-type="{start} - {end} of {all}" data-control-type="pagination-info" data-control-name="paging" data-control-action="paging" class="jplist-label btn btn-default"></div>
-                                        <div data-control-type="pagination" data-control-name="paging" data-control-action="paging" data-control-animate-to-top="true" class="jplist-pagination"></div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
                             </div>
 
@@ -226,7 +340,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     </div>
                 </div>
                 <!--END CONTENT-->
- 
+
             </div>
             <!-- jQuery CDN - Slim version (=without AJAX) -->
             <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -284,7 +398,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             <!--CORE JAVASCRIPT-->
             <script src="script/main.js"></script>
             <script>
-          
+
             </script>
 </body>
 

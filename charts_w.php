@@ -7,6 +7,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
+$id = $_GET['nodeID'];
 ?>
 
 <!DOCTYPE html>
@@ -87,6 +88,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                 </li>
             </ul>
         </nav>
+        
         <!-- Page Content Holder -->
         <div id="content">
 
@@ -107,13 +109,30 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     </div>
                 </div>
             </nav>
-    
+            <script>
+                var auto_refresh = setInterval(
+                    function() {
+                        location.reload();
+                    }, 1200000); // refreshing after every 15000 milliseconds
+            </script>
+
+            <style>
+                canvas {
+                    -moz-user-select: none;
+                    -webkit-user-select: none;
+                    -ms-user-select: none;
+                    width: 100% !important;
+                    max-width: 1920px;
+                    height: auto !important;
+                }
+            </style>
            <div> 
         <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
 
             <div class="page-header pull-left">
                 <div class="page-title">
-                    Charts (week) Node ID: 10</div>
+                    Charts (week) Node ID:<?php echo $id ?>
+                </div>
             </div>
             <div class="clearfix">
             </div>
@@ -133,9 +152,9 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
                          <div class="topnav" style="display: flex;">
 
-                                    <a href="charts_d.php?nodeID=10">Day</a>
-                                    <a href="charts_w.php?nodeID=10" class="active">Week</a>
-                                    <a href="charts_m.php?nodeID=10">Month</a>
+                                    <a href="charts_d.php?nodeID=<?php echo $id ?>">Day</a>
+                                    <a href="charts_w.php?nodeID=<?php echo $id ?>" class="active">Week</a>
+                                    <a href="charts_m.php?nodeID=<?php echo $id ?>">Month</a>
 
                          </div>
 
