@@ -74,7 +74,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
           <a href="reports.php" class="list-items"><i class="fas fa-file-alt"></i>&nbsp; Reports</a>
         </li>
         <li>
-          <a href="#" class="list-items"><i class="fas fa-user"></i>&nbsp; User</a>
+          <a href="user.php" class="list-items"><i class="fas fa-user"></i>&nbsp; User</a>
         </li>
         <li>
           <a href="#" class="list-items"><i class="fa fa-life-ring fa-fw"></i>&nbsp; Manual</a>
