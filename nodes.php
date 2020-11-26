@@ -75,16 +75,16 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     <a href="Alarms.php" class="list-items"><i class="fas fa-bell fa fw"></i>&nbsp; Alarms</a>
                 </li>
                 <li>
-                    <a href="#" class="list-items"><i class="fas fa-chart-bar fa fw"></i>&nbsp; Charts</a>
+                    <a href="genchart.php" class="list-items"><i class="fas fa-chart-bar fa fw"></i>&nbsp; Charts</a>
                 </li>
                 <li>
-                    <a href="#" class="list-items"><i class="fas fa-file-alt"></i>&nbsp; Reports</a>
+                    <a href="reports.php" class="list-items"><i class="fas fa-file-alt"></i>&nbsp; Reports</a>
                 </li>
                 <li>
-                    <a href="#" class="list-items"><i class="fas fa-user"></i>&nbsp; User</a>
+                    <a href="user.php" class="list-items"><i class="fas fa-user"></i>&nbsp; User</a>
                 </li>
                 <li>
-                    <a href="#" class="list-items"><i class="fa fa-life-ring fa-fw"></i>&nbsp; Manual</a>
+                    <a target="_blank" href="/geoalertmanual.pdf" class="list-items"><i class="fa fa-life-ring fa-fw"></i>&nbsp; Manual</a>
                 </li>
                 <li>
                     <a href="reset-password.php" class="list-items"> <i class="fa fa-key"></i>&nbsp; Reset Password</a>
@@ -170,8 +170,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                                                             <div style="display:inline-block">
                                                                 <div class="text-filter-box">
                                                                     <div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span>
-                                                                    <input data-path=".title" type="text" value="" placeholder="Filter by Node ID" data-control-type="textbox" data-control-name="title-filter" data-control-action="filter" class="form-control" />
-                                                                </div>
+                                                                        <input data-path=".title" type="text" value="" placeholder="Filter by Node ID" data-control-type="textbox" data-control-name="title-filter" data-control-action="filter" class="form-control" />
+                                                                    </div>
                                                                 </div>
                                                                 <div class="text-filter-box">
                                                                     <div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span><input data-path=".desc" type="text" value="" placeholder="Filter by Description" data-control-type="textbox" data-control-name="desc-filter" data-control-action="filter" class="form-control" /></div>
@@ -189,18 +189,48 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                                                         <div class="box text-shadow">
                                                             <table class="demo-tbl">
                                                                 <!--<item>1</item>-->
+                                                                <?php
+                                                                
+// Create connection
+// include 'config.php';
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "nodes";
+$connection = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($connection->connect_error) {
+    die("Connection failed: " . $connection->connect_error);
+}
+
+$sql = "SELECT * FROM node_chart_10";
+$result = $connection->query($sql);
+
+if ($result->num_rows > 0) {
+
+                                                                ?>
 
                                                                 <tr class="tbl-item">
                                                                     <!--<img/>-->
                                                                     <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>
                                                                     <td class="td-block">
+<?php     while($row = $result->fetch_assoc()) {
+ ?>
                                                                         <p style="text-align:right">Data Last Received</p>
-                                                                        <p class="date">2020-11-03 12:00:00</p>
-                                                                        <p class="title">Node 10</p>
-                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): -0.31<br>Axis B movement (mm/m): -1.05<br>Total movement (mm/m): 1.09<br>Device Temperature (Celcius): 29.6<br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
+                                                                        <p class="date"><?php echo $row["dateAndTime"] ?></p>
+                                                                        <p class="title">Node <?php echo $row["nodeId"] ?></p>
+                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): <?php echo $row["Aaxis_10_ch1"] ?><br>Axis B movement (mm/m): <?php echo $row["Baxis_10_ch1"] ?><br>Total movement (mm/m): 1.09<br>Device Temperature (Celcius): <?php echo $row["temp_10_ch1"] ?><br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
                                                                             <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=10" target="_blank">View Charts</a> ]</p>
-                                                                    </td>
+<?php }?>
+                                                                        </td>
                                                                 </tr>
+                                                                <?php 
+
+} else {
+    echo "0 results";
+  }
+  $connection->close();
+  ?>
                                                                 <tr class="tbl-item">
                                                                     <!--<img/>-->
                                                                     <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>

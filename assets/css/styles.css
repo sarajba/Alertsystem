@@ -293,7 +293,6 @@ a.article, a.article:hover {
     margin-left: 3%;
 
 }
-
 @media only screen and (max-width: 990px) and (min-width:700px)  {
     .third-content > .text, .number{
         position: left;
@@ -346,6 +345,7 @@ a.article, a.article:hover {
     top: 0px;
     }
     
+
     .animated-icon1 span:nth-child(2) {
     top: 10px;
     }
@@ -363,4 +363,4 @@ a.article, a.article:hover {
         width: 90%;
         height: 400px;
       }
-    /* circle percentage */
+  

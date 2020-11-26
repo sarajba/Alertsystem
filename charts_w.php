@@ -59,34 +59,34 @@ $id = $_GET['nodeID'];
             </div>
 
             <ul class="list-unstyled components">
-                <li>
-                    <a href="#" class="list-items"><i class="fas fa-tachometer-alt"></i>&nbsp; Dashboard</a>
-                </li>
-                <li>
-                    <a href="nodes.php" class="list-items"><i class="fas fa-map-marker-alt"></i>&nbsp; Nodes</a>
-                </li>
-                <li>
-                    <a href="Alarms.php" class="list-items"><i class="fas fa-bell fa fw"></i>&nbsp; Alarms</a>
-                </li>
-                <li>
-                    <a href="genchart.php" class="list-items"><i class="fas fa-chart-bar fa fw"></i>&nbsp; Charts</a>
-                </li>
-                <li>
-                    <a href="" class="list-items"><i class="fas fa-file-alt"></i>&nbsp; Reports</a>
-                </li>
-                <li>
-                    <a href="#" class="list-items"><i class="fas fa-user"></i>&nbsp; User</a>
-                </li>
-                <li>
-                    <a href="#" class="list-items"><i class="fa fa-life-ring fa-fw"></i>&nbsp; Manual</a>
-                </li>
-                <li>
-                    <a href="reset-password.php" class="list-items"> <i class="fa fa-key"></i>&nbsp; Reset Password</a>
-                </li>
-                <li>
-                    <a href="logout.php" class="list-items"><i class="fas fa-sign-out-alt"></i>&nbsp; Sign Out </a>
-                </li>
-            </ul>
+        <li>
+          <a href="index.php" class="list-items"><i class="fas fa-tachometer-alt"></i>&nbsp; Dashboard</a>
+        </li>
+        <li>
+          <a href="nodes.php" class="list-items"><i class="fas fa-map-marker-alt"></i>&nbsp; Nodes</a>
+        </li>
+        <li>
+          <a href="Alarms.php" class="list-items"><i class="fas fa-bell fa fw"></i>&nbsp; Alarms</a>
+        </li>
+        <li>
+          <a href="genchart.php" class="list-items"><i class="fas fa-chart-bar fa fw"></i>&nbsp; Charts</a>
+        </li>
+        <li>
+          <a href="reports.php" class="list-items"><i class="fas fa-file-alt"></i>&nbsp; Reports</a>
+        </li>
+        <li>
+          <a href="user.php" class="list-items"><i class="fas fa-user"></i>&nbsp; User</a>
+        </li>
+        <li>
+          <a target="_blank" href="/geoalertmanual.pdf"  class="list-items"><i class="fa fa-life-ring fa-fw"></i>&nbsp; Manual</a>
+        </li>
+        <li>
+          <a href="reset-password.php" class="list-items"> <i class="fa fa-key"></i>&nbsp; Reset Password</a>
+        </li>
+        <li>
+          <a href="logout.php" class="list-items"><i class="fas fa-sign-out-alt"></i>&nbsp; Sign Out </a>
+        </li>
+      </ul>
         </nav>
         
         <!-- Page Content Holder -->
