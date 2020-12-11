@@ -7,6 +7,59 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   header("location: login.php");
   exit;
 }
+
+$connect = mysqli_connect("localhost", "root", "", "geoalertsystem");
+
+
+$AllNodes = "
+WITH tempnode AS (
+    SELECT  nodeId, Temp_10_Ch1 as tem, Aaxix_10_Ch1 as Aaxix,Baxix_10_Ch1 as Baxix, node_10.Date_and_time as cts
+    FROM node_10
+    UNION ALL 
+    SELECT   nodeId, Temp_20_Ch1 as tem ,Aaxix_20_Ch1 as Aaxix,Baxix_20_Ch1 as Baxix, node_20.Date_and_time as cts
+    FROM node_20
+    UNION ALL 
+    SELECT   nodeId, Temp_21_Ch1 as tem ,Aaxix_21_Ch1 as Aaxix,Baxix_21_Ch1 as Baxix, node_21.Date_and_time as cts
+    FROM node_21
+    UNION ALL 
+    SELECT   nodeId, Temp_30_Ch1 as tem ,Aaxix_30_Ch1 as Aaxix,Baxix_30_Ch1 as Baxix, node_30.Date_and_time as cts
+    FROM node_30
+    UNION ALL 
+    SELECT   nodeId, Temp_40_Ch1 as tem ,Aaxix_40_Ch1 as Aaxix,Baxix_40_Ch1 as Baxix, node_40.Date_and_time as cts
+    FROM node_40
+    UNION ALL 
+    SELECT   nodeId, Temp_50_Ch1 as tem ,Aaxix_50_Ch1 as Aaxix,Baxix_50_Ch1 as Baxix, node_50.Date_and_time as cts
+    FROM node_50
+    UNION ALL
+    SELECT   nodeId, Temp_60_Ch1 as tem ,Aaxix_60_Ch1 as Aaxix,Baxix_60_Ch1 as Baxix, node_60.Date_and_time as cts
+    FROM node_60
+    UNION ALL
+    SELECT   nodeId, Temp_61_Ch1 as tem ,Aaxix_61_Ch1 as Aaxix,Baxix_61_Ch1 as Baxix, node_61.Date_and_time as cts
+    FROM node_61
+    UNION ALL
+    SELECT   nodeId, Temp_70_Ch1 as tem ,Aaxix_70_Ch1 as Aaxix,Baxix_70_Ch1 as Baxix, node_70.Date_and_time as cts
+    FROM node_70
+    UNION ALL
+    SELECT   nodeId, Temp_80_Ch1 as tem ,Aaxix_80_Ch1 as Aaxix,Baxix_80_Ch1 as Baxix, node_80.Date_and_time as cts
+    FROM node_80
+), latest AS (
+  SELECT tempnode.*, ROW_NUMBER() OVER (
+  PARTITION BY tempnode.nodeId 
+  ORDER BY tempnode.cts DESC) myrank
+  FROM tempnode 
+)
+SELECT nodes.NodeId, tempnode.*
+FROM nodes
+LEFT JOIN latest as tempnode ON tempnode.nodeId = nodes.NodeID AND tempnode.myrank = 1
+GROUP BY nodes.NodeID
+ORDER BY nodes.NodeID, tempnode.cts desc
+";
+
+
+$AllNodesResult = mysqli_query($connect, $AllNodes);
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -204,85 +257,44 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   <h2>Summary Details of Nodes</h2>
   <table class="table">
     <thead class="thead-dark">
-      <tr>
-        <th>Node ID</th>
-        <th>Location</th>
-        <th>Status</th>
-        <th>Last Data Time</th>
-        <th>Alarm</th>
-      </tr>
+     <tr>
+                <th>Node ID</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Data Time</th>
+                <th>Alarm</th>
+            </tr>
     </thead>
     <tbody>
-      <tr class="table-info">
-        <td>10</td>
-        <td>Residence</td>
-        <td>Up</td>
-        <td>2020-10-28 12:00:00</td>
-        <td>Normal</td>
-      </tr>      
-      <tr class="table-primary">
-        <td>20</td>
-        <td>Residence</td>
-        <td>Up</td>
-        <td>2020-10-28 12:00:00</td>
-        <td>Normal</td>
-      </tr>
-      <tr class="table-secondary">
-        <td>21</td>
-        <td>Residence</td>
-        <td>Up</td>
-        <td>2020-10-28 12:00:00</td>
-        <td>Normal</td>
-      </tr>
-      <tr class="table-danger">
-        <td>30</td>
-        <td>Residence</td>
-        <td>Up</td>
-        <td>2020-10-28 12:00:00</td>
-        <td>Normal</td>
-      </tr>
-      <tr class="table-info">
-        <td>40</td>
-        <td>Residence</td>
-        <td>Up</td>
-        <td>2020-10-28 12:00:00</td>
-        <td>Normal</td>
-      </tr>
-      <tr class="table-warning">
-        <td>50</td>
-        <td>Residence</td>
-        <td>Up</td>
-        <td>2020-10-28 12:00:00</td>
-        <td>Normal</td>
-      </tr>
-      <tr class="table-active">
-        <td>60</td>
-        <td>Residence</td>
-        <td>Up</td>
-        <td>2020-10-28 12:00:00</td>
-        <td>Normal</td>
-      </tr>
-      <tr class="table-success">
-        <td>61</td>
-        <td>Residence</td>
-        <td>Up</td>
-        <td>2020-10-28 12:00:00</td> 
-        <td>Normal</td>
-      </tr>
-      <tr class="table-warning">
-        <td>70</td>
-        <td>Residence</td>
-        <td>Up</td>
-        <td>2020-10-28 12:00:00</td>
-        <td>Normal</td>
-      </tr>
-      <tr class="table-dark text-dark">
-        <td>80</td>
-        <td>Residence</td>
-        <td>Up</td>
-        <td>2020-10-28 12:00:00</td>
-        <td>Normal</td>
-      </tr>
+<!-- <style>
+tbody tr:nth-child(odd){
+  background-color: #4C8BF5;
+  color: #fff;
+}
+tbody tr:nth-child(even){
+  background-color: #4C8925;
+  color: #fff;
+}
+ </style> -->
+           <?php
+             if (mysqli_num_rows($AllNodesResult) > 0) {
+                                // output data of each row
+                  while ($row2 = mysqli_fetch_array($AllNodesResult)) {
+                 ?>
+                         <tr style="background-color:rgb(48,24,81);color:white;">
+                                    <td><a target="_blank" href="charts_d.php?nodeID=<?php echo $row2["NodeId"] ?>"><?php echo $row2["NodeId"] ?></a></td>
+                                    <td>Residence</td>
+                                    <td>Up</td>
+                                    <td><?php echo $row2['cts'] ?></td>
+                                    <td>Normal</td>
+                                  </tr>
+                              <?php  }
+                              } else {
+                                echo "0 results";
+                              }
+     
+                          ?>
+     
     </tbody>
   </table>
           <!--// table -->

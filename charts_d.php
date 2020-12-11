@@ -8,6 +8,83 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     exit;
 }
 $id = $_GET['nodeID'];
+$dataPoint = [];
+$date = new DateTime("now", new DateTimeZone('Asia/Kuala_Lumpur'));
+$aa = $date->format('Y-m-d H:i:s');
+$connect = mysqli_connect("localhost", "root", "", "geoalertsystem");
+
+
+$aaa = "
+SELECT nodeId, Dateـandـtime, Temp_10_Ch1, AaxisVariation-10-Ch1, BaxisVariation-10-Ch1
+FROM node_10
+";
+
+$sql = "SELECT *
+        FROM node_10
+        ";
+$result = mysqli_query($connect, $sql);
+
+if (mysqli_num_rows($result) > 0) {
+    // output data of each row
+    while ($row = mysqli_fetch_assoc($result)) {
+      //  $bb = $row["BaxisVariation_10_Ch1"];
+        $bbb = 1000 * (tan(-0.0122));
+        $ddd = 1000 * (tan(-0.0546));
+        // echo($bbb);
+        $cc = sqrt(($bbb * $bbb) + ($ddd * $ddd));
+        // print_r($cc);
+        // echo "id: " . $row["BaxisVariation_10_Ch1"]. "<br>";
+    }
+} else {
+    echo "0 results";
+}
+
+$AllNodes = "
+WITH tempnode AS ( SELECT nodeId, Temp_10_Ch1 as tem, Aaxix_10_Ch1 as Aaxix,Baxix_10_Ch1 as Baxix, node_10.Date_and_time as cts FROM node_10 UNION ALL SELECT nodeId, Temp_20_Ch1 as tem ,Aaxix_20_Ch1 as Aaxix,Baxix_20_Ch1 as Baxix, node_20.Date_and_time as cts FROM node_20 UNION ALL SELECT nodeId, Temp_30_Ch1 as tem ,Aaxix_30_Ch1 as Aaxix,Baxix_30_Ch1 as Baxix, node_30.Date_and_time as cts FROM node_30 ), latest AS ( SELECT tempnode.*, ROW_NUMBER() OVER ( PARTITION BY tempnode.nodeId ORDER BY tempnode.cts DESC) myrank FROM tempnode ) SELECT nodes.NodeId, tempnode.* FROM nodes LEFT JOIN latest as tempnode ON tempnode.nodeId = nodes.NodeID AND tempnode.myrank = 1 GROUP BY nodes.NodeID ORDER BY nodes.NodeID, tempnode.cts desc
+";
+$list=[];
+$Temp=[];
+// Run the query
+$query = $connect->query($AllNodes);
+if ($id == 10) {
+    while ($row = $query->fetch_assoc()) {
+        $list[] = $row['cts'];
+        $Temp[] = $row['tem'];
+    };
+}
+if ($id == 20) {
+    while ($row = $query->fetch_assoc()) {
+        $list[] = $row['cts'];
+        $Temp[] = $row['tem'];
+    };
+}
+if ($id == 30) {
+    while ($row = $query->fetch_assoc()) {
+        $list[] = $row['cts'];
+        $Temp[] = $row['tem'];
+    };
+}
+if ($id == 90) {
+    while ($row = $query->fetch_assoc()) {
+        $list[] = $row['cts'];
+        $Temp[] = $row['tem'];
+    };
+}
+
+$data = [];
+foreach ($Temp as $key => $value2) {
+    $element = array('y' => $value2, 'label' => $value2);
+    //  array_push($data, $element);
+}
+foreach ($list as $key => $value) {
+    $element = array('label' => $value, 'y' => 1);
+    array_push($data, $element);
+}
+
+$dataPoint_d = json_encode($data);
+//print_r($dataPoint_d);
+$connect->close();
+
 ?>
 
 <!DOCTYPE html>
@@ -59,34 +136,34 @@ $id = $_GET['nodeID'];
             </div>
 
             <ul class="list-unstyled components">
-        <li>
-          <a href="index.php" class="list-items"><i class="fas fa-tachometer-alt"></i>&nbsp; Dashboard</a>
-        </li>
-        <li>
-          <a href="nodes.php" class="list-items"><i class="fas fa-map-marker-alt"></i>&nbsp; Nodes</a>
-        </li>
-        <li>
-          <a href="Alarms.php" class="list-items"><i class="fas fa-bell fa fw"></i>&nbsp; Alarms</a>
-        </li>
-        <li>
-          <a href="genchart.php" class="list-items"><i class="fas fa-chart-bar fa fw"></i>&nbsp; Charts</a>
-        </li>
-        <li>
-          <a href="reports.php" class="list-items"><i class="fas fa-file-alt"></i>&nbsp; Reports</a>
-        </li>
-        <li>
-          <a href="user.php" class="list-items"><i class="fas fa-user"></i>&nbsp; User</a>
-        </li>
-        <li>
-          <a target="_blank" href="/geoalertmanual.pdf"  class="list-items"><i class="fa fa-life-ring fa-fw"></i>&nbsp; Manual</a>
-        </li>
-        <li>
-          <a href="reset-password.php" class="list-items"> <i class="fa fa-key"></i>&nbsp; Reset Password</a>
-        </li>
-        <li>
-          <a href="logout.php" class="list-items"><i class="fas fa-sign-out-alt"></i>&nbsp; Sign Out </a>
-        </li>
-      </ul>
+                <li>
+                    <a href="#" class="list-items"><i class="fas fa-tachometer-alt"></i>&nbsp; Dashboard</a>
+                </li>
+                <li>
+                    <a href="nodes.php" class="list-items"><i class="fas fa-map-marker-alt"></i>&nbsp; Nodes</a>
+                </li>
+                <li>
+                    <a href="Alarms.php" class="list-items"><i class="fas fa-bell fa fw"></i>&nbsp; Alarms</a>
+                </li>
+                <li>
+                    <a href="genchart.php" class="list-items"><i class="fas fa-chart-bar fa fw"></i>&nbsp; Charts</a>
+                </li>
+                <li>
+                    <a href="" class="list-items"><i class="fas fa-file-alt"></i>&nbsp; Reports</a>
+                </li>
+                <li>
+                    <a href="#" class="list-items"><i class="fas fa-user"></i>&nbsp; User</a>
+                </li>
+                <li>
+                    <a href="#" class="list-items"><i class="fa fa-life-ring fa-fw"></i>&nbsp; Manual</a>
+                </li>
+                <li>
+                    <a href="reset-password.php" class="list-items"> <i class="fa fa-key"></i>&nbsp; Reset Password</a>
+                </li>
+                <li>
+                    <a href="logout.php" class="list-items"><i class="fas fa-sign-out-alt"></i>&nbsp; Sign Out </a>
+                </li>
+            </ul>
         </nav>
         <!-- Page Content Holder -->
         <div id="content">
@@ -154,11 +231,69 @@ $id = $_GET['nodeID'];
 
                                 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
-
                                 <script>
+                                    // Old JS for canvas charjs 
                                     window.onload = function chartAngle() {
 
 
+
+                                        // **********************************************************       NEW JS       ******************************************************************************
+                                        var dateArray = [new Date(2016, 1, 1), new Date(2016, 1, 2), new Date(2016, 1, 3), new Date(2016, 1, 4), new Date(2016, 1, 5), new Date(2016, 1, 6), new Date(2016, 1, 7), new Date(2016, 1, 8), new Date(2016, 1, 9), new Date(2016, 1, 10), new Date(2016, 1, 11), new Date(2016, 1, 12), new Date(2016, 1, 13), new Date(2016, 1, 14), new Date(2016, 1, 15), new Date(2016, 1, 16), new Date(2016, 1, 17), new Date(2016, 1, 18)];
+
+                                        var numberArray = [10, 13, 18, 20, 17, 10, 13, 18, 20, 17, 20, 17, 10, 13, 18, 10, 13, 18];
+
+                                        var dps = []; //dataPoints. 
+
+                                        var chart = new CanvasJS.Chart("chartContainer", {
+                                            title: {
+                                                text: "Data Plotted from Array"
+                                            },
+                                            axisX: {
+                                                title: "Axis X Title"
+                                            },
+                                            axisY: {
+                                                title: "Units"
+                                            },
+                                            data: [{
+                                                type: "line",
+                                                dataPoints: dps
+                                            }]
+                                        });
+
+
+                                        function parseDataPoints() {
+                                            for (var i = dps.length; i < dateArray.length; i++)
+                                                dps.push({
+                                                    x: new Date(dateArray[i]),
+                                                    y: numberArray[i]
+                                                });
+                                        };
+
+                                        function addDataPoints() {
+                                            parseDataPoints();
+                                            chart.options.data[0].dataPoints = dps;
+                                            chart.render();
+                                        }
+
+                                        addDataPoints();
+                                        chart.render();
+
+                                        // ****************************************************************************************************************************************
+
+
+                                        var dp_d = <?php echo ($dataPoint_d) ?>;
+                                        console.log(dp_d);
+                                        var aa = [{
+                                                "label": "2020-12-1 20:30:00",
+                                                "y": 2
+                                            },
+
+                                            {
+                                                "label": "2020-11-11 21:20:00",
+                                                "y": 3
+                                            },
+                                        ];
+                                        console.log(aa);
                                         //BEGIN CHART ANGLE    
                                         var chart = new CanvasJS.Chart("chartContainerAngle", {
                                             animationEnabled: true,
@@ -247,128 +382,7 @@ $id = $_GET['nodeID'];
                                                     lineThickness: 2,
                                                     color: "#36a2df",
                                                     showInLegend: true,
-                                                    dataPoints: [
-
-                                                        {
-                                                            label: "2020-11-11 20:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-11 21:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-11 22:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-11 23:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 00:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 01:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 02:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 03:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 04:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 05:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 06:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 07:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 08:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 09:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 10:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 11:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 12:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 13:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 14:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 15:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 16:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 17:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 18:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 19:00:00",
-                                                            y: 0
-                                                        },
-                                                    ]
+                                                    dataPoints: dp_d
                                                 },
 
                                                 {
@@ -377,128 +391,7 @@ $id = $_GET['nodeID'];
                                                     lineThickness: 2,
                                                     color: "brown",
                                                     showInLegend: true,
-                                                    dataPoints: [
-
-                                                        {
-                                                            label: "2020-11-11 20:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-11 21:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-11 22:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-11 23:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 00:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 01:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 02:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 03:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 04:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 05:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 06:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 07:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 08:00:00",
-                                                            y: 0.1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 09:00:00",
-                                                            y: 0.1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 10:00:00",
-                                                            y: 0.1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 11:00:00",
-                                                            y: 0.1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 12:00:00",
-                                                            y: 0.1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 13:00:00",
-                                                            y: 0.1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 14:00:00",
-                                                            y: 0.1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 15:00:00",
-                                                            y: 0.1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 16:00:00",
-                                                            y: 0.1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 17:00:00",
-                                                            y: 0.1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 18:00:00",
-                                                            y: 0.1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 19:00:00",
-                                                            y: 0.1
-                                                        },
-                                                    ]
+                                                    dataPoints: dp_d
                                                 },
                                             ]
                                         });
@@ -1113,6 +1006,16 @@ $id = $_GET['nodeID'];
                                                 <div id="chartContainerMM" style="height: 450px; width: 100%;"> </div>
                                             </div>
                                         </div>
+                                        <div class="portlet box">
+                                            <div class="portlet-header">
+                                                <div class="caption">Axis Movements (Degree)</div>
+                                                <div class="tools">
+                                                    <a href="#top"><i class="fa fa-chevron-up"></i></a> </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div id="chartContainer" style="height: 450px; width: 100%;"> </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="portlet22 box22">
@@ -1147,6 +1050,8 @@ $id = $_GET['nodeID'];
     </div>
     <!-- jQuery CDN - Slim version (=without AJAX) -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
     <!-- Popper.JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <!-- Bootstrap JS -->

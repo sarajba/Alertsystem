@@ -1,4 +1,5 @@
 <?php
+$connect = mysqli_connect("localhost", "root", "", "geoalertsystem");
 // initialize the session
 session_start();
 
@@ -7,6 +8,112 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
+
+$AllNodes = "
+SELECT  *
+FROM nodes
+ORDER BY Createdtime DESC
+";
+// *** Here we declare the default values for our Nodes ****
+$Aaxix = 0.231;
+$Baxix = 0.3242;
+$totalMov = 1.242;
+$Temp = 27.32;
+$nodeStatus = "Up";
+$alarStatus = "Normal";
+
+// SELECT  *
+// FROM nodes
+// LEFT JOIN (
+//   SELECT DISTINCT  nodeId, Temp_10_Ch1,Aaxix_10_Ch1
+//   FROM node_10
+//   LIMIT 2
+
+//   UNION ALL 
+//   SELECT DISTINCT  nodeId, Temp_20_Ch1,Aaxix_20_Ch1
+//   FROM node_20
+//   LIMIT 2
+
+// ) tempnode ON tempnode.nodeId = nodes.NodeID
+// ORDER BY Createdtime DESC
+
+// -------------------------------
+
+// $AllNodes = "SELECT NodeId
+// FROM nodes
+// LEFT JOIN node_10 ON node_10.nodeId = nodes.NodeId
+// LEFT JOIN node_20 ON node_20.nodeId = nodes.NodeId
+// ";
+
+$AllNodes = "
+WITH tempnode AS (
+    SELECT  nodeId, Temp_10_Ch1 as tem, Aaxix_10_Ch1 as Aaxix,Baxix_10_Ch1 as Baxix, node_10.Date_and_time as cts
+    FROM node_10
+    UNION ALL 
+    SELECT   nodeId, Temp_20_Ch1 as tem ,Aaxix_20_Ch1 as Aaxix,Baxix_20_Ch1 as Baxix, node_20.Date_and_time as cts
+    FROM node_20
+    UNION ALL 
+    SELECT   nodeId, Temp_21_Ch1 as tem ,Aaxix_21_Ch1 as Aaxix,Baxix_21_Ch1 as Baxix, node_21.Date_and_time as cts
+    FROM node_21
+    UNION ALL 
+    SELECT   nodeId, Temp_30_Ch1 as tem ,Aaxix_30_Ch1 as Aaxix,Baxix_30_Ch1 as Baxix, node_30.Date_and_time as cts
+    FROM node_30
+    UNION ALL 
+    SELECT   nodeId, Temp_40_Ch1 as tem ,Aaxix_40_Ch1 as Aaxix,Baxix_40_Ch1 as Baxix, node_40.Date_and_time as cts
+    FROM node_40
+    UNION ALL 
+    SELECT   nodeId, Temp_50_Ch1 as tem ,Aaxix_50_Ch1 as Aaxix,Baxix_50_Ch1 as Baxix, node_50.Date_and_time as cts
+    FROM node_50
+    UNION ALL
+    SELECT   nodeId, Temp_60_Ch1 as tem ,Aaxix_60_Ch1 as Aaxix,Baxix_60_Ch1 as Baxix, node_60.Date_and_time as cts
+    FROM node_60
+    UNION ALL
+    SELECT   nodeId, Temp_61_Ch1 as tem ,Aaxix_61_Ch1 as Aaxix,Baxix_61_Ch1 as Baxix, node_61.Date_and_time as cts
+    FROM node_61
+    UNION ALL
+    SELECT   nodeId, Temp_70_Ch1 as tem ,Aaxix_70_Ch1 as Aaxix,Baxix_70_Ch1 as Baxix, node_70.Date_and_time as cts
+    FROM node_70
+    UNION ALL
+    SELECT   nodeId, Temp_80_Ch1 as tem ,Aaxix_80_Ch1 as Aaxix,Baxix_80_Ch1 as Baxix, node_80.Date_and_time as cts
+    FROM node_80
+), latest AS (
+  SELECT tempnode.*, ROW_NUMBER() OVER (
+  PARTITION BY tempnode.nodeId 
+  ORDER BY tempnode.cts DESC) myrank
+  FROM tempnode 
+)
+SELECT nodes.NodeId, tempnode.*
+FROM nodes
+LEFT JOIN latest as tempnode ON tempnode.nodeId = nodes.NodeID AND tempnode.myrank = 1
+GROUP BY nodes.NodeID
+ORDER BY nodes.NodeID, tempnode.cts desc
+";
+// Run the query
+$query = $connect->query($AllNodes);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$AllNodesResult = mysqli_query($connect, $AllNodes);
+
+$query2 = "SELECT *
+FROM nodes
+LEFT JOIN node_10 ON node_10.nodeId = nodes.NodeId";
+$result2 = mysqli_query($connect, $query2);
+
 ?>
 
 <!DOCTYPE html>
@@ -190,146 +297,35 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                                                             <table class="demo-tbl">
                                                                 <!--<item>1</item>-->
                                                                 <?php
-                                                                
-// Create connection
-// include 'config.php';
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "nodes";
-$connection = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($connection->connect_error) {
-    die("Connection failed: " . $connection->connect_error);
-}
 
-$sql = "SELECT * FROM node_chart_10";
-$result = $connection->query($sql);
-
-if ($result->num_rows > 0) {
+                                                                while ($row2 = mysqli_fetch_array($AllNodesResult)) {
 
                                                                 ?>
 
-                                                                <tr class="tbl-item">
-                                                                    <!--<img/>-->
-                                                                    <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>
-                                                                    <td class="td-block">
-<?php     while($row = $result->fetch_assoc()) {
- ?>
-                                                                        <p style="text-align:right">Data Last Received</p>
-                                                                        <p class="date"><?php echo $row["dateAndTime"] ?></p>
-                                                                        <p class="title">Node <?php echo $row["nodeId"] ?></p>
-                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): <?php echo $row["Aaxis_10_ch1"] ?><br>Axis B movement (mm/m): <?php echo $row["Baxis_10_ch1"] ?><br>Total movement (mm/m): 1.09<br>Device Temperature (Celcius): <?php echo $row["temp_10_ch1"] ?><br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
-                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=10" target="_blank">View Charts</a> ]</p>
-<?php }?>
-                                                                        </td>
-                                                                </tr>
-                                                                <?php 
+                                                                    <tr class="tbl-item">
+                                                                        <!--<img/>-->
+                                                                        <td class="td-block">
+                                                                            <p style="text-align:right">Data Last Received</p>
+                                                                            <p class="date"><?php echo $row2["cts"] ?></p>
+                                                                            <p class="title">Node <?php echo $row2["NodeId"] ?></p>
+                                                                            <p class="desc">Location: Residence</p>
+                                                                            <p> Axis A movement (mm/m): <?php echo $row2["Aaxix"] ?> </p>
+                                                                            <p> Axis B movement (mm/m): <?php echo $row2["Baxix"]  ?> </p>
+                                                                            <p> Total movement (mm/m): <?php echo $totalMov ?> </p>
+                                                                            <p> Device Temperature (Celcius):<?php echo $row2["tem"] ?></p>
+                                                                            <p> Node Status: <?php echo $nodeStatus ?> </p>
+                                                                            </p>
+                                                                            <p class="like">Latest Alarm: <?php echo $alarStatus ?></p>
+                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=<?php echo $row2["NodeId"] ?>" target="_blank">View Charts</a> ]</p>
 
-} else {
-    echo "0 results";
-  }
-  $connection->close();
-  ?>
-                                                                <tr class="tbl-item">
-                                                                    <!--<img/>-->
-                                                                    <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>
-                                                                    <td class="td-block">
-                                                                        <p style="text-align:right">Data Last Received</p>
-                                                                        <p class="date">2020-11-03 12:00:00</p>
-                                                                        <p class="title">Node 20</p>
-                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): 0.13<br>Axis B movement (mm/m): -0.44<br>Total movement (mm/m): 0.46<br>Device Temperature (Celcius): 29.7<br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
-                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=20" target="_blank">View Charts</a> ]</p>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr class="tbl-item">
-                                                                    <!--<img/>-->
-                                                                    <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>
-                                                                    <td class="td-block">
-                                                                        <p style="text-align:right">Data Last Received</p>
-                                                                        <p class="date">2020-11-03 12:00:00</p>
-                                                                        <p class="title">Node 21</p>
-                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): 0.34<br>Axis B movement (mm/m): -0.2<br>Total movement (mm/m): 0.39<br>Device Temperature (Celcius): 30.3<br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
-                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=21" target="_blank">View Charts</a> ]</p>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr class="tbl-item">
-                                                                    <!--<img/>-->
-                                                                    <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>
-                                                                    <td class="td-block">
-                                                                        <p style="text-align:right">Data Last Received</p>
-                                                                        <p class="date">2020-11-03 12:00:00</p>
-                                                                        <p class="title">Node 30</p>
-                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): -1.2<br>Axis B movement (mm/m): -0.42<br>Total movement (mm/m): 1.27<br>Device Temperature (Celcius): 29.4<br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
-                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=30" target="_blank">View Charts</a> ]</p>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr class="tbl-item">
-                                                                    <!--<img/>-->
-                                                                    <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>
-                                                                    <td class="td-block">
-                                                                        <p style="text-align:right">Data Last Received</p>
-                                                                        <p class="date">2020-11-03 12:00:00</p>
-                                                                        <p class="title">Node 40</p>
-                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): -0.37<br>Axis B movement (mm/m): 0.46<br>Total movement (mm/m): 0.59<br>Device Temperature (Celcius): 29.6<br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
-                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=40" target="_blank">View Charts</a> ]</p>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr class="tbl-item">
-                                                                    <!--<img/>-->
-                                                                    <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>
-                                                                    <td class="td-block">
-                                                                        <p style="text-align:right">Data Last Received</p>
-                                                                        <p class="date">2020-11-03 12:00:00</p>
-                                                                        <p class="title">Node 50</p>
-                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): -1.22<br>Axis B movement (mm/m): -0.59<br>Total movement (mm/m): 1.35<br>Device Temperature (Celcius): 29.6<br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
-                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=50" target="_blank">View Charts</a> ]</p>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr class="tbl-item">
-                                                                    <!--<img/>-->
-                                                                    <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>
-                                                                    <td class="td-block">
-                                                                        <p style="text-align:right">Data Last Received</p>
-                                                                        <p class="date">2020-11-03 12:00:00</p>
-                                                                        <p class="title">Node 60</p>
-                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): 0.34<br>Axis B movement (mm/m): 0.56<br>Total movement (mm/m): 0.66<br>Device Temperature (Celcius): 30.2<br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
-                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=60" target="_blank">View Charts</a> ]</p>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr class="tbl-item">
-                                                                    <!--<img/>-->
-                                                                    <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>
-                                                                    <td class="td-block">
-                                                                        <p style="text-align:right">Data Last Received</p>
-                                                                        <p class="date">2020-11-03 12:00:00</p>
-                                                                        <p class="title">Node 61</p>
-                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): -0.32<br>Axis B movement (mm/m): 0.55<br>Total movement (mm/m): 0.64<br>Device Temperature (Celcius): 30<br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
-                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=61" target="_blank">View Charts</a> ]</p>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr class="tbl-item">
-                                                                    <!--<img/>-->
-                                                                    <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>
-                                                                    <td class="td-block">
-                                                                        <p style="text-align:right">Data Last Received</p>
-                                                                        <p class="date">2020-11-03 12:00:00</p>
-                                                                        <p class="title">Node 70</p>
-                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): -0.14<br>Axis B movement (mm/m): 0.25<br>Total movement (mm/m): 0.29<br>Device Temperature (Celcius): 29.9<br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
-                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=70" target="_blank">View Charts</a> ]</p>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr class="tbl-item">
-                                                                    <!--<img/>-->
-                                                                    <td class="img" width="15%" align="center"><img src="" alt="" title="" width="200px" /></td>
-                                                                    <td class="td-block">
-                                                                        <p style="text-align:right">Data Last Received</p>
-                                                                        <p class="date">2020-11-03 12:00:00</p>
-                                                                        <p class="title">Node 80</p>
-                                                                        <p class="desc">Location: Residence<br>Axis A movement (mm/m): -1.54<br>Axis B movement (mm/m): -0.76<br>Total movement (mm/m): 1.71<br>Device Temperature (Celcius): 30.5<br>Node Status: Up<p class="like">Latest Alarm: Normal</p>
-                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=80" target="_blank">View Charts</a> ]</p>
-                                                                    </td>
-                                                                </tr>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                <?php
+
+                                                                }
+                                                                ?>
+
                                                             </table>
 
                                                         </div>
