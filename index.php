@@ -7,58 +7,78 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   header("location: login.php");
   exit;
 }
-
 $connect = mysqli_connect("localhost", "root", "", "geoalertsystem");
 
-
-$AllNodes = "
-WITH tempnode AS (
-    SELECT  nodeId, Temp_10_Ch1 as tem, Aaxix_10_Ch1 as Aaxix,Baxix_10_Ch1 as Baxix, node_10.Date_and_time as cts
-    FROM node_10
+$nodesUp = 0;
+$nodesDown = 0;
+// here we get the total number of nodes
+$getAllNodes = $connect->query("SELECT * FROM nodes WHERE NodeID IS NOT NULL;");
+$countNodes = $getAllNodes->num_rows;
+$nodesUp = $countNodes;
+$AllNodes_data = "
+WITH tempnode AS ( 
+    SELECT nodeId, Temp_10_Ch1 as tem, Aaxix_10_Ch1 as Aaxix,Baxix_10_Ch1 as Baxix, node_10.Date_and_time as cts 
+    FROM node_10 
     UNION ALL 
-    SELECT   nodeId, Temp_20_Ch1 as tem ,Aaxix_20_Ch1 as Aaxix,Baxix_20_Ch1 as Baxix, node_20.Date_and_time as cts
-    FROM node_20
+    SELECT nodeId, Temp_20_Ch1 as tem ,Aaxix_20_Ch1 as Aaxix,Baxix_20_Ch1 as Baxix, node_20.Date_and_time as cts 
+    FROM node_20 
     UNION ALL 
-    SELECT   nodeId, Temp_21_Ch1 as tem ,Aaxix_21_Ch1 as Aaxix,Baxix_21_Ch1 as Baxix, node_21.Date_and_time as cts
-    FROM node_21
+    SELECT nodeId, Temp_30_Ch1 as tem ,Aaxix_30_Ch1 as Aaxix,Baxix_30_Ch1 as Baxix, node_30.Date_and_time as cts 
+    FROM node_30 
     UNION ALL 
-    SELECT   nodeId, Temp_30_Ch1 as tem ,Aaxix_30_Ch1 as Aaxix,Baxix_30_Ch1 as Baxix, node_30.Date_and_time as cts
-    FROM node_30
+    SELECT nodeId, Temp_21_Ch1 as tem ,Aaxix_21_Ch1 as Aaxix,Baxix_21_Ch1 as Baxix, node_21.Date_and_time as cts 
+    FROM node_21 
     UNION ALL 
-    SELECT   nodeId, Temp_40_Ch1 as tem ,Aaxix_40_Ch1 as Aaxix,Baxix_40_Ch1 as Baxix, node_40.Date_and_time as cts
-    FROM node_40
-    UNION ALL 
-    SELECT   nodeId, Temp_50_Ch1 as tem ,Aaxix_50_Ch1 as Aaxix,Baxix_50_Ch1 as Baxix, node_50.Date_and_time as cts
-    FROM node_50
-    UNION ALL
-    SELECT   nodeId, Temp_60_Ch1 as tem ,Aaxix_60_Ch1 as Aaxix,Baxix_60_Ch1 as Baxix, node_60.Date_and_time as cts
-    FROM node_60
-    UNION ALL
-    SELECT   nodeId, Temp_61_Ch1 as tem ,Aaxix_61_Ch1 as Aaxix,Baxix_61_Ch1 as Baxix, node_61.Date_and_time as cts
-    FROM node_61
-    UNION ALL
-    SELECT   nodeId, Temp_70_Ch1 as tem ,Aaxix_70_Ch1 as Aaxix,Baxix_70_Ch1 as Baxix, node_70.Date_and_time as cts
-    FROM node_70
-    UNION ALL
-    SELECT   nodeId, Temp_80_Ch1 as tem ,Aaxix_80_Ch1 as Aaxix,Baxix_80_Ch1 as Baxix, node_80.Date_and_time as cts
-    FROM node_80
-), latest AS (
-  SELECT tempnode.*, ROW_NUMBER() OVER (
-  PARTITION BY tempnode.nodeId 
-  ORDER BY tempnode.cts DESC) myrank
-  FROM tempnode 
-)
-SELECT nodes.NodeId, tempnode.*
-FROM nodes
-LEFT JOIN latest as tempnode ON tempnode.nodeId = nodes.NodeID AND tempnode.myrank = 1
-GROUP BY nodes.NodeID
-ORDER BY nodes.NodeID, tempnode.cts desc
+    SELECT nodeId, Temp_40_Ch1 as tem ,Aaxix_40_Ch1 as Aaxix,Baxix_40_Ch1 as Baxix, node_40.Date_and_time as cts 
+    FROM node_40 
+),
+     latest AS ( 
+         SELECT tempnode.*, ROW_NUMBER() OVER ( PARTITION BY tempnode.nodeId ORDER BY tempnode.cts DESC) myrank FROM tempnode ) 
+         SELECT nodes.NodeId, tempnode.* 
+         FROM nodes 
+         LEFT JOIN latest as tempnode ON tempnode.nodeId = nodes.NodeID AND tempnode.myrank = 1
+          GROUP BY nodes.NodeID ORDER BY nodes.NodeID, tempnode.cts desc
 ";
 
+$AllNodesResult = mysqli_query($connect, $AllNodes_data);
+$AllNodesResult_data2 = mysqli_query($connect, $AllNodes_data);
+$countNodes2 = $AllNodesResult_data2->num_rows;
 
-$AllNodesResult = mysqli_query($connect, $AllNodes);
 
+$normal_nodes = 0; //below 0.5 
+$advisery_nodes = 0; //bellow 1
+$watch_nodes = 0;    // bellow 1.5
+$danger_nodes = 0;  // more than 1.5 
 
+if (mysqli_num_rows($AllNodesResult_data2) > 0) {
+  // output data of each row
+  while ($row = mysqli_fetch_array($AllNodesResult_data2)) {
+
+    $aaxix = $row["Aaxix"];
+    $getnodesDown = 0;
+    if ($aaxix != null) {
+      $getnodesDown += 1;
+      $nodesDown = $nodesUp - $aaxix;
+    }
+    //print_r($aaxix, "\n");
+    if ($aaxix <= 0.5 && $aaxix > -2) {
+      // Return the number of rows in result set
+      // $rowcount=mysqli_num_rows($AllNodesResult_data);
+      // echo "number of rows: ",$rowcount;
+      // Free result set
+      //mysqli_free_result($result);
+      $normal_nodes += 1;
+    } elseif ($aaxix > 0.5 && $aaxix <= 1) {
+      $advisery_nodes += 1;
+    } elseif ($aaxix > 1.5 && $aaxix <= 1.5) {
+      $watch_node += 1;
+    } elseif ($aaxix > 1.5) {
+      $danger_nodes += 1;
+    }
+  }
+} else {
+  echo "0 results";
+}
 
 ?>
 
@@ -97,6 +117,171 @@ $AllNodesResult = mysqli_query($connect, $AllNodes);
   <!-- Font Awesome JS -->
   <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .map {
+      margin: 0px;
+      border: 5px solid lightgrey;
+      position: relative;
+      display: inline-block;
+    }
+
+    .map img {
+      max-width: 100%;
+      display: block;
+    }
+
+    @-webkit-keyframes blink {
+      0% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes blink {
+      0% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .box-normal {
+      width: 5%;
+      height: 5%;
+      background-image: url(assets/images/pin-normal.png);
+      background-position: top center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      position: absolute;
+    }
+
+    .box-normal:hover>.pin-text {
+      display: block;
+    }
+
+    .box-advisory {
+      width: 5%;
+      height: 5%;
+      background-image: url(img/pin-advisory.png);
+      background-position: top center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      position: absolute;
+    }
+
+    .box-advisory:hover>.pin-text {
+      display: block;
+    }
+
+    .box-watch {
+      width: 5%;
+      height: 5%;
+      background-image: url(img/pin-watch.png);
+      background-position: top center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      position: absolute;
+    }
+
+    .box-watch:hover>.pin-text {
+      display: block;
+    }
+
+
+    .box-warning {
+      width: 5%;
+      height: 5%;
+      background-image: url(img/pin-warning.png);
+      background-position: top center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      position: absolute;
+      -webkit-animation: blink 1s;
+      -webkit-animation-iteration-count: infinite;
+      animation: blink 1s;
+      animation-iteration-count: infinite;
+    }
+
+    .box-warning:hover>.pin-text {
+      display: block;
+    }
+
+    .box-down {
+      width: 5%;
+      height: 5%;
+      background-image: url(img/pin-down.png);
+      background-position: top center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      position: absolute;
+    }
+
+    .box-down:hover>.pin-text {
+      display: block;
+    }
+
+    div#bottomText {
+      position: relative;
+      text-align: center;
+      bottom: -100%;
+      color: white;
+      text-shadow: 1px 1px 1px #000;
+    }
+
+    #pin-1 {
+      top: 30%;
+      right: 20%;
+    }
+
+    .pin-text {
+      position: absolute;
+      top: 200%;
+      transform: translateY(-50%);
+      right: 60%;
+      white-space: nowrap;
+      display: none;
+      /*background-color:#7D1935;*/
+      background: rgba(76, 175, 80, 0.8);
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .pin-text h3 {
+      color: white;
+      text-shadow: 1px 1px 1px #000;
+    }
+
+    .pin-whitetext {
+      color: white;
+      text-shadow: 1px 1px 1px #000;
+      z-index: 100;
+    }
+
+    .a {
+      color: white;
+      text-decoration: none;
+    }
+  </style>
 </head>
 
 <body>
@@ -109,7 +294,7 @@ $AllNodesResult = mysqli_query($connect, $AllNodes);
           <h3>GeoAlertSystem</h3>
         </a>
       </div>
-      
+
       <ul class="list-unstyled components">
         <li>
           <a href="index.php" class="list-items"><i class="fas fa-tachometer-alt"></i>&nbsp; Dashboard</a>
@@ -130,7 +315,7 @@ $AllNodesResult = mysqli_query($connect, $AllNodes);
           <a href="user.php" class="list-items"><i class="fas fa-user"></i>&nbsp; User</a>
         </li>
         <li>
-          <a target="_blank" href="/geoalertmanual.pdf"  class="list-items"><i class="fa fa-life-ring fa-fw"></i>&nbsp; Manual</a>
+          <a target="_blank" href="/geoalertmanual.pdf" class="list-items"><i class="fa fa-life-ring fa-fw"></i>&nbsp; Manual</a>
         </li>
         <li>
           <a href="reset-password.php" class="list-items"> <i class="fa fa-key"></i>&nbsp; Reset Password</a>
@@ -160,9 +345,185 @@ $AllNodesResult = mysqli_query($connect, $AllNodes);
           </div>
         </div>
       </nav>
-      <div class="slide-pic">
+      <!-- <div class="slide-pic">
         <img class="bg-pic" src="assets/images/mainpic.png" alt="image">
+      </div> -->
+      <div class="map">
+        <img src="assets/images/mainpic.png" alt="" />
+
+        <!--Formula to pin locations-->
+
+        <!--Add nodes here-->
+
+        <!--Node 10-->
+        <a href="charts_d.php?nodeID=10" target="_blank" id="a1">
+          <div id="$nodeID" style="top:60%; left:12%;" class="box-normal">
+            <div id="bottomText">10</div>
+            <div class="pin-text pin-whitetext">
+              <p>Node 10<br>2020-12-09 15:00:00<br>Axis A: -0.31mm<br>Axis B: -0.93mm</p>
+            </div>
+          </div>
+        </a>
+        <!--End Node 10-->
+
+        <!-- Node 11-->
+        <!-- End Node 11 -->
+
+        <!--Node 20-->
+        <a href="charts_d.php?nodeID=20" target="_blank" id="a1">
+          <div id="$nodeID" style="top:59%; left:26%;" class="box-normal">
+            <div id="bottomText">20</div>
+            <div class="pin-text pin-whitetext">
+              <p>Node 20<br>2020-12-09 15:00:00<br>Axis A: 0.06mm<br>Axis B: -0.57mm</p>
+            </div>
+          </div>
+        </a>
+        <!--End Node 20-->
+
+        <!--Node 21-->
+
+        <a href="charts_d.php?nodeID=21" target="_blank" id="a1">
+          <div id="$nodeID" style="top:88%; left:21%;" class="box-normal">
+            <div id="bottomText">21</div>
+            <div class="pin-text pin-whitetext">
+              <p>Node 21<br>2020-12-09 15:00:00<br>Axis A: 0.5mm<br>Axis B: -0.8mm</p>
+            </div>
+          </div>
+        </a>
+        <!--End Node 21-->
+
+        <!--Node 22-->
+
+
+        <!--End Node 22-->
+
+        <!--Node 30-->
+
+        <a href="charts_d.php?nodeID=30" target="_blank" id="a1">
+          <div id="$nodeID" style="top:58%; left:41%;" class="box-normal">
+            <div id="bottomText">30</div>
+            <div class="pin-text pin-whitetext">
+              <p>Node 30<br>2020-12-09 15:00:00<br>Axis A: -0.89mm<br>Axis B: -0.34mm</p>
+            </div>
+          </div>
+        </a>
+        <!--End Node 30-->
+
+        <!--Node 31-->
+
+
+        <!--End Node 31-->
+
+
+        <!--Node 40-->
+
+        <a href="charts_d.php?nodeID=40" target="_blank" id="a1">
+          <div id="$nodeID" style="top:58%; left:48%;" class="box-normal">
+            <div id="bottomText">40</div>
+            <div class="pin-text pin-whitetext">
+              <p>Node 40<br>2020-12-09 15:00:00<br>Axis A: -0.37mm<br>Axis B: 0.48mm</p>
+            </div>
+          </div>
+        </a>
+        <!--End Node 40-->
+
+        <!--Node 41-->
+
+
+        <!--End Node 41-->
+
+        <!--Node 42-->
+
+
+        <!--End Node 42-->
+
+        <!--Node 50-->
+
+        <a href="charts_d.php?nodeID=50" target="_blank" id="a1">
+          <div id="$nodeID" style="top:58%; left:57%;" class="box-normal">
+            <div id="bottomText">50</div>
+            <div class="pin-text pin-whitetext">
+              <p>Node 50<br>2020-12-09 15:00:00<br>Axis A: -0.61mm<br>Axis B: 0.16mm</p>
+            </div>
+          </div>
+        </a>
+        <!--End Node 50-->
+
+        <!--Node 51-->
+
+        <a href="charts_d.php?nodeID=61" target="_blank" id="a1">
+          <div id="$nodeID" style="top:74%; left:64%;" class="box-normal">
+            <div id="bottomText">61</div>
+            <div class="pin-text pin-whitetext">
+              <p>Node 61<br>2020-12-09 15:00:00<br>Axis A: -0.41mm<br>Axis B: 0.47mm</p>
+            </div>
+          </div>
+        </a>
+        <!--End Node 51-->
+
+        <!--Node 52-->
+
+
+        <!--End Node 52-->
+
+        <!--Node 60-->
+
+        <a href="charts_d.php?nodeID=60" target="_blank" id="a1">
+          <div id="$nodeID" style="top:58%; left:64%;" class="box-normal">
+            <div id="bottomText">60</div>
+            <div class="pin-text pin-whitetext">
+              <p>Node 60<br>2020-12-09 15:00:00<br>Axis A: 0.04mm<br>Axis B: 0.6mm</p>
+            </div>
+          </div>
+        </a>
+        <!--End Node 60-->
+
+        <!--Node 61-->
+
+
+        <!--End Node 61-->
+
+        <!--Node 70-->
+
+        <a href="charts_d.php?nodeID=70" target="_blank" id="a1">
+          <div id="$nodeID" style="top:60%; left:79%;" class="box-normal">
+            <div id="bottomText">70</div>
+            <div class="pin-text pin-whitetext">
+              <p>Node 70<br>2020-12-09 15:00:00<br>Axis A: 0.01mm<br>Axis B: 0.06mm</p>
+            </div>
+          </div>
+        </a>
+        <!--End Node 70-->
+
+        <!--Node 71-->
+
+
+        <!--End Node 71-->
+
+        <!--Node 81-->
+
+        <a href="charts_d.php?nodeID=80" target="_blank" id="a1">
+          <div id="$nodeID" style="top:60%; left:91%;" class="box-normal">
+            <div id="bottomText">80</div>
+            <div class="pin-text pin-whitetext">
+              <p>Node 80<br>2020-12-09 15:00:00<br>Axis A: -0.59mm<br>Axis B: -0.31mm</p>
+            </div>
+          </div>
+        </a>
+        <!--End Node 81-->
+
+        <!--Node 82-->
+
+
+        <!--End Node 82-->
+
+        <!--Node 83-->
+
+
+        <!--End Node 83-->
+
       </div>
+
       <br>
 
       <!--Grid row-->
@@ -174,7 +535,7 @@ $AllNodesResult = mysqli_query($connect, $AllNodes);
             <!-- Data -->
             <div class="third-content ml-auto mr-4 mb-2">
               <p class="text">Normal</p>
-              <h4 class="font-weight-bold number">10</h4>
+              <h4 class="font-weight-bold number"><?php echo $normal_nodes ?></h4>
             </div>
             <!-- Content -->
             <div class="card-body white">
@@ -194,7 +555,7 @@ $AllNodesResult = mysqli_query($connect, $AllNodes);
             <!-- Data -->
             <div class="third-content  ml-auto mr-4 mb-2">
               <p class="text">Advisory</p>
-              <h4 class="font-weight-bold number">0</h4>
+              <h4 class="font-weight-bold number"><?php echo $advisery_nodes ?></h4>
             </div>
             <!-- Content -->
             <div class="card-body white">
@@ -212,7 +573,7 @@ $AllNodesResult = mysqli_query($connect, $AllNodes);
             <!-- Data -->
             <div class="third-content  ml-auto mr-4 mb-2">
               <p class="text">Watch</p>
-              <h4 class="font-weight-bold number">0</h4>
+              <h4 class="font-weight-bold number"><?php echo $watch_nodes ?></h4>
             </div>
             <!-- Content -->
             <div class="card-body white">
@@ -230,7 +591,7 @@ $AllNodesResult = mysqli_query($connect, $AllNodes);
             <!-- Data -->
             <div class="third-content  ml-auto mr-4 mb-2">
               <p class="text">Danger</p>
-              <h4 class="font-weight-bold number">0</h4>
+              <h4 class="font-weight-bold number"><?php echo $danger_nodes ?></h4>
             </div>
             <!-- Content -->
             <div class="card-body white">
@@ -240,63 +601,52 @@ $AllNodesResult = mysqli_query($connect, $AllNodes);
             </div>
           </div>
         </div>
-       <div class="gua-chart">
-       <div class="col-md-5 mb-4">
-          <div id="chartdiv"></div>
-          <span class="nodes">Nodes Up <br> 10 Nodes (100%)</span>
+        <div class="gua-chart">
+          <div class="col-md-5 mb-4">
+            <div id="chartdiv"></div>
+            <span class="nodes">Nodes Up <br> <?php echo $nodesUp ?> Nodes (100%)</span>
+          </div>
+          <div class="col-md-5 mb-4">
+            <div id="chartdiv2"></div>
+            <span class="nodes"> Nodes Down <br> <?php echo $nodesDown ?> Ndoes (0%)</span>
+          </div>
         </div>
-        <div class="col-md-5 mb-4">
-          <div id="chartdiv2"></div>
-          <span class="nodes"> Nodes Down <br> 0 Ndoes (0%)</span>
-        </div>
-       </div>
 
         <!-- circle percentage -->
         <div class="col-md-12 mb-8">
           <!-- table -->
-  <h2>Summary Details of Nodes</h2>
-  <table class="table">
-    <thead class="thead-dark">
-     <tr>
+          <h2>Summary Details of Nodes</h2>
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
                 <th>Node ID</th>
                 <th>Location</th>
                 <th>Status</th>
-                <th>Data Time</th>
+                <th>Last Data Time</th>
                 <th>Alarm</th>
-            </tr>
-    </thead>
-    <tbody>
-<!-- <style>
-tbody tr:nth-child(odd){
-  background-color: #4C8BF5;
-  color: #fff;
-}
-tbody tr:nth-child(even){
-  background-color: #4C8925;
-  color: #fff;
-}
- </style> -->
-           <?php
-             if (mysqli_num_rows($AllNodesResult) > 0) {
-                                // output data of each row
-                  while ($row2 = mysqli_fetch_array($AllNodesResult)) {
-                 ?>
-                         <tr style="background-color:rgb(48,24,81);color:white;">
-                                    <td><a target="_blank" href="charts_d.php?nodeID=<?php echo $row2["NodeId"] ?>"><?php echo $row2["NodeId"] ?></a></td>
-                                    <td>Residence</td>
-                                    <td>Up</td>
-                                    <td><?php echo $row2['cts'] ?></td>
-                                    <td>Normal</td>
-                                  </tr>
-                              <?php  }
-                              } else {
-                                echo "0 results";
-                              }
-     
-                          ?>
-     
-    </tbody>
-  </table>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+              if (mysqli_num_rows($AllNodesResult) > 0) {
+                // output data of each row
+                while ($row2 = mysqli_fetch_array($AllNodesResult)) {
+              ?>
+                  <tr style="background-color:rgb(48,24,81);color:white;">
+                    <td><a target="_blank" href="charts_d.php?nodeID=<?php echo $row2["NodeId"] ?>"><?php echo $row2["NodeId"] ?></a></td>
+                    <td>Residence</td>
+                    <td>Up</td>
+                    <td><?php echo $row2['cts'] ?></td>
+                    <td>Normal</td>
+                  </tr>
+              <?php  }
+              } else {
+                echo "0 results";
+              }
+
+              ?>
+            </tbody>
+          </table>
           <!--// table -->
         </div>
       </div>
@@ -328,7 +678,8 @@ tbody tr:nth-child(even){
   <!-- Chart code -->
   <script>
     am4core.ready(function() {
-
+      var getnodesUp = <?= $nodesUp ?>;
+      var nodesUp = (getnodesUp * 100) / getnodesUp;
       // Themes begin
       am4core.useTheme(am4themes_animated);
       // Themes end
@@ -365,7 +716,7 @@ tbody tr:nth-child(even){
       hand.radius = am4core.percent(97);
 
       setInterval(function() {
-        hand.showValue(99);
+        hand.showValue(nodesUp);
       }, 2000);
 
 
@@ -374,7 +725,11 @@ tbody tr:nth-child(even){
   <!-- Chart code -->
   <script>
     am4core.ready(function() {
+      var getnodesDown = <?= $nodesDown ?>;
+      var getnodesUp = <?= $nodesUp ?>;
 
+      var nodesDown = (getnodesDown * 100) / getnodesUp;
+      console.log(getnodesDown)
       // Themes begin
       am4core.useTheme(am4themes_animated);
       // Themes end
@@ -411,7 +766,7 @@ tbody tr:nth-child(even){
       hand.radius = am4core.percent(97);
 
       setInterval(function() {
-        hand.showValue(1);
+        hand.showValue(nodesDown);
       }, 2000);
 
 
@@ -419,4 +774,3 @@ tbody tr:nth-child(even){
   </script>
 
 </body>
-</html>

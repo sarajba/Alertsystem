@@ -45,51 +45,26 @@ $alarStatus = "Normal";
 // LEFT JOIN node_20 ON node_20.nodeId = nodes.NodeId
 // ";
 
-$AllNodes = "
-WITH tempnode AS (
-    SELECT  nodeId, Temp_10_Ch1 as tem, Aaxix_10_Ch1 as Aaxix,Baxix_10_Ch1 as Baxix, node_10.Date_and_time as cts
-    FROM node_10
+$AllNodes_data = "
+WITH tempnode AS ( 
+    SELECT nodeId, Temp_10_Ch1 as tem, Aaxix_10_Ch1 as Aaxix,Baxix_10_Ch1 as Baxix, node_10.Date_and_time as cts 
+    FROM node_10 
     UNION ALL 
-    SELECT   nodeId, Temp_20_Ch1 as tem ,Aaxix_20_Ch1 as Aaxix,Baxix_20_Ch1 as Baxix, node_20.Date_and_time as cts
-    FROM node_20
+    SELECT nodeId, Temp_20_Ch1 as tem ,Aaxix_20_Ch1 as Aaxix,Baxix_20_Ch1 as Baxix, node_20.Date_and_time as cts 
+    FROM node_20 
     UNION ALL 
-    SELECT   nodeId, Temp_21_Ch1 as tem ,Aaxix_21_Ch1 as Aaxix,Baxix_21_Ch1 as Baxix, node_21.Date_and_time as cts
-    FROM node_21
-    UNION ALL 
-    SELECT   nodeId, Temp_30_Ch1 as tem ,Aaxix_30_Ch1 as Aaxix,Baxix_30_Ch1 as Baxix, node_30.Date_and_time as cts
-    FROM node_30
-    UNION ALL 
-    SELECT   nodeId, Temp_40_Ch1 as tem ,Aaxix_40_Ch1 as Aaxix,Baxix_40_Ch1 as Baxix, node_40.Date_and_time as cts
-    FROM node_40
-    UNION ALL 
-    SELECT   nodeId, Temp_50_Ch1 as tem ,Aaxix_50_Ch1 as Aaxix,Baxix_50_Ch1 as Baxix, node_50.Date_and_time as cts
-    FROM node_50
-    UNION ALL
-    SELECT   nodeId, Temp_60_Ch1 as tem ,Aaxix_60_Ch1 as Aaxix,Baxix_60_Ch1 as Baxix, node_60.Date_and_time as cts
-    FROM node_60
-    UNION ALL
-    SELECT   nodeId, Temp_61_Ch1 as tem ,Aaxix_61_Ch1 as Aaxix,Baxix_61_Ch1 as Baxix, node_61.Date_and_time as cts
-    FROM node_61
-    UNION ALL
-    SELECT   nodeId, Temp_70_Ch1 as tem ,Aaxix_70_Ch1 as Aaxix,Baxix_70_Ch1 as Baxix, node_70.Date_and_time as cts
-    FROM node_70
-    UNION ALL
-    SELECT   nodeId, Temp_80_Ch1 as tem ,Aaxix_80_Ch1 as Aaxix,Baxix_80_Ch1 as Baxix, node_80.Date_and_time as cts
-    FROM node_80
-), latest AS (
-  SELECT tempnode.*, ROW_NUMBER() OVER (
-  PARTITION BY tempnode.nodeId 
-  ORDER BY tempnode.cts DESC) myrank
-  FROM tempnode 
-)
-SELECT nodes.NodeId, tempnode.*
-FROM nodes
-LEFT JOIN latest as tempnode ON tempnode.nodeId = nodes.NodeID AND tempnode.myrank = 1
-GROUP BY nodes.NodeID
-ORDER BY nodes.NodeID, tempnode.cts desc
+    SELECT nodeId, Temp_30_Ch1 as tem ,Aaxix_30_Ch1 as Aaxix,Baxix_30_Ch1 as Baxix, node_30.Date_and_time as cts 
+    FROM node_30 
+),
+     latest AS ( 
+         SELECT tempnode.*, ROW_NUMBER() OVER ( PARTITION BY tempnode.nodeId ORDER BY tempnode.cts DESC) myrank FROM tempnode ) 
+         SELECT nodes.NodeId, tempnode.* 
+         FROM nodes 
+         LEFT JOIN latest as tempnode ON tempnode.nodeId = nodes.NodeID AND tempnode.myrank = 1
+          GROUP BY nodes.NodeID ORDER BY nodes.NodeID, tempnode.cts desc
 ";
-// Run the query
-$query = $connect->query($AllNodes);
+
+$AllNodesResult_data = mysqli_query($connect, $AllNodes_data);
 
 
 
@@ -98,21 +73,6 @@ $query = $connect->query($AllNodes);
 
 
 
-
-
-
-
-
-
-
-
-
-$AllNodesResult = mysqli_query($connect, $AllNodes);
-
-$query2 = "SELECT *
-FROM nodes
-LEFT JOIN node_10 ON node_10.nodeId = nodes.NodeId";
-$result2 = mysqli_query($connect, $query2);
 
 ?>
 
@@ -297,34 +257,36 @@ $result2 = mysqli_query($connect, $query2);
                                                             <table class="demo-tbl">
                                                                 <!--<item>1</item>-->
                                                                 <?php
-
-                                                                while ($row2 = mysqli_fetch_array($AllNodesResult)) {
-
+                                                                if (mysqli_num_rows($AllNodesResult_data) > 0) {
+                                                                    // output data of each row
+                                                                    while ($row2 = mysqli_fetch_array($AllNodesResult_data)) {
                                                                 ?>
-
-                                                                    <tr class="tbl-item">
-                                                                        <!--<img/>-->
-                                                                        <td class="td-block">
-                                                                            <p style="text-align:right">Data Last Received</p>
-                                                                            <p class="date"><?php echo $row2["cts"] ?></p>
-                                                                            <p class="title">Node <?php echo $row2["NodeId"] ?></p>
-                                                                            <p class="desc">Location: Residence</p>
-                                                                            <p> Axis A movement (mm/m): <?php echo $row2["Aaxix"] ?> </p>
-                                                                            <p> Axis B movement (mm/m): <?php echo $row2["Baxix"]  ?> </p>
-                                                                            <p> Total movement (mm/m): <?php echo $totalMov ?> </p>
-                                                                            <p> Device Temperature (Celcius):<?php echo $row2["tem"] ?></p>
-                                                                            <p> Node Status: <?php echo $nodeStatus ?> </p>
-                                                                            </p>
-                                                                            <p class="like">Latest Alarm: <?php echo $alarStatus ?></p>
-                                                                            <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=<?php echo $row2["NodeId"] ?>" target="_blank">View Charts</a> ]</p>
-
-                                                                        </td>
-                                                                    </tr>
+                                                                        <tr class="tbl-item">
+                                                                            <!--<img/>-->
+                                                                            <td class="td-block">
+                                                                                <p style="text-align:right">Data Last Received</p>
+                                                                                <p class="date"><?php echo $row2["cts"] ?></p>
+                                                                                <p class="title">Node <?php echo $row2["NodeId"] ?></p>
+                                                                                <p class="desc">Location: Residence</p>
+                                                                                <p> Axis A movement (mm/m): <?php echo $row2["Aaxix"] ?> </p>
+                                                                                <p> Axis B movement (mm/m): <?php echo $row2["Baxix"]  ?> </p>
+                                                                                <p> Total movement (mm/m): <?php echo $totalMov ?> </p>
+                                                                                <p> Device Temperature (Celcius):<?php echo $row2["tem"] ?></p>
+                                                                                <p> Node Status: <?php echo $nodeStatus ?> </p>
+                                                        
+                                                                                <p class="like">Latest Alarm: <?php echo $alarStatus ?></p>
+                                                                                <p style="color:green">[ <a style="color:green" href="charts_d.php?nodeID=<?php echo $row2["NodeId"] ?>" target="_blank">View Charts</a> ]</p>
+                                                                            </td>
+                                                                        </tr>
 
                                                                 <?php
 
+                                                                    }
+                                                                } else {
+                                                                    echo "0 results";
                                                                 }
                                                                 ?>
+
 
                                                             </table>
 
