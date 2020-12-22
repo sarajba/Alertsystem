@@ -1,4 +1,15 @@
 <?php
+/*
+********************** Resources *******************
+
+https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html
+
+https://stackoverflow.com/questions/15633653/mysql-date-subnow-interval-1-day-24-hours-or-weekday
+
+http://sqlfiddle.com/#!9/823380e/8
+
+*/
+
 // initialize the session
 session_start();
 
@@ -7,83 +18,108 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
-$id = $_GET['nodeID'];
-$dataPoint = [];
-$date = new DateTime("now", new DateTimeZone('Asia/Kuala_Lumpur'));
-$aa = $date->format('Y-m-d H:i:s');
 $connect = mysqli_connect("localhost", "root", "", "geoalertsystem");
 
+$id = $_GET['nodeID'];
+$getNode = "
+SELECT * FROM `node_$id`
+WHERE Date_and_time BETWEEN DATE(DATE_SUB(NOW(), INTERVAL 2 DAY)) AND DATE(NOW())
+ORDER BY Date_and_time DESC;
+    ";
 
-$aaa = "
-SELECT nodeId, Dateـandـtime, Temp_10_Ch1, AaxisVariation-10-Ch1, BaxisVariation-10-Ch1
-FROM node_10
-";
 
-$sql = "SELECT *
-        FROM node_10
-        ";
-$result = mysqli_query($connect, $sql);
-
-if (mysqli_num_rows($result) > 0) {
-    // output data of each row
-    while ($row = mysqli_fetch_assoc($result)) {
-      //  $bb = $row["BaxisVariation_10_Ch1"];
-        $bbb = 1000 * (tan(-0.0122));
-        $ddd = 1000 * (tan(-0.0546));
-        // echo($bbb);
-        $cc = sqrt(($bbb * $bbb) + ($ddd * $ddd));
-        // print_r($cc);
-        // echo "id: " . $row["BaxisVariation_10_Ch1"]. "<br>";
-    }
-} else {
-    echo "0 results";
-}
-
-$AllNodes = "
-WITH tempnode AS ( SELECT nodeId, Temp_10_Ch1 as tem, Aaxix_10_Ch1 as Aaxix,Baxix_10_Ch1 as Baxix, node_10.Date_and_time as cts FROM node_10 UNION ALL SELECT nodeId, Temp_20_Ch1 as tem ,Aaxix_20_Ch1 as Aaxix,Baxix_20_Ch1 as Baxix, node_20.Date_and_time as cts FROM node_20 UNION ALL SELECT nodeId, Temp_30_Ch1 as tem ,Aaxix_30_Ch1 as Aaxix,Baxix_30_Ch1 as Baxix, node_30.Date_and_time as cts FROM node_30 ), latest AS ( SELECT tempnode.*, ROW_NUMBER() OVER ( PARTITION BY tempnode.nodeId ORDER BY tempnode.cts DESC) myrank FROM tempnode ) SELECT nodes.NodeId, tempnode.* FROM nodes LEFT JOIN latest as tempnode ON tempnode.nodeId = nodes.NodeID AND tempnode.myrank = 1 GROUP BY nodes.NodeID ORDER BY nodes.NodeID, tempnode.cts desc
-";
-$list=[];
-$Temp=[];
+$DateTime = [];
+$Avariation = [];
+$Bvariation = [];
+$Aaxix= [];
 // Run the query
-$query = $connect->query($AllNodes);
-if ($id == 10) {
-    while ($row = $query->fetch_assoc()) {
-        $list[] = $row['cts'];
-        $Temp[] = $row['tem'];
-    };
-}
-if ($id == 20) {
-    while ($row = $query->fetch_assoc()) {
-        $list[] = $row['cts'];
-        $Temp[] = $row['tem'];
-    };
-}
-if ($id == 30) {
-    while ($row = $query->fetch_assoc()) {
-        $list[] = $row['cts'];
-        $Temp[] = $row['tem'];
-    };
-}
-if ($id == 90) {
-    while ($row = $query->fetch_assoc()) {
-        $list[] = $row['cts'];
-        $Temp[] = $row['tem'];
-    };
-}
+$query = $connect->query($getNode);
+foreach ($query as $data) // using foreach  to display each element of array
+{
+    if ($id == 10) {
+        $dt = $data['Date_and_time'];
+        $av = $data['AaxisVariation_10_Ch1'];
+        $bv = $data['BaxisVariation_10_Ch1'];
+        $aaxix= $data['Aaxix_10_Ch1'];
+        array_push($DateTime, $dt);
+        array_push($Avariation, $av);
+        array_push($Bvariation, $bv);
+        array_push($Aaxix, $aaxix);
 
-$data = [];
-foreach ($Temp as $key => $value2) {
-    $element = array('y' => $value2, 'label' => $value2);
-    //  array_push($data, $element);
+    }
+    if ($id == 20) {
+        $dt = $data['Date_and_time'];
+        $av = $data['AaxisVariation_20_Ch1'];
+        $bv = $data['BaxisVariation_20_Ch1'];
+        array_push($DateTime, $dt);
+        array_push($Avariation, $av);
+        array_push($Bvariation, $bv);
+    }
+    if ($id == 21) {
+        $dt = $data['Date_and_time'];
+        $av = $data['AaxisVariation_21_Ch1'];
+        $bv = $data['BaxisVariation_21_Ch1'];
+        array_push($DateTime, $dt);
+        array_push($Avariation, $av);
+        array_push($Bvariation, $bv);
+    }
+    if ($id == 30) {
+        $dt = $data['Date_and_time'];
+        $av = $data['AaxisVariation_30_Ch1'];
+        $bv = $data['BaxisVariation_30_Ch1'];
+        array_push($DateTime, $dt);
+        array_push($Avariation, $av);
+        array_push($Bvariation, $bv);
+    }
+    if ($id == 40) {
+        $dt = $data['Date_and_time'];
+        $av = $data['AaxisVariation_40_Ch1'];
+        $bv = $data['BaxisVariation_40_Ch1'];
+        array_push($DateTime, $dt);
+        array_push($Avariation, $av);
+        array_push($Bvariation, $bv);
+    }
+    if ($id == 50) {
+        $dt = $data['Date_and_time'];
+        $av = $data['AaxisVariation_50_Ch1'];
+        $bv = $data['BaxisVariation_50_Ch1'];
+        array_push($DateTime, $dt);
+        array_push($Avariation, $av);
+        array_push($Bvariation, $bv);
+    }
+    if ($id == 60) {
+        $dt = $data['Date_and_time'];
+        $av = $data['AaxisVariation_60_Ch1'];
+        $bv = $data['BaxisVariation_60_Ch1'];
+        array_push($DateTime, $dt);
+        array_push($Avariation, $av);
+        array_push($Bvariation, $bv);
+    }
+    if ($id == 61) {
+        $dt = $data['Date_and_time'];
+        $av = $data['AaxisVariation_61_Ch1'];
+        $bv = $data['BaxisVariation_61_Ch1'];
+        array_push($DateTime, $dt);
+        array_push($Avariation, $av);
+        array_push($Bvariation, $bv);
+    }
+    if ($id == 70) {
+        $dt = $data['Date_and_time'];
+        $av = $data['AaxisVariation_70_Ch1'];
+        $bv = $data['BaxisVariation_70_Ch1'];
+        array_push($DateTime, $dt);
+        array_push($Avariation, $av);
+        array_push($Bvariation, $bv);
+    }
+    if ($id == 80) {
+        $dt = $data['Date_and_time'];
+        $av = $data['AaxisVariation_80_Ch1'];
+        $bv = $data['BaxisVariation_80_Ch1'];
+        array_push($DateTime, $dt);
+        array_push($Avariation, $av);
+        array_push($Bvariation, $bv);
+    }
 }
-foreach ($list as $key => $value) {
-    $element = array('label' => $value, 'y' => 1);
-    array_push($data, $element);
-}
-
-$dataPoint_d = json_encode($data);
-//print_r($dataPoint_d);
-$connect->close();
 
 ?>
 
@@ -165,6 +201,7 @@ $connect->close();
                 </li>
             </ul>
         </nav>
+
         <!-- Page Content Holder -->
         <div id="content">
 
@@ -204,19 +241,24 @@ $connect->close();
             </style>
             <div>
                 <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+
                     <div class="page-header pull-left">
                         <div class="page-title">
-                            Charts (day) Node ID: <?php echo $id ?>
+                            Charts (week) Node ID:<?php echo $id ?>
                         </div>
                     </div>
-                    <div class="clearfix"></div>
+                    <div class="clearfix">
+                    </div>
                 </div>
+
 
                 <!--BEGIN CONTENT-->
                 <div class="page-content">
                     <div id="tab-general">
                         <div class="row mbl">
+
                             <div class="col-lg-12">
+
                                 <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
                                 <link rel="stylesheet" type="text/css" href="chartmenu.css">
                                 <title>Chart Menu</title>
@@ -229,44 +271,76 @@ $connect->close();
 
                                 </div>
 
+
                                 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
                                 <script>
-                                    // Old JS for canvas charjs 
                                     window.onload = function chartAngle() {
 
 
-
                                         // **********************************************************       NEW JS       ******************************************************************************
-                                        var dateArray = [new Date(2016, 1, 1), new Date(2016, 1, 2), new Date(2016, 1, 3), new Date(2016, 1, 4), new Date(2016, 1, 5), new Date(2016, 1, 6), new Date(2016, 1, 7), new Date(2016, 1, 8), new Date(2016, 1, 9), new Date(2016, 1, 10), new Date(2016, 1, 11), new Date(2016, 1, 12), new Date(2016, 1, 13), new Date(2016, 1, 14), new Date(2016, 1, 15), new Date(2016, 1, 16), new Date(2016, 1, 17), new Date(2016, 1, 18)];
 
-                                        var numberArray = [10, 13, 18, 20, 17, 10, 13, 18, 20, 17, 20, 17, 10, 13, 18, 10, 13, 18];
+
+
+                                        var dateTime = <?php echo json_encode(array_values($DateTime)); ?>;
+                                        var aVar = <?php echo json_encode(array_values($Avariation)); ?>;
+                                        // this how u should change it
+                                        var bVar = <?php echo json_encode(array_values($Bvariation)); ?>;
+                                        var aAxix = <?php echo json_encode(array_values($Aaxix)); ?>;
 
                                         var dps = []; //dataPoints. 
-
-                                        var chart = new CanvasJS.Chart("chartContainer", {
+                                        var dpsbv = []; //data point for b variation
+                                        var aaAxix=[]; // here we will add total movement
+                                        var chart = new CanvasJS.Chart("chartContainer_d", {
                                             title: {
-                                                text: "Data Plotted from Array"
+                                                text: "Hourly Readings: Axis Movements(Degree)"
+
                                             },
                                             axisX: {
-                                                title: "Axis X Title"
+                                                // title: "Axis A Axis B",
+                                                titleFontColor: "#4F81BC",
+                                                lineColor: "#4F81BC",
+                                                //labelFontColor: "#4F81BC",
+                                                tickColor: "#4F81BC"
                                             },
                                             axisY: {
-                                                title: "Units"
+                                                title: "Movements(Degree)"
                                             },
                                             data: [{
                                                 type: "line",
+                                                name: "A variation",
+                                                markerSize: 0,
+                                                toolTipContent: "Avar: {x}<br>{name}: {y} ",
+                                                showInLegend: true,
                                                 dataPoints: dps
+                                            }, {
+                                                type: "line",
+                                                axisYType: "secondary",
+                                                name: "B Variation",
+                                                markerSize: 0,
+                                                toolTipContent: "Bvar: {x}<br>{name}: {y}",
+                                                showInLegend: true,
+                                                dataPoints: dpsbv
                                             }]
                                         });
 
 
                                         function parseDataPoints() {
-                                            for (var i = dps.length; i < dateArray.length; i++)
+                                            for (var i = dps.length; i < dateTime.length; i++) {
                                                 dps.push({
-                                                    x: new Date(dateArray[i]),
-                                                    y: numberArray[i]
+                                                    x: new Date(dateTime[i]),
+                                                    y: parseFloat(aVar[i])
                                                 });
+                                                dpsbv.push({
+                                                    x: new Date(dateTime[i]),
+                                                    y: parseFloat(bVar[i])
+                                                });
+                                                aaAxix.push({
+                                                    x: new Date(dateTime[i]),
+                                                    y: parseFloat(aAxix[i])
+                                                });
+
+                                            }
                                         };
 
                                         function addDataPoints() {
@@ -274,647 +348,94 @@ $connect->close();
                                             chart.options.data[0].dataPoints = dps;
                                             chart.render();
                                         }
+                                        addDataPoints();
+                                        chart.render();
+                                        // ******************************************************8 grpah 2 *****************************
+
+                                        var chart = new CanvasJS.Chart("chartContainer_withTotalm", {
+                                            title: {
+                                                text: "Hourly Readings: Axis Movements(MM/M)"
+                                            },
+                                            axisX: {
+                                                // title: "Axis A Axis B",
+                                                titleFontColor: "#4F81BC",
+                                                lineColor: "#4F81BC",
+                                                //labelFontColor: "#4F81BC",
+                                                tickColor: "#4F81BC"
+                                            },
+                                            axisY: {
+                                                title: "Movements(mm/m)"
+                                            },
+                                            data: [{
+                                                type: "line",
+                                                name: "A variation",
+                                                markerSize: 0,
+                                                toolTipContent: "Avar: {x}<br>{name}: {y} ",
+                                                showInLegend: true,
+                                                dataPoints: dps
+                                            }, {
+                                                type: "line",
+                                                axisYType: "secondary",
+                                                name: "B Variation",
+                                                markerSize: 0,
+                                                toolTipContent: "Bvar: {x}<br>{name}: {y}",
+                                                showInLegend: true,
+                                                dataPoints: dpsbv
+                                            },
+                                            {
+                                                type: "line",
+                                                axisYType: "secondary",
+                                                name: "Total Movement",
+                                                markerSize: 0,
+                                                toolTipContent: "Bvar: {x}<br>{name}: {y}",
+                                                showInLegend: true,
+                                                dataPoints: aaAxix
+                                            }]
+                                        });
 
                                         addDataPoints();
                                         chart.render();
 
                                         // ****************************************************************************************************************************************
-
-
-                                        var dp_d = <?php echo ($dataPoint_d) ?>;
-                                        console.log(dp_d);
-                                        var aa = [{
-                                                "label": "2020-12-1 20:30:00",
-                                                "y": 2
-                                            },
-
-                                            {
-                                                "label": "2020-11-11 21:20:00",
-                                                "y": 3
-                                            },
-                                        ];
-                                        console.log(aa);
-                                        //BEGIN CHART ANGLE    
-                                        var chart = new CanvasJS.Chart("chartContainerAngle", {
-                                            animationEnabled: true,
-                                            exportEnabled: true,
-                                            zoomEnabled: true,
-                                            title: {
-                                                text: "Hourly Readings: Axis Movements (Degree)",
-                                                fontWeight: "normal",
-                                                fontFamily: "arial",
-                                                fontSize: 20
-                                            },
-
-                                            subtitles: [{
-                                                text: "[ 1 Day ]",
-                                                fontWeight: "normal",
-                                                fontFamily: "arial",
-                                                fontSize: 15
-                                            }],
-
-                                            axisY: {
-                                                title: "Movements (Degree)",
-                                                titleFontSize: 15,
-                                                gridThickness: 0.3,
-                                                maximum: 3,
-
-                                                stripLines: [{
-                                                        value: 0.5,
-                                                        thickness: 1,
-                                                        label: "Advisory",
-                                                        color: "#36a2df",
-                                                        labelFontColor: "#36a2df",
-                                                        lineDashType: "longDash"
-                                                    },
-                                                    {
-                                                        value: 1,
-                                                        thickness: 1,
-                                                        label: "Watch",
-                                                        color: "orange",
-                                                        labelFontColor: "orange",
-                                                        lineDashType: "longDash"
-                                                    },
-                                                    {
-                                                        value: 1.5,
-                                                        thickness: 1,
-                                                        label: "Danger",
-                                                        color: "red",
-                                                        labelFontColor: "red",
-                                                        lineDashType: "longDash"
-                                                    }
-                                                ],
-
-                                            },
-                                            axisX: {
-                                                title: "Date/Time",
-                                                titleFontSize: 15,
-                                                labelAngle: 135,
-                                                labelMaxWidth: 80,
-                                                labelWrap: true,
-                                                labelFontSize: 12,
-
-                                            },
-                                            toolTip: {
-                                                shared: false
-                                            },
-                                            legend: {
-                                                cursor: "pointer",
-                                                itemclick: function(e) {
-                                                    //console.log("legend click: " + e.dataPointIndex);
-                                                    //console.log(e);
-                                                    if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-                                                        e.dataSeries.visible = false;
-                                                    } else {
-                                                        e.dataSeries.visible = true;
-                                                    }
-
-                                                    e.chart.render();
-                                                }
-                                            },
-                                            data: [
-
-
-
-                                                {
-                                                    type: "spline",
-                                                    name: "Axis A",
-                                                    lineThickness: 2,
-                                                    color: "#36a2df",
-                                                    showInLegend: true,
-                                                    dataPoints: dp_d
-                                                },
-
-                                                {
-                                                    type: "spline",
-                                                    name: "Axis B",
-                                                    lineThickness: 2,
-                                                    color: "brown",
-                                                    showInLegend: true,
-                                                    dataPoints: dp_d
-                                                },
-                                            ]
-                                        });
-
-                                        chart.render();
-                                        //END CHART ANGLE    
-
-
-                                        //BEGIN CHART MM    
-                                        var chart = new CanvasJS.Chart("chartContainerMM", {
-                                            animationEnabled: true,
-                                            exportEnabled: true,
-                                            zoomEnabled: true,
-                                            title: {
-                                                text: "Hourly Readings: Axis Movements (mm/m)",
-                                                fontWeight: "normal",
-                                                fontFamily: "arial",
-                                                fontSize: 20
-                                            },
-
-                                            subtitles: [{
-                                                text: "[ 1 Day ]",
-                                                fontWeight: "normal",
-                                                fontFamily: "arial",
-                                                fontSize: 15
-                                            }],
-
-                                            axisY: {
-                                                title: "Movements (mm/m)",
-                                                titleFontSize: 15,
-                                                gridThickness: 0.3,
-                                                maximum: 100,
-                                            },
-                                            axisX: {
-                                                title: "Date/Time",
-                                                titleFontSize: 15,
-                                                labelAngle: 135,
-                                                labelMaxWidth: 80,
-                                                labelWrap: true,
-                                                labelFontSize: 12,
-                                            },
-                                            toolTip: {
-                                                shared: false
-                                            },
-                                            legend: {
-                                                cursor: "pointer",
-                                                itemclick: function(e) {
-                                                    //console.log("legend click: " + e.dataPointIndex);
-                                                    //console.log(e);
-                                                    if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-                                                        e.dataSeries.visible = false;
-                                                    } else {
-                                                        e.dataSeries.visible = true;
-                                                    }
-
-                                                    e.chart.render();
-                                                }
-                                            },
-                                            data: [
-
-
-
-                                                {
-                                                    type: "spline",
-                                                    name: "Axis A",
-                                                    lineThickness: 2,
-                                                    color: "#36a2df",
-                                                    showInLegend: true,
-                                                    dataPoints: [
-
-                                                        {
-                                                            label: "2020-11-11 20:00:00",
-                                                            y: 0.2
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-11 21:00:00",
-                                                            y: 0.1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-11 22:00:00",
-                                                            y: 0.1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-11 23:00:00",
-                                                            y: 0.1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 00:00:00",
-                                                            y: 0.1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 01:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 02:00:00",
-                                                            y: 0
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 03:00:00",
-                                                            y: 0.1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 04:00:00",
-                                                            y: 0.1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 05:00:00",
-                                                            y: 0.1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 06:00:00",
-                                                            y: 0.1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 07:00:00",
-                                                            y: 0.1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 08:00:00",
-                                                            y: 0.1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 09:00:00",
-                                                            y: 0.2
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 10:00:00",
-                                                            y: 0.3
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 11:00:00",
-                                                            y: 0.3
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 12:00:00",
-                                                            y: 0.3
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 13:00:00",
-                                                            y: 0.3
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 14:00:00",
-                                                            y: 0.3
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 15:00:00",
-                                                            y: 0.3
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 16:00:00",
-                                                            y: 0.3
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 17:00:00",
-                                                            y: 0.3
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 18:00:00",
-                                                            y: 0.3
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 19:00:00",
-                                                            y: 0.2
-                                                        },
-                                                    ]
-                                                },
-
-                                                {
-                                                    type: "spline",
-                                                    name: "Axis B",
-                                                    lineThickness: 2,
-                                                    color: "brown",
-                                                    showInLegend: true,
-                                                    dataPoints: [
-
-                                                        {
-                                                            label: "2020-11-11 20:00:00",
-                                                            y: 0.8
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-11 21:00:00",
-                                                            y: 0.8
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-11 22:00:00",
-                                                            y: 0.7
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-11 23:00:00",
-                                                            y: 0.8
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 00:00:00",
-                                                            y: 0.8
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 01:00:00",
-                                                            y: 0.7
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 02:00:00",
-                                                            y: 0.8
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 03:00:00",
-                                                            y: 0.8
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 04:00:00",
-                                                            y: 0.8
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 05:00:00",
-                                                            y: 0.8
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 06:00:00",
-                                                            y: 0.8
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 07:00:00",
-                                                            y: 0.9
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 08:00:00",
-                                                            y: 0.9
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 09:00:00",
-                                                            y: 1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 10:00:00",
-                                                            y: 1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 11:00:00",
-                                                            y: 0.9
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 12:00:00",
-                                                            y: 0.9
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 13:00:00",
-                                                            y: 0.9
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 14:00:00",
-                                                            y: 0.9
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 15:00:00",
-                                                            y: 1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 16:00:00",
-                                                            y: 1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 17:00:00",
-                                                            y: 1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 18:00:00",
-                                                            y: 1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 19:00:00",
-                                                            y: 0.9
-                                                        },
-                                                    ]
-                                                },
-
-                                                {
-                                                    type: "spline",
-                                                    name: "Total Movement",
-                                                    lineThickness: 2,
-                                                    color: "orange",
-                                                    showInLegend: true,
-                                                    dataPoints: [
-
-                                                        {
-                                                            label: "2020-11-11 20:00:00",
-                                                            y: 0.8
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-11 21:00:00",
-                                                            y: 0.8
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-11 22:00:00",
-                                                            y: 0.8
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-11 23:00:00",
-                                                            y: 0.8
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 00:00:00",
-                                                            y: 0.8
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 01:00:00",
-                                                            y: 0.7
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 02:00:00",
-                                                            y: 0.8
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 03:00:00",
-                                                            y: 0.8
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 04:00:00",
-                                                            y: 0.8
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 05:00:00",
-                                                            y: 0.8
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 06:00:00",
-                                                            y: 0.9
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 07:00:00",
-                                                            y: 0.9
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 08:00:00",
-                                                            y: 0.9
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 09:00:00",
-                                                            y: 1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 10:00:00",
-                                                            y: 1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 11:00:00",
-                                                            y: 1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 12:00:00",
-                                                            y: 1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 13:00:00",
-                                                            y: 1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 14:00:00",
-                                                            y: 1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 15:00:00",
-                                                            y: 1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 16:00:00",
-                                                            y: 1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 17:00:00",
-                                                            y: 1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 18:00:00",
-                                                            y: 1
-                                                        },
-
-                                                        {
-                                                            label: "2020-11-12 19:00:00",
-                                                            y: 1
-                                                        },
-                                                    ]
-                                                },
-                                            ]
-                                        });
-
-                                        chart.render();
-                                        //END CHART MM
-
-
-                                        //BEGIN ALARM STATISTICS
-                                        CanvasJS.addColorSet("alarmColors",
-                                            [ //colorSet Array
-                                                "green",
-                                                "#36a2df",
-                                                "orange",
-                                                "red",
-                                            ]);
-
                                         var chart = new CanvasJS.Chart("chartContainerPie", {
-                                            exportEnabled: true,
-                                            animationEnabled: true,
-                                            colorSet: "alarmColors",
-
                                             title: {
-                                                text: "Alarm Statistics",
-                                                fontWeight: "normal",
-                                                fontFamily: "arial",
-                                                fontSize: 20
+                                                text: "Alarm Statistics"
                                             },
-
-                                            subtitles: [{
-                                                text: "[ 1 Day ]",
-                                                fontWeight: "normal",
-                                                fontFamily: "arial",
-                                                fontSize: 15
-                                            }],
-
                                             data: [{
                                                 type: "pie",
-                                                //showInLegend: true,
-                                                startAngle: 240,
-                                                yValueFormatString: "###0",
-                                                indexLabel: "{label} ({y})",
-                                                dataPoints: [
-
-                                                    {
-                                                        y: 24,
+                                                startAngle: 25,
+                                                toolTipContent: "<b>{label}</b>: {y}%",
+                                                showInLegend: "true",
+                                                legendText: "{label}",
+                                                indexLabelFontSize: 16,
+                                                indexLabel: "{label} - {y}%",
+                                                dataPoints: [{
+                                                        y: 51.08,
                                                         label: "Normal"
                                                     },
-
+                                                    {
+                                                        y: 27.34,
+                                                        label: "Advisory"
+                                                    },
+                                                    {
+                                                        y: 10.62,
+                                                        label: "Watch"
+                                                    },
+                                                    {
+                                                        y: 5.02,
+                                                        label: "Danger"
+                                                    },
+                                                  
                                                 ]
                                             }]
                                         });
+                                        addDataPoints();
                                         chart.render();
 
-                                        //END ALARM STATISTICS
 
-                                        function toggleDataSeries(e) {
-                                            if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-                                                e.dataSeries.visible = false;
-                                            } else {
-                                                e.dataSeries.visible = true;
-                                            }
-                                            chart.render();
-                                        }
 
-                                        function toggleDataSeries1(e) {
-                                            if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-                                                e.dataSeries.visible = false;
-                                            } else {
-                                                e.dataSeries.visible = true;
-                                            }
-                                            chart.render();
-                                        }
+                                        //BEGIN CHART ANGLE    
+
 
                                     }
 
@@ -926,65 +447,17 @@ $connect->close();
                                     		e.dataSeries.dataPoints[e.dataPointIndex].exploded = false;
                                     	}
                                     	e.chart.render();
+
                                     }
                                     */
-
-
-                                    var chart = new CanvasJS.Chart("chartContaineraaa", {
-                                        theme: "light2", // "light1", "light2", "dark1", "dark2"
-                                        exportEnabled: true,
-                                        animationEnabled: true,
-                                        title: {
-                                            text: "Desktop Browser Market Share in 2016"
-                                        },
-                                        data: [{
-                                            type: "pie",
-                                            startAngle: 25,
-                                            toolTipContent: "<b>{label}</b>: {y}%",
-                                            showInLegend: "true",
-                                            legendText: "{label}",
-                                            indexLabelFontSize: 16,
-                                            indexLabel: "{label} - {y}%",
-                                            dataPoints: [{
-                                                    y: 51.08,
-                                                    label: "Chrome"
-                                                },
-                                                {
-                                                    y: 27.34,
-                                                    label: "Internet Explorer"
-                                                },
-                                                {
-                                                    y: 10.62,
-                                                    label: "Firefox"
-                                                },
-                                                {
-                                                    y: 5.02,
-                                                    label: "Microsoft Edge"
-                                                },
-                                                {
-                                                    y: 4.07,
-                                                    label: "Safari"
-                                                },
-                                                {
-                                                    y: 1.22,
-                                                    label: "Opera"
-                                                },
-                                                {
-                                                    y: 0.44,
-                                                    label: "Others"
-                                                }
-                                            ]
-                                        }]
-                                    });
-                                    chart.render();
                                 </script>
-
 
 
                                 <div class="row">
                                     <div class="col-lg-12">
+                                    <div id="chartContainer_d" style="height: 450px; width: 100%;"> </div>
 
-                                        <div class="portlet box">
+                                        <!-- <div class="portlet box">
                                             <div class="portlet-header">
                                                 <div class="caption">Axis Movements (Degree)</div>
                                                 <div class="tools">
@@ -993,9 +466,9 @@ $connect->close();
                                             <div class="col-lg-12">
                                                 <div id="chartContainerAngle" style="height: 450px; width: 100%;"> </div>
                                             </div>
-                                        </div>
+                                        </div> -->
 
-                                        <div class="portlet box">
+                                        <!-- <div class="portlet box">
                                             <div class="portlet-header">
                                                 <div class="caption">Axis Movements (mm/m)</div>
                                                 <div class="tools">
@@ -1005,34 +478,16 @@ $connect->close();
                                             <div class="portlet-body" align="center">
                                                 <div id="chartContainerMM" style="height: 450px; width: 100%;"> </div>
                                             </div>
-                                        </div>
-                                        <div class="portlet box">
-                                            <div class="portlet-header">
-                                                <div class="caption">Axis Movements (Degree)</div>
-                                                <div class="tools">
-                                                    <a href="#top"><i class="fa fa-chevron-up"></i></a> </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div id="chartContainer" style="height: 450px; width: 100%;"> </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="portlet22 box22">
-                                        <div class="portlet-header">
-                                            <div class="caption">Alarm Statistics</div>
-                                            <div class="tools">
-                                                <a href="#top"><i class="fa fa-chevron-up"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="portlet-body" align="center">
-
-                                        </div>
+                                        </div> -->
+                                        <div id="chartContainer_withTotalm" style="height: 450px; width: 100%;"> </div>
 
                                     </div>
+
+
                                     <!--end col-lg-12-->
                                     <div id="chartContainerPie" style="height: 450px; width: 100%;">
                                     </div>
+
                                 </div>
                                 <!--end row-->
                             </div>
@@ -1050,8 +505,6 @@ $connect->close();
     </div>
     <!-- jQuery CDN - Slim version (=without AJAX) -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-
     <!-- Popper.JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <!-- Bootstrap JS -->
@@ -1066,6 +519,7 @@ $connect->close();
         });
     </script>
 
+    <span style="position: absolute; left: 0px; top: -20000px; padding: 0px; margin: 0px; border: none; white-space: pre; line-height: normal; font-family: &quot;Trebuchet MS&quot;, Helvetica, sans-serif; font-size: 14px; font-weight: normal; display: none;">Mpgyi</span>
 </body>
 
 </html>

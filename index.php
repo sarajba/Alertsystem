@@ -17,20 +17,36 @@ $countNodes = $getAllNodes->num_rows;
 $nodesUp = $countNodes;
 $AllNodes_data = "
 WITH tempnode AS ( 
-    SELECT nodeId, Temp_10_Ch1 as tem, Aaxix_10_Ch1 as Aaxix,Baxix_10_Ch1 as Baxix, node_10.Date_and_time as cts 
-    FROM node_10 
-    UNION ALL 
-    SELECT nodeId, Temp_20_Ch1 as tem ,Aaxix_20_Ch1 as Aaxix,Baxix_20_Ch1 as Baxix, node_20.Date_and_time as cts 
-    FROM node_20 
-    UNION ALL 
-    SELECT nodeId, Temp_30_Ch1 as tem ,Aaxix_30_Ch1 as Aaxix,Baxix_30_Ch1 as Baxix, node_30.Date_and_time as cts 
-    FROM node_30 
-    UNION ALL 
-    SELECT nodeId, Temp_21_Ch1 as tem ,Aaxix_21_Ch1 as Aaxix,Baxix_21_Ch1 as Baxix, node_21.Date_and_time as cts 
-    FROM node_21 
-    UNION ALL 
-    SELECT nodeId, Temp_40_Ch1 as tem ,Aaxix_40_Ch1 as Aaxix,Baxix_40_Ch1 as Baxix, node_40.Date_and_time as cts 
-    FROM node_40 
+  SELECT nodeId, Temp_10_Ch1 as tem, Aaxix_10_Ch1 as Aaxix,Baxix_10_Ch1 as Baxix, node_10.Date_and_time as cts 
+  FROM node_10 
+  UNION ALL 
+  SELECT nodeId, Temp_20_Ch1 as tem ,Aaxix_20_Ch1 as Aaxix,Baxix_20_Ch1 as Baxix, node_20.Date_and_time as cts 
+  FROM node_20 
+  UNION ALL 
+  SELECT nodeId, Temp_30_Ch1 as tem ,Aaxix_30_Ch1 as Aaxix,Baxix_30_Ch1 as Baxix, node_30.Date_and_time as cts 
+  FROM node_30 
+  UNION ALL 
+  SELECT nodeId, Temp_21_Ch1 as tem ,Aaxix_21_Ch1 as Aaxix,Baxix_21_Ch1 as Baxix, node_21.Date_and_time as cts 
+  FROM node_21 
+  UNION ALL
+  SELECT nodeId, Temp_40_Ch1 as tem ,Aaxix_40_Ch1 as Aaxix,Baxix_40_Ch1 as Baxix, node_40.Date_and_time as cts 
+  FROM node_40 
+  UNION ALL 
+  SELECT nodeId, Temp_50_Ch1 as tem ,Aaxix_50_Ch1 as Aaxix,Baxix_50_Ch1 as Baxix, node_50.Date_and_time as cts 
+  FROM node_50 
+  UNION ALL 
+  SELECT nodeId, Temp_60_Ch1 as tem ,Aaxix_60_Ch1 as Aaxix,Baxix_60_Ch1 as Baxix, node_60.Date_and_time as cts 
+  FROM node_60
+  UNION ALL 
+  SELECT nodeId, Temp_61_Ch1 as tem ,Aaxix_61_Ch1 as Aaxix,Baxix_61_Ch1 as Baxix, node_61.Date_and_time as cts 
+  FROM node_61
+  UNION ALL 
+  SELECT nodeId, Temp_70_Ch1 as tem ,Aaxix_70_Ch1 as Aaxix,Baxix_70_Ch1 as Baxix, node_70.Date_and_time as cts 
+  FROM node_70
+  UNION ALL 
+  SELECT nodeId, Temp_80_Ch1 as tem ,Aaxix_80_Ch1 as Aaxix,Baxix_80_Ch1 as Baxix, node_80.Date_and_time as cts 
+  FROM node_80
+    
 ),
      latest AS ( 
          SELECT tempnode.*, ROW_NUMBER() OVER ( PARTITION BY tempnode.nodeId ORDER BY tempnode.cts DESC) myrank FROM tempnode ) 
@@ -540,7 +556,7 @@ if (mysqli_num_rows($AllNodesResult_data2) > 0) {
             <!-- Content -->
             <div class="card-body white">
               <div class="progress md-progress">
-                <div class="progress-bar bg-primary" role="progressbar" style="width: 0%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar bg-primary" role="progressbar" style="width: <?php echo $normal_nodes ?>0%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
               </div>
             </div>
           </div>
@@ -560,7 +576,7 @@ if (mysqli_num_rows($AllNodesResult_data2) > 0) {
             <!-- Content -->
             <div class="card-body white">
               <div class="progress md-progress">
-                <div class="progress-bar purple lighten-2" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar purple lighten-2" role="progressbar" style="width: <?php echo $advisery_nodes ?>0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
               </div>
             </div>
           </div>
@@ -578,7 +594,7 @@ if (mysqli_num_rows($AllNodesResult_data2) > 0) {
             <!-- Content -->
             <div class="card-body white">
               <div class="progress md-progress">
-                <div class="progress-bar purple lighten-2" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar purple lighten-2" role="progressbar" style="width: <?php echo $watch_nodes ?>0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
               </div>
             </div>
           </div>
@@ -596,7 +612,7 @@ if (mysqli_num_rows($AllNodesResult_data2) > 0) {
             <!-- Content -->
             <div class="card-body white">
               <div class="progress md-progress">
-                <div class="progress-bar purple lighten-2" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar purple lighten-2" role="progressbar" style="width: <?php echo $danger_nodes ?>0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
               </div>
             </div>
           </div>
@@ -608,7 +624,7 @@ if (mysqli_num_rows($AllNodesResult_data2) > 0) {
           </div>
           <div class="col-md-5 mb-4">
             <div id="chartdiv2"></div>
-            <span class="nodes"> Nodes Down <br> <?php echo $nodesDown ?> Ndoes (0%)</span>
+            <span class="nodes"> Nodes Down <br> <?php echo(10-$nodesUp) ?> Ndoes (0%)</span>
           </div>
         </div>
 
@@ -727,8 +743,8 @@ if (mysqli_num_rows($AllNodesResult_data2) > 0) {
     am4core.ready(function() {
       var getnodesDown = <?= $nodesDown ?>;
       var getnodesUp = <?= $nodesUp ?>;
-
-      var nodesDown = (getnodesDown * 100) / getnodesUp;
+       var nodesDown=10-getnodesUp;
+     // var nodesDown = (nodedif * 100) / getnodesUp;
       console.log(getnodesDown)
       // Themes begin
       am4core.useTheme(am4themes_animated);
