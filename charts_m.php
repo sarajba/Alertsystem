@@ -31,7 +31,11 @@ ORDER BY Date_and_time DESC;
 $DateTime = [];
 $Avariation = [];
 $Bvariation = [];
-$Aaxix = [];
+$Aaxix= [];
+$DangerNode=0;
+$NormalNode=10;
+$AdvisoryNode=0;
+$WatchNode=0;
 // Run the query
 $query = $connect->query($getNode);
 foreach ($query as $data) // using foreach  to display each element of array
@@ -40,11 +44,26 @@ foreach ($query as $data) // using foreach  to display each element of array
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_10_Ch1'];
         $bv = $data['BaxisVariation_10_Ch1'];
-        $aaxix = $data['Aaxix_10_Ch1'];
+        $aaxix= $data['Aaxix_10_Ch1'];
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
+        if($aaxix >=0.5 && $aaxix <1){ 
+            ++$AdvisoryNode;
+            --$NormalNode;
+        }
+        if($aaxix >=1 && $aaxix <1.5){ 
+            ++$WatchNode;
+            --$NormalNode;
+
+        }
+        if($aaxix >1.5){ 
+            ++$DangerNode;
+            --$NormalNode;
+
+        }
+
     }
     if ($id == 20) {
         $dt = $data['Date_and_time'];
@@ -53,6 +72,22 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
+        array_push($Aaxix, $aaxix);
+        if($aaxix >=0.5 && $aaxix <1){ 
+            ++$AdvisoryNode;
+            --$NormalNode;
+        }
+        if($aaxix >=1 && $aaxix <1.5){ 
+            ++$WatchNode;
+            --$NormalNode;
+
+        }
+        if($aaxix >1.5){ 
+            ++$DangerNode;
+            --$NormalNode;
+
+        }
+
     }
     if ($id == 21) {
         $dt = $data['Date_and_time'];
@@ -61,6 +96,22 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
+        array_push($Aaxix, $aaxix);
+        if($aaxix >=0.5 && $aaxix <1){ 
+            ++$AdvisoryNode;
+            --$NormalNode;
+        }
+        if($aaxix >=1 && $aaxix <1.5){ 
+            ++$WatchNode;
+            --$NormalNode;
+
+        }
+        if($aaxix >1.5){ 
+            ++$DangerNode;
+            --$NormalNode;
+
+        }
+
     }
     if ($id == 30) {
         $dt = $data['Date_and_time'];
@@ -69,6 +120,22 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
+        array_push($Aaxix, $aaxix);
+        if($aaxix >=0.5 && $aaxix <1){ 
+            ++$AdvisoryNode;
+            --$NormalNode;
+        }
+        if($aaxix >=1 && $aaxix <1.5){ 
+            ++$WatchNode;
+            --$NormalNode;
+
+        }
+        if($aaxix >1.5){ 
+            ++$DangerNode;
+            --$NormalNode;
+
+        }
+
     }
     if ($id == 40) {
         $dt = $data['Date_and_time'];
@@ -77,6 +144,22 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
+        array_push($Aaxix, $aaxix);
+        if($aaxix >=0.5 && $aaxix <1){ 
+            ++$AdvisoryNode;
+            --$NormalNode;
+        }
+        if($aaxix >=1 && $aaxix <1.5){ 
+            ++$WatchNode;
+            --$NormalNode;
+
+        }
+        if($aaxix >1.5){ 
+            ++$DangerNode;
+            --$NormalNode;
+
+        }
+
     }
     if ($id == 50) {
         $dt = $data['Date_and_time'];
@@ -85,6 +168,22 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
+        array_push($Aaxix, $aaxix);
+        if($aaxix >=0.5 && $aaxix <1){ 
+            ++$AdvisoryNode;
+            --$NormalNode;
+        }
+        if($aaxix >=1 && $aaxix <1.5){ 
+            ++$WatchNode;
+            --$NormalNode;
+
+        }
+        if($aaxix >1.5){ 
+            ++$DangerNode;
+            --$NormalNode;
+
+        }
+
     }
     if ($id == 60) {
         $dt = $data['Date_and_time'];
@@ -93,6 +192,22 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
+        array_push($Aaxix, $aaxix);
+        if($aaxix >=0.5 && $aaxix <1){ 
+            ++$AdvisoryNode;
+            --$NormalNode;
+        }
+        if($aaxix >=1 && $aaxix <1.5){ 
+            ++$WatchNode;
+            --$NormalNode;
+
+        }
+        if($aaxix >1.5){ 
+            ++$DangerNode;
+            --$NormalNode;
+
+        }
+
     }
     if ($id == 61) {
         $dt = $data['Date_and_time'];
@@ -101,6 +216,22 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
+        array_push($Aaxix, $aaxix);
+        if($aaxix >=0.5 && $aaxix <1){ 
+            ++$AdvisoryNode;
+            --$NormalNode;
+        }
+        if($aaxix >=1 && $aaxix <1.5){ 
+            ++$WatchNode;
+            --$NormalNode;
+
+        }
+        if($aaxix >1.5){ 
+            ++$DangerNode;
+            --$NormalNode;
+
+        }
+
     }
     if ($id == 70) {
         $dt = $data['Date_and_time'];
@@ -109,6 +240,22 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
+        array_push($Aaxix, $aaxix);
+        if($aaxix >=0.5 && $aaxix <1){ 
+            ++$AdvisoryNode;
+            --$NormalNode;
+        }
+        if($aaxix >=1 && $aaxix <1.5){ 
+            ++$WatchNode;
+            --$NormalNode;
+
+        }
+        if($aaxix >1.5){ 
+            ++$DangerNode;
+            --$NormalNode;
+
+        }
+
     }
     if ($id == 80) {
         $dt = $data['Date_and_time'];
@@ -117,6 +264,22 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
+        array_push($Aaxix, $aaxix);
+        if($aaxix >=0.5 && $aaxix <1){ 
+            ++$AdvisoryNode;
+            --$NormalNode;
+        }
+        if($aaxix >=1 && $aaxix <1.5){ 
+            ++$WatchNode;
+            --$NormalNode;
+
+        }
+        if($aaxix >1.5){ 
+            ++$DangerNode;
+            --$NormalNode;
+
+        }
+
     }
 }
 
@@ -127,7 +290,7 @@ foreach ($query as $data) // using foreach  to display each element of array
 
 <head>
     <meta charset="UTF-8">
-    <title>Nodes 10 | MySTAR GeoAlert</title>
+    <title>Nodes | MySTAR GeoAlert</title>
     <!-- Bootstrap -->
 
     <!-- add library -->
@@ -243,7 +406,7 @@ foreach ($query as $data) // using foreach  to display each element of array
 
                     <div class="page-header pull-left">
                         <div class="page-title">
-                            Charts (week) Node ID:<?php echo $id ?>
+                            Charts (Month) Node ID:<?php echo $id ?>
                         </div>
                     </div>
                     <div class="clearfix">
@@ -289,10 +452,14 @@ foreach ($query as $data) // using foreach  to display each element of array
 
                                         var dps = []; //dataPoints. 
                                         var dpsbv = []; //data point for b variation
-                                        var aaAxix = []; // here we will add total movement
+                                        var aaAxix=[]; // here we will add total movement
                                         var chart = new CanvasJS.Chart("chartContainer_m", {
                                             title: {
-                                                text: "Hourly Readings: Axis Movements(Degree)"
+                                                text: "Hourly Readings: Axis Movements(Degree)",
+                                                fontWeight: "bold",
+                                                fontFamily: "arial",
+                                                fontSize: 20
+
                                             },
                                             axisX: {
                                                 // title: "Axis A Axis B",
@@ -352,7 +519,10 @@ foreach ($query as $data) // using foreach  to display each element of array
 
                                         var chart = new CanvasJS.Chart("chartContainer_withTotalm", {
                                             title: {
-                                                text: "Hourly Readings: Axis Movements(MM/M)"
+                                                text: "Hourly Readings: Axis Movements(MM/M)",
+                                                fontWeight: "bold",
+                                                fontFamily: "arial",
+                                                fontSize: 20
                                             },
                                             axisX: {
                                                 // title: "Axis A Axis B",
@@ -365,70 +535,77 @@ foreach ($query as $data) // using foreach  to display each element of array
                                                 title: "Movements(mm/m)"
                                             },
                                             data: [{
-                                                    type: "line",
-                                                    name: "A variation",
-                                                    markerSize: 0,
-                                                    toolTipContent: "Avar: {x}<br>{name}: {y} ",
-                                                    showInLegend: true,
-                                                    dataPoints: dps
-                                                }, {
-                                                    type: "line",
-                                                    axisYType: "secondary",
-                                                    name: "B Variation",
-                                                    markerSize: 0,
-                                                    toolTipContent: "Bvar: {x}<br>{name}: {y}",
-                                                    showInLegend: true,
-                                                    dataPoints: dpsbv
-                                                },
-                                                {
-                                                    type: "line",
-                                                    axisYType: "secondary",
-                                                    name: "Total Movement",
-                                                    markerSize: 0,
-                                                    toolTipContent: "Bvar: {x}<br>{name}: {y}",
-                                                    showInLegend: true,
-                                                    dataPoints: aaAxix
-                                                }
-                                            ]
+                                                type: "line",
+                                                name: "A variation",
+                                                markerSize: 0,
+                                                toolTipContent: "Avar: {x}<br>{name}: {y} ",
+                                                showInLegend: true,
+                                                dataPoints: dps
+                                            }, {
+                                                type: "line",
+                                                axisYType: "secondary",
+                                                name: "B Variation",
+                                                markerSize: 0,
+                                                toolTipContent: "Bvar: {x}<br>{name}: {y}",
+                                                showInLegend: true,
+                                                dataPoints: dpsbv
+                                            },
+                                            {
+                                                type: "line",
+                                                axisYType: "secondary",
+                                                name: "Total Movement",
+                                                markerSize: 0,
+                                                toolTipContent: "Bvar: {x}<br>{name}: {y}",
+                                                showInLegend: true,
+                                                dataPoints: aaAxix
+                                            }]
                                         });
 
                                         addDataPoints();
                                         chart.render();
 
                                         // ****************************************************************************************************************************************
-                                        var chart = new CanvasJS.Chart("chartContainerPie", {
+
+                                        var chart = new CanvasJS.Chart("chartContainerPie22", {
                                             title: {
-                                                text: "Alarm Statistics"
+                                                text: "Alarm Statistics",
+                                                fontWeight: "bold",
+                                                fontFamily: "arial",
+                                                fontSize: 20
                                             },
                                             data: [{
                                                 type: "pie",
                                                 startAngle: 25,
-                                                toolTipContent: "<b>{label}</b>: {y}%",
+                                                toolTipContent: "<b>{label}</b>: {y} Nodes",
                                                 showInLegend: "true",
                                                 legendText: "{label}",
                                                 indexLabelFontSize: 16,
-                                                indexLabel: "{label} - {y}%",
+                                                indexLabel: "{label} - {y}",
                                                 dataPoints: [{
-                                                        y: 51.08,
-                                                        label: "Normal"
+                                                        y: <?= $NormalNode ?>,
+                                                        label: "Normal",
+                                                        color: "#29B966"
+                                                    },
+                                                    {  
+                                                        y: <?= $AdvisoryNode ?>,
+                                                        label: "Advisory",
+                                                        color: "#2B89C6"
                                                     },
                                                     {
-                                                        y: 27.34,
-                                                        label: "Advisory"
+                                                        y: <?= $WatchNode ?>,
+                                                        label: "Watch",
+                                                        color: "#E5BA0D"
                                                     },
                                                     {
-                                                        y: 10.62,
-                                                        label: "Watch"
-                                                    },
-                                                    {
-                                                        y: 5.02,
-                                                        label: "Danger"
+                                                        y: <?= $DangerNode ?>,
+                                                        label: "Danger",
+                                                        color: "#FF362E"
                                                     },
                                                   
                                                 ]
                                             }]
                                         });
-                                        addDataPoints();
+                                        // addDataPoints();
                                         chart.render();
 
 
@@ -453,7 +630,7 @@ foreach ($query as $data) // using foreach  to display each element of array
 
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <div id="chartContainer_m" style="height: 450px; width: 100%;"> </div>
+                                    <div id="chartContainer_m" style="height: 450px; width: 100%;"> </div>
 
                                         <!-- <div class="portlet box">
                                             <div class="portlet-header">
@@ -483,9 +660,8 @@ foreach ($query as $data) // using foreach  to display each element of array
 
 
                                     <!--end col-lg-12-->
-                                    <div id="chartContainerPie" style="height: 450px; width: 100%;">
+                                    <div id="chartContainerPie22" style="height: 450px; width: 100%;">
                                     </div>
-
 
                                 </div>
                                 <!--end row-->

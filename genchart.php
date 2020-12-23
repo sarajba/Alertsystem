@@ -7,6 +7,125 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
+
+$connect = mysqli_connect("localhost", "root", "", "geoalertsystem");
+
+$id =10;
+$getNode = "
+SELECT * FROM `node_$id`
+WHERE Date_and_time BETWEEN DATE(DATE_SUB(NOW(), INTERVAL 50 DAY)) AND DATE(NOW())
+ORDER BY Date_and_time DESC;
+    ";
+
+
+$DateTime = [];
+$Avariation = [];
+$Bvariation = [];
+$Aaxix = [];
+$DangerNode = 0;
+$NormalNode = 10;
+$AdvisoryNode = 0;
+$WatchNode = 0;
+// Run the query
+$query = $connect->query($getNode);
+foreach ($query as $data) // using foreach  to display each element of array
+{
+    if ($id == 10) {
+        $dt = $data['Date_and_time'];
+        $av = $data['AaxisVariation_10_Ch1'];
+        $bv = $data['BaxisVariation_10_Ch1'];
+        $aaxix = $data['Aaxix_10_Ch1'];
+        array_push($DateTime, $dt);
+        array_push($Avariation, $av);
+        array_push($Bvariation, $bv);
+        array_push($Aaxix, $aaxix);
+        if ($aaxix >= 0.5 && $aaxix < 1) {
+            ++$AdvisoryNode;
+            --$NormalNode;
+        }
+        if ($aaxix >= 1 && $aaxix < 1.5) {
+            ++$WatchNode;
+            --$NormalNode;
+        }
+        if ($aaxix > 1.5) {
+            ++$DangerNode;
+            --$NormalNode;
+        }
+    }
+    if ($id == 20) {
+        $dt = $data['Date_and_time'];
+        $av = $data['AaxisVariation_20_Ch1'];
+        $bv = $data['BaxisVariation_20_Ch1'];
+        array_push($DateTime, $dt);
+        array_push($Avariation, $av);
+        array_push($Bvariation, $bv);
+    }
+    if ($id == 21) {
+        $dt = $data['Date_and_time'];
+        $av = $data['AaxisVariation_21_Ch1'];
+        $bv = $data['BaxisVariation_21_Ch1'];
+        array_push($DateTime, $dt);
+        array_push($Avariation, $av);
+        array_push($Bvariation, $bv);
+    }
+    if ($id == 30) {
+        $dt = $data['Date_and_time'];
+        $av = $data['AaxisVariation_30_Ch1'];
+        $bv = $data['BaxisVariation_30_Ch1'];
+        array_push($DateTime, $dt);
+        array_push($Avariation, $av);
+        array_push($Bvariation, $bv);
+    }
+    if ($id == 40) {
+        $dt = $data['Date_and_time'];
+        $av = $data['AaxisVariation_40_Ch1'];
+        $bv = $data['BaxisVariation_40_Ch1'];
+        array_push($DateTime, $dt);
+        array_push($Avariation, $av);
+        array_push($Bvariation, $bv);
+    }
+    if ($id == 50) {
+        $dt = $data['Date_and_time'];
+        $av = $data['AaxisVariation_50_Ch1'];
+        $bv = $data['BaxisVariation_50_Ch1'];
+        array_push($DateTime, $dt);
+        array_push($Avariation, $av);
+        array_push($Bvariation, $bv);
+    }
+    if ($id == 60) {
+        $dt = $data['Date_and_time'];
+        $av = $data['AaxisVariation_60_Ch1'];
+        $bv = $data['BaxisVariation_60_Ch1'];
+        array_push($DateTime, $dt);
+        array_push($Avariation, $av);
+        array_push($Bvariation, $bv);
+    }
+    if ($id == 61) {
+        $dt = $data['Date_and_time'];
+        $av = $data['AaxisVariation_61_Ch1'];
+        $bv = $data['BaxisVariation_61_Ch1'];
+        array_push($DateTime, $dt);
+        array_push($Avariation, $av);
+        array_push($Bvariation, $bv);
+    }
+    if ($id == 70) {
+        $dt = $data['Date_and_time'];
+        $av = $data['AaxisVariation_70_Ch1'];
+        $bv = $data['BaxisVariation_70_Ch1'];
+        array_push($DateTime, $dt);
+        array_push($Avariation, $av);
+        array_push($Bvariation, $bv);
+    }
+    if ($id == 80) {
+        $dt = $data['Date_and_time'];
+        $av = $data['AaxisVariation_80_Ch1'];
+        $bv = $data['BaxisVariation_80_Ch1'];
+        array_push($DateTime, $dt);
+        array_push($Avariation, $av);
+        array_push($Bvariation, $bv);
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -146,7 +265,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                                             <div class="panel">
                                                 <div class="panel-body">
                                                     <div class="noprint">
-                                                        <form action="/genchart.php" method="post" name="chartform">
+                                                        <form action="/AlertSystem/genchart.php" method="post" name="chartform">
                                                             <h3>Residence</h3><input type="checkbox" onClick="toggle_res(this)" /> Select All<br />
                                                             <label><input type="checkbox" name="10" value="10" class="residence"> Node 10&nbsp;&nbsp;
                                                             </label><label><input type="checkbox" name="20" value="20" class="residence"> Node 20&nbsp;&nbsp;
@@ -304,6 +423,15 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
         <script>
             window.onload = function() {
 
+                var dateTime = <?php echo json_encode(array_values($DateTime)); ?>;
+                var aVar = <?php echo json_encode(array_values($Avariation)); ?>;
+                // this how u should change it
+                var bVar = <?php echo json_encode(array_values($Bvariation)); ?>;
+                var aAxix = <?php echo json_encode(array_values($Aaxix)); ?>;
+
+                var dps = []; //dataPoints. 
+                var dpsbv = []; //data point for b variation
+                var aaAxix = []; // here we will add total movement
                 CanvasJS.addColorSet("customColorSet",
                     [ //colorSet Array
 
@@ -379,152 +507,47 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                             legendText: '{name}',
                             legendMarkerType: 'circle',
                             toolTipContent: '<b>{name}</b><br/>Axis A: {y} degree<br/> Axis B: {x} degree<br/> Total Movement: {z} mm/m<br/> DateTime: {datetime}',
-                            dataPoints: [{
-                                x: -0.0173,
-                                y: -0.0562,
-                                z: 1.0263,
-                                name: 'Node 10',
-                                datetime: '2020-11-09 10:00:00'
-                            }, ]
+                            // dataPoints: [{
+                            //     x: -0.0173,
+                            //     y: -0.0562,
+                            //     z: 1.0263,
+                            //     name: 'Node 10',
+                            //     datetime: '2020-11-09 10:00:00'
+                            // }, ]
+                            dataPoints: dps
                         },
 
-                        {
-                            type: 'bubble',
-                            showInLegend: true,
-                            legendText: '{name}',
-                            legendMarkerType: 'circle',
-                            toolTipContent: '<b>{name}</b><br/>Axis A: {y} degree<br/> Axis B: {x} degree<br/> Total Movement: {z} mm/m<br/> DateTime: {datetime}',
-                            dataPoints: [{
-                                x: 0.0233,
-                                y: -0.025,
-                                z: 0.5965,
-                                name: 'Node 20',
-                                datetime: '2020-11-09 02:00:00'
-                            }, ]
-                        },
 
-                        {
-                            type: 'bubble',
-                            showInLegend: true,
-                            legendText: '{name}',
-                            legendMarkerType: 'circle',
-                            toolTipContent: '<b>{name}</b><br/>Axis A: {y} degree<br/> Axis B: {x} degree<br/> Total Movement: {z} mm/m<br/> DateTime: {datetime}',
-                            dataPoints: [{
-                                x: -0.0269,
-                                y: 0.0569,
-                                z: 1.0985,
-                                name: 'Node 21',
-                                datetime: '2020-11-09 02:00:00'
-                            }, ]
-                        },
 
-                        {
-                            type: 'bubble',
-                            showInLegend: true,
-                            legendText: '{name}',
-                            legendMarkerType: 'circle',
-                            toolTipContent: '<b>{name}</b><br/>Axis A: {y} degree<br/> Axis B: {x} degree<br/> Total Movement: {z} mm/m<br/> DateTime: {datetime}',
-                            dataPoints: [{
-                                x: -0.0901,
-                                y: -0.0346,
-                                z: 1.6845,
-                                name: 'Node 30',
-                                datetime: '2020-11-09 02:00:00'
-                            }, ]
-                        },
 
-                        {
-                            type: 'bubble',
-                            showInLegend: true,
-                            legendText: '{name}',
-                            legendMarkerType: 'circle',
-                            toolTipContent: '<b>{name}</b><br/>Axis A: {y} degree<br/> Axis B: {x} degree<br/> Total Movement: {z} mm/m<br/> DateTime: {datetime}',
-                            dataPoints: [{
-                                x: -0.0322,
-                                y: 0.0779,
-                                z: 1.4712,
-                                name: 'Node 40',
-                                datetime: '2020-11-09 02:00:00'
-                            }, ]
-                        },
-
-                        {
-                            type: 'bubble',
-                            showInLegend: true,
-                            legendText: '{name}',
-                            legendMarkerType: 'circle',
-                            toolTipContent: '<b>{name}</b><br/>Axis A: {y} degree<br/> Axis B: {x} degree<br/> Total Movement: {z} mm/m<br/> DateTime: {datetime}',
-                            dataPoints: [{
-                                x: -0.1071,
-                                y: -0.0462,
-                                z: 2.0358,
-                                name: 'Node 50',
-                                datetime: '2020-11-09 02:00:00'
-                            }, ]
-                        },
-
-                        {
-                            type: 'bubble',
-                            showInLegend: true,
-                            legendText: '{name}',
-                            legendMarkerType: 'circle',
-                            toolTipContent: '<b>{name}</b><br/>Axis A: {y} degree<br/> Axis B: {x} degree<br/> Total Movement: {z} mm/m<br/> DateTime: {datetime}',
-                            dataPoints: [{
-                                x: 0.0216,
-                                y: 0.0288,
-                                z: 0.6283,
-                                name: 'Node 60',
-                                datetime: '2020-11-09 10:00:00'
-                            }, ]
-                        },
-
-                        {
-                            type: 'bubble',
-                            showInLegend: true,
-                            legendText: '{name}',
-                            legendMarkerType: 'circle',
-                            toolTipContent: '<b>{name}</b><br/>Axis A: {y} degree<br/> Axis B: {x} degree<br/> Total Movement: {z} mm/m<br/> DateTime: {datetime}',
-                            dataPoints: [{
-                                x: -0.0193,
-                                y: 0.0358,
-                                z: 0.7098,
-                                name: 'Node 61',
-                                datetime: '2020-11-09 06:00:00'
-                            }, ]
-                        },
-
-                        {
-                            type: 'bubble',
-                            showInLegend: true,
-                            legendText: '{name}',
-                            legendMarkerType: 'circle',
-                            toolTipContent: '<b>{name}</b><br/>Axis A: {y} degree<br/> Axis B: {x} degree<br/> Total Movement: {z} mm/m<br/> DateTime: {datetime}',
-                            dataPoints: [{
-                                x: -0.0214,
-                                y: 0.0225,
-                                z: 0.542,
-                                name: 'Node 70',
-                                datetime: '2020-11-09 02:00:00'
-                            }, ]
-                        },
-
-                        {
-                            type: 'bubble',
-                            showInLegend: true,
-                            legendText: '{name}',
-                            legendMarkerType: 'circle',
-                            toolTipContent: '<b>{name}</b><br/>Axis A: {y} degree<br/> Axis B: {x} degree<br/> Total Movement: {z} mm/m<br/> DateTime: {datetime}',
-                            dataPoints: [{
-                                x: -0.1427,
-                                y: -0.0647,
-                                z: 2.7346,
-                                name: 'Node 80',
-                                datetime: '2020-11-09 02:00:00'
-                            }, ]
-                        },
                     ]
                 });
+
+                function parseDataPoints() {
+                    for (var i = dps.length; i < dateTime.length; i++) {
+                        dps.push({
+                            x: parseFloat(aVar[i]),
+                            y: parseFloat(bVar[i]),
+                            z: parseFloat(aaAxix[i]),
+                            name: 'Node 10',
+                            datetime: new Date(dateTime[i]),
+                        });
+
+
+                    }
+                };
+
+                function addDataPoints() {
+                    parseDataPoints();
+                    chart.options.data[0].dataPoints = dps;
+                    chart.render();
+                }
+                addDataPoints();
                 chart.render();
+
+
+
+
                 var chart = new CanvasJS.Chart("chart2", {
                     colorSet: "customColorSet",
                     animationEnabled: true,
