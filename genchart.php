@@ -13,7 +13,7 @@ $connect = mysqli_connect("localhost", "root", "", "geoalertsystem");
 $id =10;
 $getNode = "
 SELECT * FROM `node_$id`
-WHERE Date_and_time BETWEEN DATE(DATE_SUB(NOW(), INTERVAL 50 DAY)) AND DATE(NOW())
+WHERE Date_and_time BETWEEN DATE(DATE_SUB(NOW(), INTERVAL 9 DAY)) AND DATE(NOW())
 ORDER BY Date_and_time DESC;
     ";
 
@@ -39,18 +39,6 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-        if ($aaxix >= 0.5 && $aaxix < 1) {
-            ++$AdvisoryNode;
-            --$NormalNode;
-        }
-        if ($aaxix >= 1 && $aaxix < 1.5) {
-            ++$WatchNode;
-            --$NormalNode;
-        }
-        if ($aaxix > 1.5) {
-            ++$DangerNode;
-            --$NormalNode;
-        }
     }
     if ($id == 20) {
         $dt = $data['Date_and_time'];
@@ -265,7 +253,7 @@ foreach ($query as $data) // using foreach  to display each element of array
                                             <div class="panel">
                                                 <div class="panel-body">
                                                     <div class="noprint">
-                                                        <form action="/AlertSystem/genchart.php" method="post" name="chartform">
+                                                        <form action="/genchart.php" method="post" name="chartform">
                                                             <h3>Residence</h3><input type="checkbox" onClick="toggle_res(this)" /> Select All<br />
                                                             <label><input type="checkbox" name="10" value="10" class="residence"> Node 10&nbsp;&nbsp;
                                                             </label><label><input type="checkbox" name="20" value="20" class="residence"> Node 20&nbsp;&nbsp;
@@ -507,14 +495,13 @@ foreach ($query as $data) // using foreach  to display each element of array
                             legendText: '{name}',
                             legendMarkerType: 'circle',
                             toolTipContent: '<b>{name}</b><br/>Axis A: {y} degree<br/> Axis B: {x} degree<br/> Total Movement: {z} mm/m<br/> DateTime: {datetime}',
-                            // dataPoints: [{
-                            //     x: -0.0173,
-                            //     y: -0.0562,
-                            //     z: 1.0263,
-                            //     name: 'Node 10',
-                            //     datetime: '2020-11-09 10:00:00'
-                            // }, ]
-                            dataPoints: dps
+                            dataPoints: [{
+                                x: -0.0173,
+                                y: -0.0562,
+                                z: 1.0263,
+                                name: 'Node 10',
+                                datetime: '2020-11-09 10:00:00'
+                            }, ]
                         },
 
 
