@@ -39,6 +39,7 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
+       
     }
     if ($id == 20) {
         $dt = $data['Date_and_time'];
@@ -121,14 +122,14 @@ foreach ($query as $data) // using foreach  to display each element of array
 
 <head>
     <meta charset="UTF-8">
-    <title>Charts (Day) Node ID: 10| MySTAR GeoAlert</title>
+    <title>Charts| MySTAR GeoAlert</title>
     <!-- Bootstrap -->
 
     <!-- add library -->
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"> -->
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>  -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> -->
 
     <!-- navbar code -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -324,8 +325,6 @@ foreach ($query as $data) // using foreach  to display each element of array
                                         <!-- end col-lg-12 -->
                                     </div>
                                     <div class="row">
-
-
                                         <!--Chart 1 Total Move-->
                                         <div class="col-lg-12">
                                             <div class="panel">
@@ -384,6 +383,9 @@ foreach ($query as $data) // using foreach  to display each element of array
                                 <!-- end page-content -->
                             </div>
                             <!-- end col-lg-12 -->
+
+
+                            
                         </div>
                         <!-- end row mbl -->
                     </div>
