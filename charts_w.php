@@ -31,11 +31,11 @@ ORDER BY Date_and_time DESC;
 $DateTime = [];
 $Avariation = [];
 $Bvariation = [];
-$Aaxix= [];
-$DangerNode=0;
-$NormalNode=10;
-$AdvisoryNode=0;
-$WatchNode=0;
+$Aaxix = [];
+$DangerNode = 0;
+$NormalNode = 10;
+$AdvisoryNode = 0;
+$WatchNode = 0;
 // Run the query
 $query = $connect->query($getNode);
 foreach ($query as $data) // using foreach  to display each element of array
@@ -44,26 +44,23 @@ foreach ($query as $data) // using foreach  to display each element of array
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_10_Ch1'];
         $bv = $data['BaxisVariation_10_Ch1'];
-        $aaxix= $data['Aaxix_10_Ch1'];
+        $aaxix = $data['Aaxix_10_Ch1'];
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-        if($aaxix >=0.5 && $aaxix <1){ 
+        if ($aaxix >= 0.5 && $aaxix < 1) {
             ++$AdvisoryNode;
             --$NormalNode;
         }
-        if($aaxix >=1 && $aaxix <1.5){ 
+        if ($aaxix >= 1 && $aaxix < 1.5) {
             ++$WatchNode;
             --$NormalNode;
-
         }
-        if($aaxix >1.5){ 
+        if ($aaxix > 1.5) {
             ++$DangerNode;
             --$NormalNode;
-
         }
-
     }
     if ($id == 20) {
         $dt = $data['Date_and_time'];
@@ -73,21 +70,18 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-        if($aaxix >=0.5 && $aaxix <1){ 
+        if ($aaxix >= 0.5 && $aaxix < 1) {
             ++$AdvisoryNode;
             --$NormalNode;
         }
-        if($aaxix >=1 && $aaxix <1.5){ 
+        if ($aaxix >= 1 && $aaxix < 1.5) {
             ++$WatchNode;
             --$NormalNode;
-
         }
-        if($aaxix >1.5){ 
+        if ($aaxix > 1.5) {
             ++$DangerNode;
             --$NormalNode;
-
         }
-
     }
     if ($id == 21) {
         $dt = $data['Date_and_time'];
@@ -97,21 +91,18 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-        if($aaxix >=0.5 && $aaxix <1){ 
+        if ($aaxix >= 0.5 && $aaxix < 1) {
             ++$AdvisoryNode;
             --$NormalNode;
         }
-        if($aaxix >=1 && $aaxix <1.5){ 
+        if ($aaxix >= 1 && $aaxix < 1.5) {
             ++$WatchNode;
             --$NormalNode;
-
         }
-        if($aaxix >1.5){ 
+        if ($aaxix > 1.5) {
             ++$DangerNode;
             --$NormalNode;
-
         }
-
     }
     if ($id == 30) {
         $dt = $data['Date_and_time'];
@@ -121,21 +112,18 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-        if($aaxix >=0.5 && $aaxix <1){ 
+        if ($aaxix >= 0.5 && $aaxix < 1) {
             ++$AdvisoryNode;
             --$NormalNode;
         }
-        if($aaxix >=1 && $aaxix <1.5){ 
+        if ($aaxix >= 1 && $aaxix < 1.5) {
             ++$WatchNode;
             --$NormalNode;
-
         }
-        if($aaxix >1.5){ 
+        if ($aaxix > 1.5) {
             ++$DangerNode;
             --$NormalNode;
-
         }
-
     }
     if ($id == 40) {
         $dt = $data['Date_and_time'];
@@ -145,21 +133,18 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-        if($aaxix >=0.5 && $aaxix <1){ 
+        if ($aaxix >= 0.5 && $aaxix < 1) {
             ++$AdvisoryNode;
             --$NormalNode;
         }
-        if($aaxix >=1 && $aaxix <1.5){ 
+        if ($aaxix >= 1 && $aaxix < 1.5) {
             ++$WatchNode;
             --$NormalNode;
-
         }
-        if($aaxix >1.5){ 
+        if ($aaxix > 1.5) {
             ++$DangerNode;
             --$NormalNode;
-
         }
-
     }
     if ($id == 50) {
         $dt = $data['Date_and_time'];
@@ -169,21 +154,18 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-        if($aaxix >=0.5 && $aaxix <1){ 
+        if ($aaxix >= 0.5 && $aaxix < 1) {
             ++$AdvisoryNode;
             --$NormalNode;
         }
-        if($aaxix >=1 && $aaxix <1.5){ 
+        if ($aaxix >= 1 && $aaxix < 1.5) {
             ++$WatchNode;
             --$NormalNode;
-
         }
-        if($aaxix >1.5){ 
+        if ($aaxix > 1.5) {
             ++$DangerNode;
             --$NormalNode;
-
         }
-
     }
     if ($id == 60) {
         $dt = $data['Date_and_time'];
@@ -193,21 +175,18 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-        if($aaxix >=0.5 && $aaxix <1){ 
+        if ($aaxix >= 0.5 && $aaxix < 1) {
             ++$AdvisoryNode;
             --$NormalNode;
         }
-        if($aaxix >=1 && $aaxix <1.5){ 
+        if ($aaxix >= 1 && $aaxix < 1.5) {
             ++$WatchNode;
             --$NormalNode;
-
         }
-        if($aaxix >1.5){ 
+        if ($aaxix > 1.5) {
             ++$DangerNode;
             --$NormalNode;
-
         }
-
     }
     if ($id == 61) {
         $dt = $data['Date_and_time'];
@@ -217,21 +196,18 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-        if($aaxix >=0.5 && $aaxix <1){ 
+        if ($aaxix >= 0.5 && $aaxix < 1) {
             ++$AdvisoryNode;
             --$NormalNode;
         }
-        if($aaxix >=1 && $aaxix <1.5){ 
+        if ($aaxix >= 1 && $aaxix < 1.5) {
             ++$WatchNode;
             --$NormalNode;
-
         }
-        if($aaxix >1.5){ 
+        if ($aaxix > 1.5) {
             ++$DangerNode;
             --$NormalNode;
-
         }
-
     }
     if ($id == 70) {
         $dt = $data['Date_and_time'];
@@ -241,21 +217,18 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-        if($aaxix >=0.5 && $aaxix <1){ 
+        if ($aaxix >= 0.5 && $aaxix < 1) {
             ++$AdvisoryNode;
             --$NormalNode;
         }
-        if($aaxix >=1 && $aaxix <1.5){ 
+        if ($aaxix >= 1 && $aaxix < 1.5) {
             ++$WatchNode;
             --$NormalNode;
-
         }
-        if($aaxix >1.5){ 
+        if ($aaxix > 1.5) {
             ++$DangerNode;
             --$NormalNode;
-
         }
-
     }
     if ($id == 80) {
         $dt = $data['Date_and_time'];
@@ -265,21 +238,18 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-        if($aaxix >=0.5 && $aaxix <1){ 
+        if ($aaxix >= 0.5 && $aaxix < 1) {
             ++$AdvisoryNode;
             --$NormalNode;
         }
-        if($aaxix >=1 && $aaxix <1.5){ 
+        if ($aaxix >= 1 && $aaxix < 1.5) {
             ++$WatchNode;
             --$NormalNode;
-
         }
-        if($aaxix >1.5){ 
+        if ($aaxix > 1.5) {
             ++$DangerNode;
             --$NormalNode;
-
         }
-
     }
 }
 
@@ -335,7 +305,7 @@ foreach ($query as $data) // using foreach  to display each element of array
 
             <ul class="list-unstyled components">
                 <li>
-                    <a href="#" class="list-items"><i class="fas fa-tachometer-alt"></i>&nbsp; Dashboard</a>
+                    <a href="index.php" class="list-items"><i class="fas fa-tachometer-alt"></i>&nbsp; Dashboard</a>
                 </li>
                 <li>
                     <a href="nodes.php" class="list-items"><i class="fas fa-map-marker-alt"></i>&nbsp; Nodes</a>
@@ -347,13 +317,13 @@ foreach ($query as $data) // using foreach  to display each element of array
                     <a href="genchart.php" class="list-items"><i class="fas fa-chart-bar fa fw"></i>&nbsp; Charts</a>
                 </li>
                 <li>
-                    <a href="" class="list-items"><i class="fas fa-file-alt"></i>&nbsp; Reports</a>
+                    <a href="reports.php" class="list-items"><i class="fas fa-file-alt"></i>&nbsp; Reports</a>
                 </li>
                 <li>
-                    <a href="#" class="list-items"><i class="fas fa-user"></i>&nbsp; User</a>
+                    <a href="user.php" class="list-items"><i class="fas fa-user"></i>&nbsp; User</a>
                 </li>
                 <li>
-                    <a href="#" class="list-items"><i class="fa fa-life-ring fa-fw"></i>&nbsp; Manual</a>
+                    <a target="_blank" href="/geoalertmanual.pdf" class="list-items"><i class="fa fa-life-ring fa-fw"></i>&nbsp; Manual</a>
                 </li>
                 <li>
                     <a href="reset-password.php" class="list-items"> <i class="fa fa-key"></i>&nbsp; Reset Password</a>
@@ -452,7 +422,7 @@ foreach ($query as $data) // using foreach  to display each element of array
 
                                         var dps = []; //dataPoints. 
                                         var dpsbv = []; //data point for b variation
-                                        var aaAxix=[]; // here we will add total movement
+                                        var aaAxix = []; // here we will add total movement
                                         var chart = new CanvasJS.Chart("chartContainer_w", {
                                             title: {
                                                 text: "Hourly Readings: Axis Movements(Degree)",
@@ -535,30 +505,31 @@ foreach ($query as $data) // using foreach  to display each element of array
                                                 title: "Movements(mm/m)"
                                             },
                                             data: [{
-                                                type: "line",
-                                                name: "A variation",
-                                                markerSize: 0,
-                                                toolTipContent: "Avar: {x}<br>{name}: {y} ",
-                                                showInLegend: true,
-                                                dataPoints: dps
-                                            }, {
-                                                type: "line",
-                                                axisYType: "secondary",
-                                                name: "B Variation",
-                                                markerSize: 0,
-                                                toolTipContent: "Bvar: {x}<br>{name}: {y}",
-                                                showInLegend: true,
-                                                dataPoints: dpsbv
-                                            },
-                                            {
-                                                type: "line",
-                                                axisYType: "secondary",
-                                                name: "Total Movement",
-                                                markerSize: 0,
-                                                toolTipContent: "Bvar: {x}<br>{name}: {y}",
-                                                showInLegend: true,
-                                                dataPoints: aaAxix
-                                            }]
+                                                    type: "line",
+                                                    name: "A variation",
+                                                    markerSize: 0,
+                                                    toolTipContent: "Avar: {x}<br>{name}: {y} ",
+                                                    showInLegend: true,
+                                                    dataPoints: dps
+                                                }, {
+                                                    type: "line",
+                                                    axisYType: "secondary",
+                                                    name: "B Variation",
+                                                    markerSize: 0,
+                                                    toolTipContent: "Bvar: {x}<br>{name}: {y}",
+                                                    showInLegend: true,
+                                                    dataPoints: dpsbv
+                                                },
+                                                {
+                                                    type: "line",
+                                                    axisYType: "secondary",
+                                                    name: "Total Movement",
+                                                    markerSize: 0,
+                                                    toolTipContent: "Bvar: {x}<br>{name}: {y}",
+                                                    showInLegend: true,
+                                                    dataPoints: aaAxix
+                                                }
+                                            ]
                                         });
 
                                         addDataPoints();
@@ -586,7 +557,7 @@ foreach ($query as $data) // using foreach  to display each element of array
                                                         label: "Normal",
                                                         color: "#29B966"
                                                     },
-                                                    {  
+                                                    {
                                                         y: <?= $AdvisoryNode ?>,
                                                         label: "Advisory",
                                                         color: "#2B89C6"
@@ -601,7 +572,7 @@ foreach ($query as $data) // using foreach  to display each element of array
                                                         label: "Danger",
                                                         color: "#FF362E"
                                                     },
-                                                  
+
                                                 ]
                                             }]
                                         });
@@ -630,7 +601,7 @@ foreach ($query as $data) // using foreach  to display each element of array
 
                                 <div class="row">
                                     <div class="col-lg-12">
-                                    <div id="chartContainer_w" style="height: 450px; width: 100%;"> </div>
+                                        <div id="chartContainer_w" style="height: 450px; width: 100%;"> </div>
 
                                         <!-- <div class="portlet box">
                                             <div class="portlet-header">

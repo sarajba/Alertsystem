@@ -10,7 +10,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
 $connect = mysqli_connect("localhost", "root", "", "geoalertsystem");
 
-$id =10;
+$id = 10;
 $getNode = "
 SELECT * FROM `node_$id`
 WHERE Date_and_time BETWEEN DATE(DATE_SUB(NOW(), INTERVAL 9 DAY)) AND DATE(NOW())
@@ -39,7 +39,6 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-       
     }
     if ($id == 20) {
         $dt = $data['Date_and_time'];
@@ -182,16 +181,16 @@ foreach ($query as $data) // using foreach  to display each element of array
                     <a href="Alarms.php" class="list-items"><i class="fas fa-bell fa fw"></i>&nbsp; Alarms</a>
                 </li>
                 <li>
-                    <a href="#" class="list-items"><i class="fas fa-chart-bar fa fw"></i>&nbsp; Charts</a>
+                    <a href="genchart.php" class="list-items"><i class="fas fa-chart-bar fa fw"></i>&nbsp; Charts</a>
                 </li>
                 <li>
-                    <a href="#" class="list-items"><i class="fas fa-file-alt"></i>&nbsp; Reports</a>
+                    <a href="reports.php" class="list-items"><i class="fas fa-file-alt"></i>&nbsp; Reports</a>
                 </li>
                 <li>
-                    <a href="#" class="list-items"><i class="fas fa-user"></i>&nbsp; User</a>
+                    <a href="user.php" class="list-items"><i class="fas fa-user"></i>&nbsp; User</a>
                 </li>
                 <li>
-                    <a href="#" class="list-items"><i class="fa fa-life-ring fa-fw"></i>&nbsp; Manual</a>
+                    <a target="_blank" href="/geoalertmanual.pdf" class="list-items"><i class="fa fa-life-ring fa-fw"></i>&nbsp; Manual</a>
                 </li>
                 <li>
                     <a href="reset-password.php" class="list-items"> <i class="fa fa-key"></i>&nbsp; Reset Password</a>
@@ -385,7 +384,7 @@ foreach ($query as $data) // using foreach  to display each element of array
                             <!-- end col-lg-12 -->
 
 
-                            
+
                         </div>
                         <!-- end row mbl -->
                     </div>
