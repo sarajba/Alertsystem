@@ -31,11 +31,12 @@ ORDER BY Date_and_time DESC;
 $DateTime = [];
 $Avariation = [];
 $Bvariation = [];
-$Aaxix= [];
-$DangerNode=0;
-$NormalNode=10;
-$AdvisoryNode=0;
-$WatchNode=0;
+$totalMove = [];
+$Aaxix = [];
+$DangerNode = 0;
+$NormalNode = 10;
+$AdvisoryNode = 0;
+$WatchNode = 0;
 // Run the query
 $query = $connect->query($getNode);
 foreach ($query as $data) // using foreach  to display each element of array
@@ -44,242 +45,311 @@ foreach ($query as $data) // using foreach  to display each element of array
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_10_Ch1'];
         $bv = $data['BaxisVariation_10_Ch1'];
-        $aaxix= $data['Aaxix_10_Ch1'];
+        $aaxix = $data['Aaxix_10_Ch1'];
+        $axixAV = tan($av * 3.14 / 180) * 1000;
+        $axixBV = tan($bv * 3.14 / 180) * 1000;
+        $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
+        $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
+
+        array_push($DateTime, $dt);
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-        if($aaxix >=0.5 && $aaxix <1){ 
+        array_push($totalMove, $roundOffIt);
+
+        if ($aaxix >= 0.5 && $aaxix < 1) {
             ++$AdvisoryNode;
             --$NormalNode;
         }
-        if($aaxix >=1 && $aaxix <1.5){ 
+        if ($aaxix >= 1 && $aaxix < 1.5) {
             ++$WatchNode;
             --$NormalNode;
-
         }
-        if($aaxix >1.5){ 
+        if ($aaxix > 1.5) {
             ++$DangerNode;
             --$NormalNode;
-
         }
-
     }
+
     if ($id == 20) {
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_20_Ch1'];
         $bv = $data['BaxisVariation_20_Ch1'];
+        $aaxix = $data['Aaxix_20_Ch1'];
+        $axixAV = tan($av * 3.14 / 180) * 1000;
+        $axixBV = tan($bv * 3.14 / 180) * 1000;
+        $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
+        $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
+
+        array_push($DateTime, $dt);
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-        if($aaxix >=0.5 && $aaxix <1){ 
+        array_push($totalMove, $roundOffIt);
+
+        if ($aaxix >= 0.5 && $aaxix < 1) {
             ++$AdvisoryNode;
             --$NormalNode;
         }
-        if($aaxix >=1 && $aaxix <1.5){ 
+        if ($aaxix >= 1 && $aaxix < 1.5) {
             ++$WatchNode;
             --$NormalNode;
-
         }
-        if($aaxix >1.5){ 
+        if ($aaxix > 1.5) {
             ++$DangerNode;
             --$NormalNode;
-
         }
-
     }
+
     if ($id == 21) {
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_21_Ch1'];
         $bv = $data['BaxisVariation_21_Ch1'];
+        $aaxix = $data['Aaxix_21_Ch1'];
+        $axixAV = tan($av * 3.14 / 180) * 1000;
+        $axixBV = tan($bv * 3.14 / 180) * 1000;
+        $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
+        $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
+
+        array_push($DateTime, $dt);
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-        if($aaxix >=0.5 && $aaxix <1){ 
+        array_push($totalMove, $roundOffIt);
+
+        if ($aaxix >= 0.5 && $aaxix < 1) {
             ++$AdvisoryNode;
             --$NormalNode;
         }
-        if($aaxix >=1 && $aaxix <1.5){ 
+        if ($aaxix >= 1 && $aaxix < 1.5) {
             ++$WatchNode;
             --$NormalNode;
-
         }
-        if($aaxix >1.5){ 
+        if ($aaxix > 1.5) {
             ++$DangerNode;
             --$NormalNode;
-
         }
-
     }
+
     if ($id == 30) {
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_30_Ch1'];
         $bv = $data['BaxisVariation_30_Ch1'];
+        $aaxix = $data['Aaxix_30_Ch1'];
+        $axixAV = tan($av * 3.14 / 180) * 1000;
+        $axixBV = tan($bv * 3.14 / 180) * 1000;
+        $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
+        $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
+
+        array_push($DateTime, $dt);
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-        if($aaxix >=0.5 && $aaxix <1){ 
+        array_push($totalMove, $roundOffIt);
+
+        if ($aaxix >= 0.5 && $aaxix < 1) {
             ++$AdvisoryNode;
             --$NormalNode;
         }
-        if($aaxix >=1 && $aaxix <1.5){ 
+        if ($aaxix >= 1 && $aaxix < 1.5) {
             ++$WatchNode;
             --$NormalNode;
-
         }
-        if($aaxix >1.5){ 
+        if ($aaxix > 1.5) {
             ++$DangerNode;
             --$NormalNode;
-
         }
-
     }
+
     if ($id == 40) {
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_40_Ch1'];
         $bv = $data['BaxisVariation_40_Ch1'];
+        $aaxix = $data['Aaxix_40_Ch1'];
+        $axixAV = tan($av * 3.14 / 180) * 1000;
+        $axixBV = tan($bv * 3.14 / 180) * 1000;
+        $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
+        $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
+
+        array_push($DateTime, $dt);
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-        if($aaxix >=0.5 && $aaxix <1){ 
+        array_push($totalMove, $roundOffIt);
+
+        if ($aaxix >= 0.5 && $aaxix < 1) {
             ++$AdvisoryNode;
             --$NormalNode;
         }
-        if($aaxix >=1 && $aaxix <1.5){ 
+        if ($aaxix >= 1 && $aaxix < 1.5) {
             ++$WatchNode;
             --$NormalNode;
-
         }
-        if($aaxix >1.5){ 
+        if ($aaxix > 1.5) {
             ++$DangerNode;
             --$NormalNode;
-
         }
-
     }
+
     if ($id == 50) {
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_50_Ch1'];
         $bv = $data['BaxisVariation_50_Ch1'];
+        $aaxix = $data['Aaxix_50_Ch1'];
+        $axixAV = tan($av * 3.14 / 180) * 1000;
+        $axixBV = tan($bv * 3.14 / 180) * 1000;
+        $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
+        $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
+
+        array_push($DateTime, $dt);
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-        if($aaxix >=0.5 && $aaxix <1){ 
+        array_push($totalMove, $roundOffIt);
+
+        if ($aaxix >= 0.5 && $aaxix < 1) {
             ++$AdvisoryNode;
             --$NormalNode;
         }
-        if($aaxix >=1 && $aaxix <1.5){ 
+        if ($aaxix >= 1 && $aaxix < 1.5) {
             ++$WatchNode;
             --$NormalNode;
-
         }
-        if($aaxix >1.5){ 
+        if ($aaxix > 1.5) {
             ++$DangerNode;
             --$NormalNode;
-
         }
-
     }
+
     if ($id == 60) {
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_60_Ch1'];
         $bv = $data['BaxisVariation_60_Ch1'];
+        $aaxix = $data['Aaxix_60_Ch1'];
+        $axixAV = tan($av * 3.14 / 180) * 1000;
+        $axixBV = tan($bv * 3.14 / 180) * 1000;
+        $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
+        $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
+
+        array_push($DateTime, $dt);
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-        if($aaxix >=0.5 && $aaxix <1){ 
+        array_push($totalMove, $roundOffIt);
+
+        if ($aaxix >= 0.5 && $aaxix < 1) {
             ++$AdvisoryNode;
             --$NormalNode;
         }
-        if($aaxix >=1 && $aaxix <1.5){ 
+        if ($aaxix >= 1 && $aaxix < 1.5) {
             ++$WatchNode;
             --$NormalNode;
-
         }
-        if($aaxix >1.5){ 
+        if ($aaxix > 1.5) {
             ++$DangerNode;
             --$NormalNode;
-
         }
-
     }
+
     if ($id == 61) {
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_61_Ch1'];
         $bv = $data['BaxisVariation_61_Ch1'];
+        $aaxix = $data['Aaxix_61_Ch1'];
+        $axixAV = tan($av * 3.14 / 180) * 1000;
+        $axixBV = tan($bv * 3.14 / 180) * 1000;
+        $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
+        $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
+
+        array_push($DateTime, $dt);
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-        if($aaxix >=0.5 && $aaxix <1){ 
+        array_push($totalMove, $roundOffIt);
+
+        if ($aaxix >= 0.5 && $aaxix < 1) {
             ++$AdvisoryNode;
             --$NormalNode;
         }
-        if($aaxix >=1 && $aaxix <1.5){ 
+        if ($aaxix >= 1 && $aaxix < 1.5) {
             ++$WatchNode;
             --$NormalNode;
-
         }
-        if($aaxix >1.5){ 
+        if ($aaxix > 1.5) {
             ++$DangerNode;
             --$NormalNode;
-
         }
-
     }
+
     if ($id == 70) {
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_70_Ch1'];
         $bv = $data['BaxisVariation_70_Ch1'];
+        $aaxix = $data['Aaxix_70_Ch1'];
+        $axixAV = tan($av * 3.14 / 180) * 1000;
+        $axixBV = tan($bv * 3.14 / 180) * 1000;
+        $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
+        $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
+
+        array_push($DateTime, $dt);
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-        if($aaxix >=0.5 && $aaxix <1){ 
+        array_push($totalMove, $roundOffIt);
+
+        if ($aaxix >= 0.5 && $aaxix < 1) {
             ++$AdvisoryNode;
             --$NormalNode;
         }
-        if($aaxix >=1 && $aaxix <1.5){ 
+        if ($aaxix >= 1 && $aaxix < 1.5) {
             ++$WatchNode;
             --$NormalNode;
-
         }
-        if($aaxix >1.5){ 
+        if ($aaxix > 1.5) {
             ++$DangerNode;
             --$NormalNode;
-
         }
-
     }
+
     if ($id == 80) {
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_80_Ch1'];
         $bv = $data['BaxisVariation_80_Ch1'];
+        $aaxix = $data['Aaxix_80_Ch1'];
+        $axixAV = tan($av * 3.14 / 180) * 1000;
+        $axixBV = tan($bv * 3.14 / 180) * 1000;
+        $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
+        $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
+
+
+         array_push($DateTime, $dt);
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
-        if($aaxix >=0.5 && $aaxix <1){ 
+        array_push($totalMove, $roundOffIt);
+ 
+        if ($aaxix >= 0.5 && $aaxix < 1) {
             ++$AdvisoryNode;
             --$NormalNode;
         }
-        if($aaxix >=1 && $aaxix <1.5){ 
+        if ($aaxix >= 1 && $aaxix < 1.5) {
             ++$WatchNode;
             --$NormalNode;
-
         }
-        if($aaxix >1.5){ 
+        if ($aaxix > 1.5) {
             ++$DangerNode;
             --$NormalNode;
-
         }
-
     }
 }
 
@@ -446,13 +516,14 @@ foreach ($query as $data) // using foreach  to display each element of array
 
                                         var dateTime = <?php echo json_encode(array_values($DateTime)); ?>;
                                         var aVar = <?php echo json_encode(array_values($Avariation)); ?>;
-                                        // this how u should change it
                                         var bVar = <?php echo json_encode(array_values($Bvariation)); ?>;
                                         var aAxix = <?php echo json_encode(array_values($Aaxix)); ?>;
+                                        var totalMovement = <?php echo json_encode(array_values($totalMove)); ?>;
 
                                         var dps = []; //dataPoints. 
                                         var dpsbv = []; //data point for b variation
-                                        var aaAxix=[]; // here we will add total movement
+                                        var tMov = []; // here we will add total movement
+
                                         var chart = new CanvasJS.Chart("chartContainer_d", {
                                             title: {
                                                 text: "Hourly Readings: Axis Movements(Degree)",
@@ -500,9 +571,9 @@ foreach ($query as $data) // using foreach  to display each element of array
                                                     x: new Date(dateTime[i]),
                                                     y: parseFloat(bVar[i])
                                                 });
-                                                aaAxix.push({
+                                                tMov.push({
                                                     x: new Date(dateTime[i]),
-                                                    y: parseFloat(aAxix[i])
+                                                    y: parseFloat(totalMovement[i])
                                                 });
 
                                             }
@@ -515,7 +586,7 @@ foreach ($query as $data) // using foreach  to display each element of array
                                         }
                                         addDataPoints();
                                         chart.render();
-                                        // ******************************************************8 grpah 2 *****************************
+                                        // ******************************************************grpah 2 *****************************
 
                                         var chart = new CanvasJS.Chart("chartContainer_withTotalm", {
                                             title: {
@@ -535,30 +606,31 @@ foreach ($query as $data) // using foreach  to display each element of array
                                                 title: "Movements(mm/m)"
                                             },
                                             data: [{
-                                                type: "line",
-                                                name: "A variation",
-                                                markerSize: 0,
-                                                toolTipContent: "Avar: {x}<br>{name}: {y} ",
-                                                showInLegend: true,
-                                                dataPoints: dps
-                                            }, {
-                                                type: "line",
-                                                axisYType: "secondary",
-                                                name: "B Variation",
-                                                markerSize: 0,
-                                                toolTipContent: "Bvar: {x}<br>{name}: {y}",
-                                                showInLegend: true,
-                                                dataPoints: dpsbv
-                                            },
-                                            {
-                                                type: "line",
+                                                    type: "line",
+                                                    name: "A variation",
+                                                    markerSize: 0,
+                                                    toolTipContent: "Avar: {x}<br>{name}: {y} ",
+                                                    showInLegend: true,
+                                                    dataPoints: dps
+                                                }, {
+                                                    type: "line",
+                                                    axisYType: "secondary",
+                                                    name: "B Variation",
+                                                    markerSize: 0,
+                                                    toolTipContent: "Bvar: {x}<br>{name}: {y}",
+                                                    showInLegend: true,
+                                                    dataPoints: dpsbv
+                                                },
+                                                {
+                                                    type: "line",
                                                 axisYType: "secondary",
                                                 name: "Total Movement",
                                                 markerSize: 0,
-                                                toolTipContent: "Bvar: {x}<br>{name}: {y}",
+                                                toolTipContent: "Date: {x}<br>{name}: {y}",
                                                 showInLegend: true,
-                                                dataPoints: aaAxix
-                                            }]
+                                                dataPoints: tMov
+                                                }
+                                            ]
                                         });
 
                                         addDataPoints();
@@ -586,7 +658,7 @@ foreach ($query as $data) // using foreach  to display each element of array
                                                         label: "Normal",
                                                         color: "#29B966"
                                                     },
-                                                    {  
+                                                    {
                                                         y: <?= $AdvisoryNode ?>,
                                                         label: "Advisory",
                                                         color: "#2B89C6"
@@ -601,7 +673,7 @@ foreach ($query as $data) // using foreach  to display each element of array
                                                         label: "Danger",
                                                         color: "#FF362E"
                                                     },
-                                                  
+
                                                 ]
                                             }]
                                         });
@@ -630,7 +702,7 @@ foreach ($query as $data) // using foreach  to display each element of array
 
                                 <div class="row">
                                     <div class="col-lg-12">
-                                    <div id="chartContainer_d" style="height: 450px; width: 100%;"> </div>
+                                        <div id="chartContainer_d" style="height: 450px; width: 100%;"> </div>
 
                                         <!-- <div class="portlet box">
                                             <div class="portlet-header">
