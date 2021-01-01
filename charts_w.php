@@ -45,13 +45,11 @@ foreach ($query as $data) // using foreach  to display each element of array
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_10_Ch1'];
         $bv = $data['BaxisVariation_10_Ch1'];
-        $aaxix = $data['Aaxix_10_Ch1'];
         $axixAV = tan($av * 3.14 / 180) * 1000;
         $axixBV = tan($bv * 3.14 / 180) * 1000;
         $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
         $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
 
-        array_push($DateTime, $dt);
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
@@ -76,13 +74,11 @@ foreach ($query as $data) // using foreach  to display each element of array
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_20_Ch1'];
         $bv = $data['BaxisVariation_20_Ch1'];
-        $aaxix = $data['Aaxix_20_Ch1'];
         $axixAV = tan($av * 3.14 / 180) * 1000;
         $axixBV = tan($bv * 3.14 / 180) * 1000;
         $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
         $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
 
-        array_push($DateTime, $dt);
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
@@ -107,13 +103,11 @@ foreach ($query as $data) // using foreach  to display each element of array
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_21_Ch1'];
         $bv = $data['BaxisVariation_21_Ch1'];
-        $aaxix = $data['Aaxix_21_Ch1'];
         $axixAV = tan($av * 3.14 / 180) * 1000;
         $axixBV = tan($bv * 3.14 / 180) * 1000;
         $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
         $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
 
-        array_push($DateTime, $dt);
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
@@ -138,13 +132,11 @@ foreach ($query as $data) // using foreach  to display each element of array
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_30_Ch1'];
         $bv = $data['BaxisVariation_30_Ch1'];
-        $aaxix = $data['Aaxix_30_Ch1'];
         $axixAV = tan($av * 3.14 / 180) * 1000;
         $axixBV = tan($bv * 3.14 / 180) * 1000;
         $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
         $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
 
-        array_push($DateTime, $dt);
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
@@ -169,13 +161,11 @@ foreach ($query as $data) // using foreach  to display each element of array
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_40_Ch1'];
         $bv = $data['BaxisVariation_40_Ch1'];
-        $aaxix = $data['Aaxix_40_Ch1'];
         $axixAV = tan($av * 3.14 / 180) * 1000;
         $axixBV = tan($bv * 3.14 / 180) * 1000;
         $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
         $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
 
-        array_push($DateTime, $dt);
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
@@ -200,13 +190,11 @@ foreach ($query as $data) // using foreach  to display each element of array
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_50_Ch1'];
         $bv = $data['BaxisVariation_50_Ch1'];
-        $aaxix = $data['Aaxix_50_Ch1'];
         $axixAV = tan($av * 3.14 / 180) * 1000;
         $axixBV = tan($bv * 3.14 / 180) * 1000;
         $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
         $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
 
-        array_push($DateTime, $dt);
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
@@ -231,13 +219,11 @@ foreach ($query as $data) // using foreach  to display each element of array
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_60_Ch1'];
         $bv = $data['BaxisVariation_60_Ch1'];
-        $aaxix = $data['Aaxix_60_Ch1'];
         $axixAV = tan($av * 3.14 / 180) * 1000;
         $axixBV = tan($bv * 3.14 / 180) * 1000;
         $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
         $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
 
-        array_push($DateTime, $dt);
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
@@ -262,13 +248,11 @@ foreach ($query as $data) // using foreach  to display each element of array
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_61_Ch1'];
         $bv = $data['BaxisVariation_61_Ch1'];
-        $aaxix = $data['Aaxix_61_Ch1'];
         $axixAV = tan($av * 3.14 / 180) * 1000;
         $axixBV = tan($bv * 3.14 / 180) * 1000;
         $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
         $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
 
-        array_push($DateTime, $dt);
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
@@ -293,13 +277,11 @@ foreach ($query as $data) // using foreach  to display each element of array
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_70_Ch1'];
         $bv = $data['BaxisVariation_70_Ch1'];
-        $aaxix = $data['Aaxix_70_Ch1'];
         $axixAV = tan($av * 3.14 / 180) * 1000;
         $axixBV = tan($bv * 3.14 / 180) * 1000;
         $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
         $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
 
-        array_push($DateTime, $dt);
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
@@ -324,14 +306,11 @@ foreach ($query as $data) // using foreach  to display each element of array
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_80_Ch1'];
         $bv = $data['BaxisVariation_80_Ch1'];
-        $aaxix = $data['Aaxix_80_Ch1'];
         $axixAV = tan($av * 3.14 / 180) * 1000;
         $axixBV = tan($bv * 3.14 / 180) * 1000;
         $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
         $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
 
-
-         array_push($DateTime, $dt);
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);

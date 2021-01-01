@@ -12,105 +12,208 @@ $connect = mysqli_connect("localhost", "root", "", "geoalertsystem");
 
 $id = 10;
 $getNode = "
-SELECT * FROM `node_$id`
-WHERE Date_and_time BETWEEN DATE(DATE_SUB(NOW(), INTERVAL 9 DAY)) AND DATE(NOW())
-ORDER BY Date_and_time DESC;
-    ";
+WITH tempnode AS ( 
+    SELECT nodeId, Temp_10_Ch1 as tem, Aaxix_10_Ch1 as Aaxix,Baxix_10_Ch1 as Baxix, node_10.Date_and_time as cts 
+    FROM node_10 
+    UNION ALL 
+    SELECT nodeId, Temp_20_Ch1 as tem ,Aaxix_20_Ch1 as Aaxix,Baxix_20_Ch1 as Baxix, node_20.Date_and_time as cts 
+    FROM node_20 
+    UNION ALL 
+    SELECT nodeId, Temp_30_Ch1 as tem ,Aaxix_30_Ch1 as Aaxix,Baxix_30_Ch1 as Baxix, node_30.Date_and_time as cts 
+    FROM node_30 
+),
+     latest AS ( 
+         SELECT tempnode.*, ROW_NUMBER() OVER ( PARTITION BY tempnode.nodeId ORDER BY tempnode.cts DESC) myrank FROM tempnode ) 
+         SELECT nodes.NodeId, tempnode.* 
+         FROM nodes 
+         LEFT JOIN latest as tempnode ON tempnode.nodeId = nodes.NodeID AND tempnode.myrank <= 30
+          GROUP BY nodes.NodeID ORDER BY nodes.NodeID, tempnode.cts desc";
+
+$DateTime10 = [];
+$Avariation10 = [];
+$Bvariation10 = [];
+$totalMove10 = [];
+
+$DateTime20 = [];
+$Avariation20 = [];
+$Bvariation20 = [];
+$totalMove20 = [];
+
+$DateTime21 = [];
+$Avariation21 = [];
+$Bvariation21 = [];
+$totalMove21 = [];
+
+$DateTime30 = [];
+$Avariation30 = [];
+$Bvariation30 = [];
+$totalMove30 = [];
+
+$DateTime40 = [];
+$Avariation40 = [];
+$Bvariation40 = [];
+$totalMove40 = [];
+
+$DateTime50 = [];
+$Avariation50 = [];
+$Bvariation50 = [];
+$totalMove50 = [];
+
+$DateTime60 = [];
+$Avariation60 = [];
+$Bvariation60 = [];
+$totalMove60 = [];
+
+$DateTime61 = [];
+$Avariation61 = [];
+$Bvariation61 = [];
+$totalMove61 = [];
+
+$DateTime70 = [];
+$Avariation70 = [];
+$Bvariation70 = [];
+$totalMove70 = [];
+
+$DateTime80 = [];
+$Avariation80 = [];
+$Bvariation80 = [];
+$totalMove80 = [];
 
 
-$DateTime = [];
-$Avariation = [];
-$Bvariation = [];
-$Aaxix = [];
-$DangerNode = 0;
-$NormalNode = 10;
-$AdvisoryNode = 0;
-$WatchNode = 0;
 // Run the query
 $query = $connect->query($getNode);
 foreach ($query as $data) // using foreach  to display each element of array
 {
-    if ($id == 10) {
-        $dt = $data['Date_and_time'];
-        $av = $data['AaxisVariation_10_Ch1'];
-        $bv = $data['BaxisVariation_10_Ch1'];
-        $aaxix = $data['Aaxix_10_Ch1'];
-        array_push($DateTime, $dt);
-        array_push($Avariation, $av);
-        array_push($Bvariation, $bv);
-        array_push($Aaxix, $aaxix);
+    $myid = $data['NodeId'];
+    if ($myid == 10) {
+        $dt = $data['cts'];
+        $av = $data['Aaxix'];
+        $bv = $data['Baxix'];
+        $axixAV = tan($av * 3.14 / 180) * 1000;
+        $axixBV = tan($bv * 3.14 / 180) * 1000;
+        $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
+        $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
+        array_push($DateTime10, $dt);
+        array_push($Avariation10, $av);
+        array_push($Bvariation10, $bv);
+        array_push($totalMove10, $roundOffIt);
     }
-    if ($id == 20) {
-        $dt = $data['Date_and_time'];
-        $av = $data['AaxisVariation_20_Ch1'];
-        $bv = $data['BaxisVariation_20_Ch1'];
-        array_push($DateTime, $dt);
-        array_push($Avariation, $av);
-        array_push($Bvariation, $bv);
+    if ($myid == 20) {
+        $dt = $data['cts'];
+        $av = $data['Aaxix'];
+        $bv = $data['Baxix'];
+        $axixAV = tan($av * 3.14 / 180) * 1000;
+        $axixBV = tan($bv * 3.14 / 180) * 1000;
+        $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
+        $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
+        array_push($DateTime20, $dt);
+        array_push($Avariation20, $av);
+        array_push($Bvariation20, $bv);
+        array_push($totalMove20, $roundOffIt);
     }
-    if ($id == 21) {
-        $dt = $data['Date_and_time'];
-        $av = $data['AaxisVariation_21_Ch1'];
-        $bv = $data['BaxisVariation_21_Ch1'];
-        array_push($DateTime, $dt);
-        array_push($Avariation, $av);
-        array_push($Bvariation, $bv);
+    if ($myid == 21) {
+        $dt = $data['cts'];
+        $av = $data['Aaxix'];
+        $bv = $data['Baxix'];
+        $axixAV = tan($av * 3.14 / 180) * 1000;
+        $axixBV = tan($bv * 3.14 / 180) * 1000;
+        $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
+        $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
+        array_push($DateTime21, $dt);
+        array_push($Avariation21, $av);
+        array_push($Bvariation21, $bv);
+        array_push($totalMove21, $roundOffIt);
     }
-    if ($id == 30) {
-        $dt = $data['Date_and_time'];
-        $av = $data['AaxisVariation_30_Ch1'];
-        $bv = $data['BaxisVariation_30_Ch1'];
-        array_push($DateTime, $dt);
-        array_push($Avariation, $av);
-        array_push($Bvariation, $bv);
+    if ($myid == 30) {
+        $dt = $data['cts'];
+        $av = $data['Aaxix'];
+        $bv = $data['Baxix'];
+        $axixAV = tan($av * 3.14 / 180) * 1000;
+        $axixBV = tan($bv * 3.14 / 180) * 1000;
+        $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
+        $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
+        array_push($DateTime30, $dt);
+        array_push($Avariation30, $av);
+        array_push($Bvariation30, $bv);
+        array_push($totalMove30, $roundOffIt);
     }
-    if ($id == 40) {
-        $dt = $data['Date_and_time'];
-        $av = $data['AaxisVariation_40_Ch1'];
-        $bv = $data['BaxisVariation_40_Ch1'];
-        array_push($DateTime, $dt);
-        array_push($Avariation, $av);
-        array_push($Bvariation, $bv);
+    if ($myid == 40) {
+        $dt = $data['cts'];
+        $av = $data['Aaxix'];
+        $bv = $data['Baxix'];
+        $axixAV = tan($av * 3.14 / 180) * 1000;
+        $axixBV = tan($bv * 3.14 / 180) * 1000;
+        $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
+        $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
+        array_push($DateTime40, $dt);
+        array_push($Avariation40, $av);
+        array_push($Bvariation40, $bv);
+        array_push($totalMove40, $roundOffIt);
     }
-    if ($id == 50) {
-        $dt = $data['Date_and_time'];
-        $av = $data['AaxisVariation_50_Ch1'];
-        $bv = $data['BaxisVariation_50_Ch1'];
-        array_push($DateTime, $dt);
-        array_push($Avariation, $av);
-        array_push($Bvariation, $bv);
+    if ($myid == 50) {
+        $dt = $data['cts'];
+        $av = $data['Aaxix'];
+        $bv = $data['Baxix'];
+        $axixAV = tan($av * 3.14 / 180) * 1000;
+        $axixBV = tan($bv * 3.14 / 180) * 1000;
+        $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
+        $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
+        array_push($DateTime50, $dt);
+        array_push($Avariation50, $av);
+        array_push($Bvariation50, $bv);
+        array_push($totalMove50, $roundOffIt);
     }
-    if ($id == 60) {
-        $dt = $data['Date_and_time'];
-        $av = $data['AaxisVariation_60_Ch1'];
-        $bv = $data['BaxisVariation_60_Ch1'];
-        array_push($DateTime, $dt);
-        array_push($Avariation, $av);
-        array_push($Bvariation, $bv);
+    if ($myid == 60) {
+        $dt = $data['cts'];
+        $av = $data['Aaxix'];
+        $bv = $data['Baxix'];
+        $axixAV = tan($av * 3.14 / 180) * 1000;
+        $axixBV = tan($bv * 3.14 / 180) * 1000;
+        $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
+        $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
+        array_push($DateTime60, $dt);
+        array_push($Avariation60, $av);
+        array_push($Bvariation60, $bv);
+        array_push($totalMove60, $roundOffIt);
     }
-    if ($id == 61) {
-        $dt = $data['Date_and_time'];
-        $av = $data['AaxisVariation_61_Ch1'];
-        $bv = $data['BaxisVariation_61_Ch1'];
-        array_push($DateTime, $dt);
-        array_push($Avariation, $av);
-        array_push($Bvariation, $bv);
+    if ($myid == 61) {
+        $dt = $data['cts'];
+        $av = $data['Aaxix'];
+        $bv = $data['Baxix'];
+        $axixAV = tan($av * 3.14 / 180) * 1000;
+        $axixBV = tan($bv * 3.14 / 180) * 1000;
+        $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
+        $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
+        array_push($DateTime61, $dt);
+        array_push($Avariation61, $av);
+        array_push($Bvariation61, $bv);
+        array_push($totalMove61, $roundOffIt);
     }
-    if ($id == 70) {
-        $dt = $data['Date_and_time'];
-        $av = $data['AaxisVariation_70_Ch1'];
-        $bv = $data['BaxisVariation_70_Ch1'];
-        array_push($DateTime, $dt);
-        array_push($Avariation, $av);
-        array_push($Bvariation, $bv);
+    if ($myid == 70) {
+        $dt = $data['cts'];
+        $av = $data['Aaxix'];
+        $bv = $data['Baxix'];
+        $axixAV = tan($av * 3.14 / 180) * 1000;
+        $axixBV = tan($bv * 3.14 / 180) * 1000;
+        $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
+        $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
+        array_push($DateTime70, $dt);
+        array_push($Avariation70, $av);
+        array_push($Bvariation70, $bv);
+        array_push($totalMove70, $roundOffIt);
     }
-    if ($id == 80) {
-        $dt = $data['Date_and_time'];
-        $av = $data['AaxisVariation_80_Ch1'];
-        $bv = $data['BaxisVariation_80_Ch1'];
-        array_push($DateTime, $dt);
-        array_push($Avariation, $av);
-        array_push($Bvariation, $bv);
+    if ($myid == 80) {
+        $dt = $data['cts'];
+        $av = $data['Aaxix'];
+        $bv = $data['Baxix'];
+        $axixAV = tan($av * 3.14 / 180) * 1000;
+        $axixBV = tan($bv * 3.14 / 180) * 1000;
+        $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
+        $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
+        array_push($DateTime80, $dt);
+        array_push($Avariation80, $av);
+        array_push($Bvariation80, $bv);
+        array_push($totalMove80, $roundOffIt);
     }
 }
 
@@ -411,19 +514,118 @@ foreach ($query as $data) // using foreach  to display each element of array
 
         <script>
             window.onload = function() {
+                //  here we get node 10 data 
+                var dateTime10 = <?php echo json_encode(array_values($DateTime10)); ?>;
+                var aVar10 = <?php echo json_encode(array_values($Avariation10)); ?>;
+                var bVar10 = <?php echo json_encode(array_values($Bvariation10)); ?>;
+                var tm10 = <?php echo json_encode(array_values($totalMove10)); ?>;
 
-                var dateTime = <?php echo json_encode(array_values($DateTime)); ?>;
-                var aVar = <?php echo json_encode(array_values($Avariation)); ?>;
-                // this how u should change it
-                var bVar = <?php echo json_encode(array_values($Bvariation)); ?>;
-                var aAxix = <?php echo json_encode(array_values($Aaxix)); ?>;
+                var dpsn10 = []; //dataPoints. 
+                var dpsav10 = []; //data point for a variation
+                var dpsbv10 = []; //data point for b variation
+                var dpstm10 = []; // here we will add total movement
 
-                var dps = []; //dataPoints. 
-                var dpsbv = []; //data point for b variation
-                var aaAxix = []; // here we will add total movement
+                //  here we get node 20 data 
+                var dateTime20 = <?php echo json_encode(array_values($DateTime20)); ?>;
+                var aVar20 = <?php echo json_encode(array_values($Avariation20)); ?>;
+                var bVar20 = <?php echo json_encode(array_values($Bvariation20)); ?>;
+                var tm20 = <?php echo json_encode(array_values($totalMove20)); ?>;
+
+                var dpsn20 = []; //dataPoints. 
+                var dpsav20 = []; //data point for a variation
+                var dpsbv20 = []; //data point for b variation
+                var dpstm20 = []; // here we will add total movement
+
+                //  here we get node 21 data 
+                var dateTime21 = <?php echo json_encode(array_values($DateTime21)); ?>;
+                var aVar21 = <?php echo json_encode(array_values($Avariation21)); ?>;
+                var bVar21 = <?php echo json_encode(array_values($Bvariation21)); ?>;
+                var tm21 = <?php echo json_encode(array_values($totalMove21)); ?>;
+
+                var dpsn21 = []; //dataPoints. 
+                var dpsav21 = []; //data point for a variation
+                var dpsbv21 = []; //data point for b variation
+                var dpstm21 = []; // here we will add total movement
+
+                //  here we get node 30 data 
+                var dateTime30 = <?php echo json_encode(array_values($DateTime30)); ?>;
+                var aVar30 = <?php echo json_encode(array_values($Avariation30)); ?>;
+                var bVar30 = <?php echo json_encode(array_values($Bvariation30)); ?>;
+                var tm30 = <?php echo json_encode(array_values($totalMove30)); ?>;
+
+                var dpsn30 = []; //dataPoints. 
+                var dpsav30 = []; //data point for a variation
+                var dpsbv30 = []; //data point for b variation
+                var dpstm30 = []; // here we will add total movement
+
+                //  here we get node 40 data 
+                var dateTime40 = <?php echo json_encode(array_values($DateTime40)); ?>;
+                var aVar40 = <?php echo json_encode(array_values($Avariation40)); ?>;
+                var bVar40 = <?php echo json_encode(array_values($Bvariation40)); ?>;
+                var tm40 = <?php echo json_encode(array_values($totalMove40)); ?>;
+
+                var dpsn40 = []; //dataPoints. 
+                var dpsav40 = []; //data point for a variation
+                var dpsbv40 = []; //data point for b variation
+                var dpstm40 = []; // here we will add total movement
+
+                //  here we get node 50 data 
+                var dateTime50 = <?php echo json_encode(array_values($DateTime50)); ?>;
+                var aVar50 = <?php echo json_encode(array_values($Avariation50)); ?>;
+                var bVar50 = <?php echo json_encode(array_values($Bvariation50)); ?>;
+                var tm50 = <?php echo json_encode(array_values($totalMove50)); ?>;
+
+                var dpsn50 = []; //dataPoints. 
+                var dpsav50 = []; //data point for a variation
+                var dpsbv50 = []; //data point for b variation
+                var dpstm50 = []; // here we will add total movement
+
+                //  here we get node 60 data 
+                var dateTime60 = <?php echo json_encode(array_values($DateTime60)); ?>;
+                var aVar60 = <?php echo json_encode(array_values($Avariation60)); ?>;
+                var bVar60 = <?php echo json_encode(array_values($Bvariation60)); ?>;
+                var tm60 = <?php echo json_encode(array_values($totalMove60)); ?>;
+
+                var dpsn60 = []; //dataPoints. 
+                var dpsav60 = []; //data point for a variation
+                var dpsbv60 = []; //data point for b variation
+                var dpstm60 = []; // here we will add total movement
+
+                //  here we get node 61 data 
+                var dateTime61 = <?php echo json_encode(array_values($DateTime61)); ?>;
+                var aVar61 = <?php echo json_encode(array_values($Avariation61)); ?>;
+                var bVar61 = <?php echo json_encode(array_values($Bvariation61)); ?>;
+                var tm61 = <?php echo json_encode(array_values($totalMove61)); ?>;
+
+                var dpsn61 = []; //dataPoints. 
+                var dpsav61 = []; //data point for a variation
+                var dpsbv61 = []; //data point for b variation
+                var dpstm61 = []; // here we will add total movement
+
+                //  here we get node 70 data 
+                var dateTime70 = <?php echo json_encode(array_values($DateTime70)); ?>;
+                var aVar70 = <?php echo json_encode(array_values($Avariation70)); ?>;
+                var bVar70 = <?php echo json_encode(array_values($Bvariation70)); ?>;
+                var tm70 = <?php echo json_encode(array_values($totalMove70)); ?>;
+
+                var dpsn70 = []; //dataPoints. 
+                var dpsav70 = []; //data point for a variation
+                var dpsbv70 = []; //data point for b variation
+                var dpstm70 = []; // here we will add total movement
+
+                //  here we get node 80 data 
+                var dateTime80 = <?php echo json_encode(array_values($DateTime80)); ?>;
+                var aVar80 = <?php echo json_encode(array_values($Avariation80)); ?>;
+                var bVar80 = <?php echo json_encode(array_values($Bvariation80)); ?>;
+                var tm80 = <?php echo json_encode(array_values($totalMove80)); ?>;
+
+                var dpsn80 = []; //dataPoints. 
+                var dpsav80 = []; //data point for a variation
+                var dpsbv80 = []; //data point for b variation
+                var dpstm80 = []; // here we will add total movement
+
                 CanvasJS.addColorSet("customColorSet",
                     [ //colorSet Array
-
                         "#4661EE",
                         "#EC5657",
                         "#1BCDD1",
@@ -496,40 +698,325 @@ foreach ($query as $data) // using foreach  to display each element of array
                             legendText: '{name}',
                             legendMarkerType: 'circle',
                             toolTipContent: '<b>{name}</b><br/>Axis A: {y} degree<br/> Axis B: {x} degree<br/> Total Movement: {z} mm/m<br/> DateTime: {datetime}',
-                            dataPoints: [{
-                                x: -0.0173,
-                                y: -0.0562,
-                                z: 1.0263,
-                                name: 'Node 10',
-                                datetime: '2020-11-09 10:00:00'
-                            }, ]
+                            dataPoints: dpsn10
                         },
-
-
-
+                        {
+                            type: 'bubble',
+                            showInLegend: true,
+                            legendText: '{name}',
+                            legendMarkerType: 'circle',
+                            toolTipContent: '<b>{name}</b><br/>Axis A: {y} degree<br/> Axis B: {x} degree<br/> Total Movement: {z} mm/m<br/> DateTime: {datetime}',
+                            dataPoints: dpsn20
+                        },
+                        {
+                            type: 'bubble',
+                            showInLegend: true,
+                            legendText: '{name}',
+                            legendMarkerType: 'circle',
+                            toolTipContent: '<b>{name}</b><br/>Axis A: {y} degree<br/> Axis B: {x} degree<br/> Total Movement: {z} mm/m<br/> DateTime: {datetime}',
+                            dataPoints: dpsn21
+                        },
+                        {
+                            type: 'bubble',
+                            showInLegend: true,
+                            legendText: '{name}',
+                            legendMarkerType: 'circle',
+                            toolTipContent: '<b>{name}</b><br/>Axis A: {y} degree<br/> Axis B: {x} degree<br/> Total Movement: {z} mm/m<br/> DateTime: {datetime}',
+                            dataPoints: dpsn30
+                        },
+                        {
+                            type: 'bubble',
+                            showInLegend: true,
+                            legendText: '{name}',
+                            legendMarkerType: 'circle',
+                            toolTipContent: '<b>{name}</b><br/>Axis A: {y} degree<br/> Axis B: {x} degree<br/> Total Movement: {z} mm/m<br/> DateTime: {datetime}',
+                            dataPoints: dpsn40
+                        },
+                        {
+                            type: 'bubble',
+                            showInLegend: true,
+                            legendText: '{name}',
+                            legendMarkerType: 'circle',
+                            toolTipContent: '<b>{name}</b><br/>Axis A: {y} degree<br/> Axis B: {x} degree<br/> Total Movement: {z} mm/m<br/> DateTime: {datetime}',
+                            dataPoints: dpsn50
+                        },
+                        {
+                            type: 'bubble',
+                            showInLegend: true,
+                            legendText: '{name}',
+                            legendMarkerType: 'circle',
+                            toolTipContent: '<b>{name}</b><br/>Axis A: {y} degree<br/> Axis B: {x} degree<br/> Total Movement: {z} mm/m<br/> DateTime: {datetime}',
+                            dataPoints: dpsn60
+                        },
+                        {
+                            type: 'bubble',
+                            showInLegend: true,
+                            legendText: '{name}',
+                            legendMarkerType: 'circle',
+                            toolTipContent: '<b>{name}</b><br/>Axis A: {y} degree<br/> Axis B: {x} degree<br/> Total Movement: {z} mm/m<br/> DateTime: {datetime}',
+                            dataPoints: dpsn61
+                        },
+                        {
+                            type: 'bubble',
+                            showInLegend: true,
+                            legendText: '{name}',
+                            legendMarkerType: 'circle',
+                            toolTipContent: '<b>{name}</b><br/>Axis A: {y} degree<br/> Axis B: {x} degree<br/> Total Movement: {z} mm/m<br/> DateTime: {datetime}',
+                            dataPoints: dpsn70
+                        },
+                        {
+                            type: 'bubble',
+                            showInLegend: true,
+                            legendText: '{name}',
+                            legendMarkerType: 'circle',
+                            toolTipContent: '<b>{name}</b><br/>Axis A: {y} degree<br/> Axis B: {x} degree<br/> Total Movement: {z} mm/m<br/> DateTime: {datetime}',
+                            dataPoints: dpsn80
+                        },
 
                     ]
                 });
 
                 function parseDataPoints() {
-                    for (var i = dps.length; i < dateTime.length; i++) {
-                        dps.push({
-                            x: parseFloat(aVar[i]),
-                            y: parseFloat(bVar[i]),
-                            z: parseFloat(aaAxix[i]),
+                    for (var i = dpsn10.length; i < dateTime10.length; i++) {
+                        dpsn10.push({
+                            x: parseFloat(aVar10[i]),
+                            y: parseFloat(bVar10[i]),
+                            z: parseFloat(tm10[i]),
                             name: 'Node 10',
-                            datetime: new Date(dateTime[i]),
+                            datetime: new Date(dateTime10[i]),
                         });
 
+                        dpstm10.push({
+                            label: new Date(dateTime10[i]),
+                            y: parseFloat(tm10[i]),
+                        })
+
+                        dpsav10.push({
+                            label: new Date(dateTime10[i]),
+                            y: parseFloat(aVar10[i]),
+                        })
+
+                        dpsbv10.push({
+                            label: new Date(dateTime10[i]),
+                            y: parseFloat(bVar10[i]),
+                        })
+
+
+                        dpsn20.push({
+                            x: parseFloat(aVar20[i]),
+                            y: parseFloat(bVar20[i]),
+                            z: parseFloat(tm20[i]),
+                            name: 'Node 20',
+                            datetime: new Date(dateTime20[i]),
+                        });
+                        dpstm20.push({
+                            label: new Date(dateTime20[i]),
+                            y: parseFloat(tm20[i]),
+                        })
+
+                        dpsav20.push({
+                            label: new Date(dateTime20[i]),
+                            y: parseFloat(aVar20[i]),
+                        })
+                        
+                        dpsbv20.push({
+                            label: new Date(dateTime20[i]),
+                            y: parseFloat(bVar20[i]),
+                        })
+
+
+                        dpsn21.push({
+                            x: parseFloat(aVar21[i]),
+                            y: parseFloat(bVar21[i]),
+                            z: parseFloat(tm21[i]),
+                            name: 'Node 21',
+                            datetime: new Date(dateTime21[i]),
+                        });
+                        dpstm21.push({
+                            label: new Date(dateTime21[i]),
+                            y: parseFloat(tm21[i]),
+                        })
+
+                        dpsav21.push({
+                            label: new Date(dateTime21[i]),
+                            y: parseFloat(aVar21[i]),
+                        })
+                        
+                        dpsbv21.push({
+                            label: new Date(dateTime21[i]),
+                            y: parseFloat(bVar21[i]),
+                        })
+
+
+                        dpsn30.push({
+                            x: parseFloat(aVar30[i]),
+                            y: parseFloat(bVar30[i]),
+                            z: parseFloat(tm30[i]),
+                            name: 'Node 30',
+                            datetime: new Date(dateTime30[i]),
+                        });
+                        dpstm30.push({
+                            label: new Date(dateTime30[i]),
+                            y: parseFloat(tm30[i]),
+                        })
+
+                        dpsav30.push({
+                            label: new Date(dateTime30[i]),
+                            y: parseFloat(aVar30[i]),
+                        })
+                        
+                        dpsbv30.push({
+                            label: new Date(dateTime30[i]),
+                            y: parseFloat(bVar30[i]),
+                        })
+
+                        
+                        dpsn40.push({
+                            x: parseFloat(aVar40[i]),
+                            y: parseFloat(bVar40[i]),
+                            z: parseFloat(tm40[i]),
+                            name: 'Node 40',
+                            datetime: new Date(dateTime40[i]),
+                        });
+                        dpstm40.push({
+                            label: new Date(dateTime40[i]),
+                            y: parseFloat(tm40[i]),
+                        })
+
+                        dpsav40.push({
+                            label: new Date(dateTime40[i]),
+                            y: parseFloat(aVar40[i]),
+                        })
+                        
+                        dpsbv40.push({
+                            label: new Date(dateTime40[i]),
+                            y: parseFloat(bVar40[i]),
+                        })
+
+
+                        dpsn50.push({
+                            x: parseFloat(aVar50[i]),
+                            y: parseFloat(bVar50[i]),
+                            z: parseFloat(tm50[i]),
+                            name: 'Node 50',
+                            datetime: new Date(dateTime50[i]),
+                        });
+                        dpstm50.push({
+                            label: new Date(dateTime50[i]),
+                            y: parseFloat(tm50[i]),
+                        })
+
+                        dpsav50.push({
+                            label: new Date(dateTime50[i]),
+                            y: parseFloat(aVar50[i]),
+                        })
+                        
+                        dpsbv50.push({
+                            label: new Date(dateTime50[i]),
+                            y: parseFloat(bVar50[i]),
+                        })
+
+
+                        dpsn60.push({
+                            x: parseFloat(aVar60[i]),
+                            y: parseFloat(bVar60[i]),
+                            z: parseFloat(tm60[i]),
+                            name: 'Node 60',
+                            datetime: new Date(dateTime60[i]),
+                        });
+                        dpstm60.push({
+                            label: new Date(dateTime60[i]),
+                            y: parseFloat(tm60[i]),
+                        })
+
+                        dpsav60.push({
+                            label: new Date(dateTime60[i]),
+                            y: parseFloat(aVar60[i]),
+                        })
+                        
+                        dpsbv60.push({
+                            label: new Date(dateTime60[i]),
+                            y: parseFloat(bVar60[i]),
+                        })
+
+
+                        dpsn61.push({
+                            x: parseFloat(aVar61[i]),
+                            y: parseFloat(bVar61[i]),
+                            z: parseFloat(tm61[i]),
+                            name: 'Node 61',
+                            datetime: new Date(dateTime61[i]),
+                        });
+                        dpstm61.push({
+                            label: new Date(dateTime61[i]),
+                            y: parseFloat(tm61[i]),
+                        })
+
+                        dpsav61.push({
+                            label: new Date(dateTime61[i]),
+                            y: parseFloat(aVar61[i]),
+                        })
+                        
+                        dpsbv61.push({
+                            label: new Date(dateTime61[i]),
+                            y: parseFloat(bVar61[i]),
+                        })
+
+
+                        dpsn70.push({
+                            x: parseFloat(aVar70[i]),
+                            y: parseFloat(bVar70[i]),
+                            z: parseFloat(tm70[i]),
+                            name: 'Node 70',
+                            datetime: new Date(dateTime70[i]),
+                        });
+                        dpstm70.push({
+                            label: new Date(dateTime70[i]),
+                            y: parseFloat(tm70[i]),
+                        })
+
+                        dpsav70.push({
+                            label: new Date(dateTime70[i]),
+                            y: parseFloat(aVar70[i]),
+                        })
+                        
+                        dpsbv70.push({
+                            label: new Date(dateTime70[i]),
+                            y: parseFloat(bVar70[i]),
+                        })
+
+
+                        dpsn80.push({
+                            x: parseFloat(aVar80[i]),
+                            y: parseFloat(bVar80[i]),
+                            z: parseFloat(tm80[i]),
+                            name: 'Node 80',
+                            datetime: new Date(dateTime80[i]),
+                        });
+                        dpstm80.push({
+                            label: new Date(dateTime80[i]),
+                            y: parseFloat(tm80[i]),
+                        })
+
+                        dpsav80.push({
+                            label: new Date(dateTime80[i]),
+                            y: parseFloat(aVar80[i]),
+                        })
+                        
+                        dpsbv80.push({
+                            label: new Date(dateTime80[i]),
+                            y: parseFloat(bVar80[i]),
+                        })
 
                     }
                 };
 
                 function addDataPoints() {
                     parseDataPoints();
-                    chart.options.data[0].dataPoints = dps;
+                    // chart.options.data[0].dataPoints = dpsn10;
                     chart.render();
                 }
+
                 addDataPoints();
                 chart.render();
 
@@ -604,790 +1091,70 @@ foreach ($query as $data) // using foreach  to display each element of array
                             type: "line",
                             name: "Node 10",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0.8
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0.8
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0.8
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0.8
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0.8
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0.9
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 1
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 1
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0.8
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0.8
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0.8
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0.9
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0.9
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0.9
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0.9
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0.9
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0.9
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0.8
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0.8
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0.8
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0.8
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0.8
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0.8
-                            }, ]
+                            dataPoints: dpstm10
                         },
 
                         {
                             type: "line",
                             name: "Node 20",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0.6
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0.6
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0.6
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0.6
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0.6
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0.6
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0.4
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0.5
-                            }, ]
+                            dataPoints: dpstm20
                         },
 
                         {
                             type: "line",
                             name: "Node 21",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 1.1
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 1
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 1
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0.9
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0.9
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0.9
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0.4
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0.3
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0.4
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0.6
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0.8
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0.3
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0.3
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0.3
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0.8
-                            }, ]
+                            dataPoints: dpstm21
                         },
 
                         {
                             type: "line",
                             name: "Node 30",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 1.7
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 1.7
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 1.7
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 1.7
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 1.6
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 1.6
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 1.5
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 1.4
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 1
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 1.4
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 1.4
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 1.5
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 1.4
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 1.4
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 1.4
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 1.4
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 1.3
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 1.4
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 1.5
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 1.5
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 1.5
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 1.5
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 1.5
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 1.5
-                            }, ]
+                            dataPoints: dpstm30
                         },
 
                         {
                             type: "line",
                             name: "Node 40",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 1.5
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 1.5
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 1.4
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 1.4
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 1.4
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 1.4
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 1.3
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 1.2
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0.9
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 1.3
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 1.3
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 1.3
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 1.3
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 1.3
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 1.2
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 1.2
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 1.2
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 1.3
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 1.3
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 1.3
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 1.3
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 1.3
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 1.3
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 1.3
-                            }, ]
+                            dataPoints: dpstm40
                         },
 
                         {
                             type: "line",
                             name: "Node 50",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 2
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 2
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 2
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 2
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 1.9
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 2
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 1.8
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 1.6
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 1.2
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 1.6
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 1.8
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 1.8
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 1.7
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 1.8
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 1.7
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 1.7
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 1.7
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 1.8
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 1.9
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 2
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 2
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 2
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 2
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 2
-                            }, ]
+                            dataPoints: dpstm50
                         },
 
                         {
                             type: "line",
                             name: "Node 60",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0.4
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0.4
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0.4
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0.4
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0.6
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0.6
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0.6
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0.6
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0.6
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0.6
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0.6
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0.6
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0.5
-                            }, ]
+                            dataPoints: dpstm60
                         },
 
                         {
                             type: "line",
                             name: "Node 61",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0.6
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0.6
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0.6
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0.7
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0.7
-                            }, ]
+                            dataPoints: dpstm61
                         },
 
                         {
                             type: "line",
                             name: "Node 70",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0.4
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0.3
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0.3
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0.4
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0.4
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0.3
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0.4
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0.4
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0.4
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0.4
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0.4
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0.5
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0.5
-                            }, ]
+                            dataPoints: dpstm70
                         },
 
                         {
                             type: "line",
                             name: "Node 80",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 2.7
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 2.7
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 2.7
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 2.7
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 2.6
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 2.7
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 2.5
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 2.2
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 1.6
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 2.2
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 2.4
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 2.4
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 2.2
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 2.2
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 2.1
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 2.2
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 2.1
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 2.3
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 2.5
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 2.5
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 2.5
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 2.5
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 2.5
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 2.5
-                            }, ]
+                            dataPoints: dpstm80
                         },
                     ]
                 });
@@ -1461,790 +1228,70 @@ foreach ($query as $data) // using foreach  to display each element of array
                             type: "line",
                             name: "Node 10",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0
-                            }, ]
+                            dataPoints: dpstm10
                         },
 
                         {
                             type: "line",
                             name: "Node 20",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0
-                            }, ]
+                            dataPoints: dpstm20
                         },
 
                         {
                             type: "line",
                             name: "Node 21",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0
-                            }, ]
+                            dataPoints: dpstm21
                         },
 
                         {
                             type: "line",
                             name: "Node 30",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0.1
-                            }, ]
+                            dataPoints: dpstm30
                         },
 
                         {
                             type: "line",
                             name: "Node 40",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0
-                            }, ]
+                            dataPoints: dpstm40
                         },
 
                         {
                             type: "line",
                             name: "Node 50",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0.1
-                            }, ]
+                            dataPoints: dpstm50
                         },
 
                         {
                             type: "line",
                             name: "Node 60",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0
-                            }, ]
+                            dataPoints: dpstm60
                         },
 
                         {
                             type: "line",
                             name: "Node 61",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0
-                            }, ]
+                            dataPoints: dpstm61
                         },
 
                         {
                             type: "line",
                             name: "Node 70",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0
-                            }, ]
+                            dataPoints: dpstm70
                         },
 
                         {
                             type: "line",
                             name: "Node 80",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0.1
-                            }, ]
+                            dataPoints: dpstm80
                         },
                     ]
                 });
@@ -2314,790 +1361,70 @@ foreach ($query as $data) // using foreach  to display each element of array
                             type: "line",
                             name: "Node 10",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0
-                            }, ]
+                            dataPoints: dpstm10
                         },
 
                         {
                             type: "line",
                             name: "Node 20",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0
-                            }, ]
+                            dataPoints: dpstm20
                         },
 
                         {
                             type: "line",
                             name: "Node 21",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0
-                            }, ]
+                            dataPoints: dpstm21
                         },
 
                         {
                             type: "line",
                             name: "Node 30",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0
-                            }, ]
+                            dataPoints: dpstm30
                         },
 
                         {
                             type: "line",
                             name: "Node 40",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0.1
-                            }, ]
+                            dataPoints: dpstm40
                         },
 
                         {
                             type: "line",
                             name: "Node 50",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0.1
-                            }, ]
+                            dataPoints: dpstm50
                         },
 
                         {
                             type: "line",
                             name: "Node 60",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0
-                            }, ]
+                            dataPoints: dpstm60
                         },
 
                         {
                             type: "line",
                             name: "Node 61",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0
-                            }, ]
+                            dataPoints: dpstm61
                         },
 
                         {
                             type: "line",
                             name: "Node 70",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0
-                            }, ]
+                            dataPoints: dpstm70
                         },
 
                         {
                             type: "line",
                             name: "Node 80",
                             showInLegend: true,
-                            dataPoints: [{
-                                label: "2020-11-09 02:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 03:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 04:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 05:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 06:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 07:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 08:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 09:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 10:00:00",
-                                y: 0
-                            }, {
-                                label: "2020-11-09 11:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 12:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 13:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 14:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 15:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 16:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 17:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 18:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 19:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 20:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 21:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 22:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-09 23:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-10 00:00:00",
-                                y: 0.1
-                            }, {
-                                label: "2020-11-10 01:00:00",
-                                y: 0.1
-                            }, ]
+                            dataPoints: dpstm80
                         },
                     ]
                 });
