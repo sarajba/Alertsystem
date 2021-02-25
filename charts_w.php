@@ -37,6 +37,7 @@ $DangerNode = 0;
 $NormalNode = 10;
 $AdvisoryNode = 0;
 $WatchNode = 0;
+$aaxix=0;
 // Run the query
 $query = $connect->query($getNode);
 foreach ($query as $data) // using foreach  to display each element of array
@@ -470,9 +471,8 @@ foreach ($query as $data) // using foreach  to display each element of array
 
                             <div class="col-lg-12">
 
-                                <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
                                 <link rel="stylesheet" type="text/css" href="chartmenu.css">
-                                <title>Chart Menu</title>
+                                
 
                                 <div class="topnav" style="display: flex;">
 
@@ -482,8 +482,57 @@ foreach ($query as $data) // using foreach  to display each element of array
 
                                 </div>
 
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div id="chartContainer_w" style="height: 450px; width: 100%;"> </div>
 
-                                <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+                                        <!-- <div class="portlet box">
+                                            <div class="portlet-header">
+                                                <div class="caption">Axis Movements (Degree)</div>
+                                                <div class="tools">
+                                                    <a href="#top"><i class="fa fa-chevron-up"></i></a> </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div id="chartContainerAngle" style="height: 450px; width: 100%;"> </div>
+                                            </div>
+                                        </div> -->
+
+                                        <!-- <div class="portlet box">
+                                            <div class="portlet-header">
+                                                <div class="caption">Axis Movements (mm/m)</div>
+                                                <div class="tools">
+                                                    <a href="#top"><i class="fa fa-chevron-up"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="portlet-body" align="center">
+                                                <div id="chartContainerMM" style="height: 450px; width: 100%;"> </div>
+                                            </div>
+                                        </div> -->
+                                        <div id="chartContainer_withTotalm" style="height: 450px; width: 100%;"> </div>
+
+                                    </div>
+
+
+                                    <!--end col-lg-12-->
+                                    <div id="chartContainerPie22" style="height: 450px; width: 100%;">
+                                    </div>
+
+                                </div>
+                                <!--end row-->
+                            </div>
+                            <!--end col-lg-12-->
+                        </div>
+                        <!--end row mbl-->
+                    </div>
+                    <!--end tab general-->
+                </div>
+                <!--end page content-->
+
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
                                 <script>
                                     window.onload = function chartAngle() {
@@ -511,6 +560,7 @@ foreach ($query as $data) // using foreach  to display each element of array
                                                 fontSize: 20
 
                                             },
+                                            exportEnabled: true,
                                             axisX: {
                                                 // title: "Axis A Axis B",
                                                 titleFontColor: "#4F81BC",
@@ -584,6 +634,7 @@ foreach ($query as $data) // using foreach  to display each element of array
                                             axisY: {
                                                 title: "Movements(mm/m)"
                                             },
+                                            exportEnabled: true,
                                             data: [{
                                                     type: "line",
                                                     name: "A variation",
@@ -624,6 +675,7 @@ foreach ($query as $data) // using foreach  to display each element of array
                                                 fontFamily: "arial",
                                                 fontSize: 20
                                             },
+                                            exportEnabled: true,
                                             data: [{
                                                 type: "pie",
                                                 startAngle: 25,
@@ -678,57 +730,6 @@ foreach ($query as $data) // using foreach  to display each element of array
                                     */
                                 </script>
 
-
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div id="chartContainer_w" style="height: 450px; width: 100%;"> </div>
-
-                                        <!-- <div class="portlet box">
-                                            <div class="portlet-header">
-                                                <div class="caption">Axis Movements (Degree)</div>
-                                                <div class="tools">
-                                                    <a href="#top"><i class="fa fa-chevron-up"></i></a> </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div id="chartContainerAngle" style="height: 450px; width: 100%;"> </div>
-                                            </div>
-                                        </div> -->
-
-                                        <!-- <div class="portlet box">
-                                            <div class="portlet-header">
-                                                <div class="caption">Axis Movements (mm/m)</div>
-                                                <div class="tools">
-                                                    <a href="#top"><i class="fa fa-chevron-up"></i></a>
-                                                </div>
-                                            </div>
-                                            <div class="portlet-body" align="center">
-                                                <div id="chartContainerMM" style="height: 450px; width: 100%;"> </div>
-                                            </div>
-                                        </div> -->
-                                        <div id="chartContainer_withTotalm" style="height: 450px; width: 100%;"> </div>
-
-                                    </div>
-
-
-                                    <!--end col-lg-12-->
-                                    <div id="chartContainerPie22" style="height: 450px; width: 100%;">
-                                    </div>
-
-                                </div>
-                                <!--end row-->
-                            </div>
-                            <!--end col-lg-12-->
-                        </div>
-                        <!--end row mbl-->
-                    </div>
-                    <!--end tab general-->
-                </div>
-                <!--end page content-->
-
-            </div>
-        </div>
-    </div>
-    </div>
     <!-- jQuery CDN - Slim version (=without AJAX) -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <!-- Popper.JS -->

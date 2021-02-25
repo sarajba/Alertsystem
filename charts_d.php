@@ -23,7 +23,7 @@ $connect = mysqli_connect("localhost", "root", "", "geoalertsystem");
 $id = $_GET['nodeID'];
 $getNode = "
 SELECT * FROM `node_$id`
-WHERE Date_and_time BETWEEN DATE(DATE_SUB(NOW(), INTERVAL 2 DAY)) AND DATE(NOW())
+WHERE Date_and_time BETWEEN DATE(DATE_SUB(NOW(), INTERVAL 3 DAY)) AND DATE(NOW())
 ORDER BY Date_and_time DESC;
     ";
 
@@ -37,6 +37,7 @@ $DangerNode = 0;
 $NormalNode = 10;
 $AdvisoryNode = 0;
 $WatchNode = 0;
+
 // Run the query
 $query = $connect->query($getNode);
 foreach ($query as $data) // using foreach  to display each element of array
@@ -49,7 +50,7 @@ foreach ($query as $data) // using foreach  to display each element of array
         $axixBV = tan($bv * 3.14 / 180) * 1000;
         $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
         $roundOffIt = round($totalMov, 1, PHP_ROUND_HALF_ODD);
-
+        $aaxix=0;
         array_push($DateTime, $dt);
         array_push($Avariation, $av);
         array_push($Bvariation, $bv);
@@ -316,7 +317,7 @@ foreach ($query as $data) // using foreach  to display each element of array
         array_push($Bvariation, $bv);
         array_push($Aaxix, $aaxix);
         array_push($totalMove, $roundOffIt);
- 
+
         if ($aaxix >= 0.5 && $aaxix < 1) {
             ++$AdvisoryNode;
             --$NormalNode;
@@ -511,6 +512,8 @@ foreach ($query as $data) // using foreach  to display each element of array
                                                 fontSize: 20
 
                                             },
+                                            exportEnabled: true,
+
                                             axisX: {
                                                 // title: "Axis A Axis B",
                                                 titleFontColor: "#4F81BC",
@@ -581,6 +584,8 @@ foreach ($query as $data) // using foreach  to display each element of array
                                                 //labelFontColor: "#4F81BC",
                                                 tickColor: "#4F81BC"
                                             },
+                                            exportEnabled: true,
+
                                             axisY: {
                                                 title: "Movements(mm/m)"
                                             },
@@ -602,12 +607,12 @@ foreach ($query as $data) // using foreach  to display each element of array
                                                 },
                                                 {
                                                     type: "line",
-                                                axisYType: "secondary",
-                                                name: "Total Movement",
-                                                markerSize: 0,
-                                                toolTipContent: "Date: {x}<br>{name}: {y}",
-                                                showInLegend: true,
-                                                dataPoints: tMov
+                                                    axisYType: "secondary",
+                                                    name: "Total Movement",
+                                                    markerSize: 0,
+                                                    toolTipContent: "Date: {x}<br>{name}: {y}",
+                                                    showInLegend: true,
+                                                    dataPoints: tMov
                                                 }
                                             ]
                                         });
@@ -624,6 +629,8 @@ foreach ($query as $data) // using foreach  to display each element of array
                                                 fontFamily: "arial",
                                                 fontSize: 20
                                             },
+                                            exportEnabled: true,
+
                                             data: [{
                                                 type: "pie",
                                                 startAngle: 25,
@@ -680,8 +687,21 @@ foreach ($query as $data) // using foreach  to display each element of array
 
 
                                 <div class="row">
+                                    <!--Chart 2 Total Movements Chart-->
                                     <div class="col-lg-12">
-                                        <div id="chartContainer_d" style="height: 450px; width: 100%;"> </div>
+                                        <div class="panel">
+                                            <div class="panel-body">
+                                                <h3 class="mbm" align="center"></h3>
+                                                <div align="center">
+                                                    <div id="chartContainer_d" style="height: 450px; width: 100%;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+
+                                        <!-- <div id="chartContainer_d" style="height: 450px; width: 100%;"> </div> -->
 
                                         <!-- <div class="portlet box">
                                             <div class="portlet-header">

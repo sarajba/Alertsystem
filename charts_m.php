@@ -45,6 +45,7 @@ foreach ($query as $data) // using foreach  to display each element of array
         $dt = $data['Date_and_time'];
         $av = $data['AaxisVariation_10_Ch1'];
         $bv = $data['BaxisVariation_10_Ch1'];
+        $aaxix=0;
         $axixAV = tan($av * 3.14 / 180) * 1000;
         $axixBV = tan($bv * 3.14 / 180) * 1000;
         $totalMov = sqrt($axixAV ** 2 + $axixBV ** 2);
@@ -470,9 +471,7 @@ foreach ($query as $data) // using foreach  to display each element of array
 
                             <div class="col-lg-12">
 
-                                <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
                                 <link rel="stylesheet" type="text/css" href="chartmenu.css">
-                                <title>Chart Menu</title>
 
                                 <div class="topnav" style="display: flex;">
 
@@ -511,6 +510,8 @@ foreach ($query as $data) // using foreach  to display each element of array
                                                 fontSize: 20
 
                                             },
+                                            exportEnabled: true,
+
                                             axisX: {
                                                 // title: "Axis A Axis B",
                                                 titleFontColor: "#4F81BC",
@@ -575,6 +576,8 @@ foreach ($query as $data) // using foreach  to display each element of array
                                                 fontFamily: "arial",
                                                 fontSize: 20
                                             },
+                                            exportEnabled: true,
+
                                             axisX: {
                                                 // title: "Axis A Axis B",
                                                 titleFontColor: "#4F81BC",
